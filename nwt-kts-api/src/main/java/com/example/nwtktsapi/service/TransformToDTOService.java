@@ -1,0 +1,22 @@
+package com.example.nwtktsapi.service;
+
+import com.example.nwtktsapi.dto.UserDTO;
+import com.example.nwtktsapi.model.User;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class TransformToDTOService {
+
+    public <T> List<Object> transformToDTOList(List<T> regularList){
+        List<Object> ret= new ArrayList<>();
+        for (T item: regularList) {
+            if( item instanceof User)
+                ret.add( new UserDTO((User)item));
+            //for other types
+        }
+        return ret;
+    }
+}
