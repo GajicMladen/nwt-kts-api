@@ -1,6 +1,8 @@
 package com.example.nwtktsapi.service;
 
+import com.example.nwtktsapi.dto.MessageDTO;
 import com.example.nwtktsapi.dto.UserDTO;
+import com.example.nwtktsapi.model.Message;
 import com.example.nwtktsapi.model.User;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ public class TransformToDTOService {
         for (T item: regularList) {
             if( item instanceof User)
                 ret.add( new UserDTO((User)item));
+            if( item instanceof Message)
+                ret.add( new MessageDTO((Message) item));
             //for other types
         }
         return ret;

@@ -11,31 +11,33 @@ public class Message {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "sender_user_id",nullable = false)
-    private User sender;
-
-    @ManyToOne
-    @JoinColumn(name = "offender_user_id")
-    private Driver offender;
-
-    @Column(name = "message_type")
-    private MessageType messageType;
+    @JoinColumn(name = "user_id",nullable = false)
+    private User user;
 
     @Column(name = "content")
     private String content;
 
-    @Column(name = "date_created")
-    private LocalDateTime dateCreated;
+    @Column(name = "admin_message")
+    private boolean isAdminMessage;
 
-    public Message() {
+
+    @Column(name = "time_stamp")
+    private LocalDateTime timeStamp;
+
+    public Long getId() {
+        return id;
     }
 
-    public MessageType getMessageType() {
-        return messageType;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setMessageType(MessageType messageType) {
-        this.messageType = messageType;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getContent() {
@@ -46,35 +48,19 @@ public class Message {
         this.content = content;
     }
 
-    public LocalDateTime getDateCreated() {
-        return dateCreated;
+    public boolean isAdminMessage() {
+        return isAdminMessage;
     }
 
-    public void setDateCreated(LocalDateTime dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setAdminMessage(boolean adminMessage) {
+        isAdminMessage = adminMessage;
     }
 
-    public Driver getOffender() {
-        return offender;
+    public LocalDateTime getTimeStamp() {
+        return timeStamp;
     }
 
-    public void setOffender(Driver offender) {
-        this.offender = offender;
-    }
-
-    public User getSender() {
-        return sender;
-    }
-
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setTimeStamp(LocalDateTime timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

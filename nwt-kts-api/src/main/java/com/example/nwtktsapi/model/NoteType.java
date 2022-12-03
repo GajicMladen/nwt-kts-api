@@ -1,6 +1,6 @@
 package com.example.nwtktsapi.model;
 
-public enum MessageType {
+public enum NoteType {
     BLOCK_NOTICE,
     CANCEL_FARE,
     COMPLAINT

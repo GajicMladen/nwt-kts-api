@@ -15,7 +15,7 @@ public class Driver extends  User{
     private Vehicle vehicle;
 
     @OneToMany(mappedBy = "offender")
-    private List<Message> blamedMessages;
+    private List<Note> blamedNotes;
 
     @Column(name = "driver_status")
     private DriverStatus driverStatus;
@@ -23,12 +23,12 @@ public class Driver extends  User{
     public Driver() {
     }
 
-    public List<Message> getBlamedMessages() {
-        return blamedMessages;
+    public List<Note> getBlamedMessages() {
+        return blamedNotes;
     }
 
-    public void setBlamedMessages(List<Message> blamedMessages) {
-        this.blamedMessages = blamedMessages;
+    public void setBlamedMessages(List<Note> blamedNotes) {
+        this.blamedNotes = blamedNotes;
     }
 
     public DriverStatus getDriverStatus() {

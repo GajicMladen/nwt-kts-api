@@ -39,18 +39,14 @@ public class User {
     private boolean blocked;
 
     @OneToMany( mappedBy = "sender")
+    private List<Note> notes;
+
+    @OneToMany( mappedBy = "user")
     private List<Message> messages;
 
     public User() {
     }
 
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
 
     public String getPassword() {
         return password;
@@ -122,5 +118,17 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 }
