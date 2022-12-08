@@ -1,6 +1,7 @@
 package com.example.nwtktsapi.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,11 @@ public class UserService implements UserDetailsService{
     
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	public User getUserById(Long userId){
+		Optional<User> user =  userRepository.findById(userId);
+		return user.orElse(null);
+	}
 
     public List<User> getAllUsers(){
         return userRepository.findAll();

@@ -1,5 +1,7 @@
 package com.example.nwtktsapi.model;
 
+import com.example.nwtktsapi.dto.MessageDTO;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -23,6 +25,16 @@ public class Message {
 
     @Column(name = "time_stamp")
     private LocalDateTime timeStamp;
+
+    public Message(){
+
+    }
+    public Message(MessageDTO messageDTO,User user){
+        this.content = messageDTO.getContent();
+        this.isAdminMessage = messageDTO.getIsAdminMessage();
+        this.timeStamp = messageDTO.getTimeStamp();
+        this.user =  user;
+    }
 
     public Long getId() {
         return id;

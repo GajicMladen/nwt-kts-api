@@ -10,10 +10,14 @@ import java.util.Objects;
  * A DTO for the {@link com.example.nwtktsapi.model.Message} entity
  */
 public class MessageDTO implements Serializable {
-    private final Long userId;
-    private final String content;
-    private final boolean isAdminMessage;
-    private final LocalDateTime timeStamp;
+    private  Long userId;
+    private  String content;
+    private  boolean isAdminMessage;
+    private  LocalDateTime timeStamp;
+
+    public MessageDTO(){
+
+    }
 
     public MessageDTO(Long userId, String content, boolean isAdminMessage, LocalDateTime timeStamp) {
         this.userId = userId;
