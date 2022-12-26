@@ -54,6 +54,9 @@ public class User implements UserDetails {
     @Column(name = "blocked",columnDefinition = "boolean default false")
     private boolean blocked;
 
+    @Column(name = "tokens" ,columnDefinition="Decimal(10,2) default '0.00'")
+    private float tokens = 0;
+
     @OneToMany( mappedBy = "sender")
     private List<Note> notes;
 
@@ -63,6 +66,9 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public List<Message> getMessages() {
+        return messages;
+    }
 
     public String getPassword() {
         return password;
@@ -148,6 +154,13 @@ public class User implements UserDetails {
         this.messages = messages;
     }
 
+    public float getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(float tokens) {
+        this.tokens = tokens;
+    }
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
