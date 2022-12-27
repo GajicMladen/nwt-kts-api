@@ -1,3 +1,9 @@
+insert into vehicle_price(type, price) values(0, 250);
+insert into vehicle_price(type, price) values(1, 450);
+insert into vehicle_price(type, price) values(2, 350);
+insert into vehicle_price(type, price) values(3, 300);
+insert into vehicle_price(type, price) values(4, 400);
+
 insert into users( dtype , email ,password ,name ,lastname ,phone  )
 values('Driver', 'm','m','Mladen','Gajic' , '0644281080');
 
