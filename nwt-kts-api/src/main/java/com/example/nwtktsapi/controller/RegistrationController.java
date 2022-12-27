@@ -13,6 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.example.nwtktsapi.dto.RegistrationDTO;
 import com.example.nwtktsapi.model.User;
 import com.example.nwtktsapi.service.UserService;
+import com.example.nwtktsapi.utils.EmailService;
 
 @RestController
 @RequestMapping(value="api/reg", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -20,6 +21,9 @@ public class RegistrationController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private EmailService mailService;
 	
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody RegistrationDTO registrationDTO, UriComponentsBuilder ucBuilder){
@@ -37,8 +41,7 @@ public class RegistrationController {
 		
 		User newUser = userService.save(registrationDTO);
 		
-//		if (userRegisterDTO.getRole().equals("ROLE_USER"))
-//			mailService.sendConfirmationMail(newUser);
+//		mailService.sendConfirmationEmail(newUser);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
 	}
