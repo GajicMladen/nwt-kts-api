@@ -4,11 +4,15 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -63,6 +67,12 @@ public class User implements UserDetails {
     @OneToMany( mappedBy = "user")
     private List<Message> messages;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    protected List<Role> roles;
+    
     public User() {
     }
 
@@ -153,6 +163,18 @@ public class User implements UserDetails {
     public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
+    
+	public List<Role> getRoles() {
+        return roles;
+     }
+    
+	public void setRoles(List<Role> roles) {
+	  this.roles = roles;
+	}
+	
+	public String getRoleString() {
+	  return this.roles.get(0).getName();
+	}
 
     public float getTokens() {
         return tokens;
@@ -162,10 +184,10 @@ public class User implements UserDetails {
         this.tokens = tokens;
     }
 
+	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+	    return this.roles;
 	}
 
 
@@ -196,5 +218,13 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+	
+	public boolean hasRole(String roleName){
+		for (Role role: roles) {
+			if(role.getName().equals(roleName))
+				return true;
+		}
+		return false;
 	}
 }

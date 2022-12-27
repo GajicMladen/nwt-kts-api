@@ -1,5 +1,6 @@
 package com.example.nwtktsapi.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.nwtktsapi.dto.RegistrationDTO;
+import com.example.nwtktsapi.model.Role;
 import com.example.nwtktsapi.model.User;
 import com.example.nwtktsapi.repository.UserRepository;
 
@@ -28,6 +30,9 @@ public class UserService implements UserDetailsService{
 		return user.orElse(null);
 	}
 
+	@Autowired
+	private RoleService roleService;
+	
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
@@ -55,9 +60,13 @@ public class UserService implements UserDetailsService{
 		newUser.setLastName(registrationDTO.getLastName());
 		newUser.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
 		newUser.setPhone(registrationDTO.getPhoneNumber());
-		newUser.setActive(false);
+		newUser.setActive(true);
 		newUser.setBlocked(false);
 		newUser.setProfilePhoto("");
+		
+		List<Role> roles = new ArrayList<Role>();
+		roles.add(roleService.findByName("ROLE_USER"));
+		newUser.setRoles(roles);
 		
 		return this.userRepository.save(newUser);
 	}

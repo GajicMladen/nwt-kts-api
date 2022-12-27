@@ -1,3 +1,9 @@
+insert into vehicle_price(type, price) values(0, 250);
+insert into vehicle_price(type, price) values(1, 450);
+insert into vehicle_price(type, price) values(2, 350);
+insert into vehicle_price(type, price) values(3, 300);
+insert into vehicle_price(type, price) values(4, 400);
+
 insert into users( dtype , email ,password ,name ,lastname ,phone  )
 values('Driver', 'm','m','Mladen','Gajic' , '0644281080');
 
@@ -16,6 +22,9 @@ values('Client', 'a','a','Nikola','Nikolic' , '0644281080');
 insert into users( dtype , email ,password ,name ,lastname ,phone  )
 values('Client', 'b','b','Lazar','Lazarovic' , '0644281080');
 
+insert into users( dtype , email ,password ,name ,lastname ,phone, active  )
+values('Client', 'p3r5kul45@gmail.com','lozinka1','Jovan','Tomic' , '0644281080', true);
+
 INSERT INTO MESSAGE("CONTENT","ADMIN_MESSAGE","TIME_STAMP","USER_ID")
 VALUES('poruka1', 0, TO_TIMESTAMP('2022-02-09 07:00:00', 'YYYY-MM-DD HH24:MI:SS') ,1);
 
@@ -30,3 +39,12 @@ VALUES('poruka3', 0, TO_TIMESTAMP('2022-02-09 07:01:30', 'YYYY-MM-DD HH24:MI:SS'
 
 INSERT INTO MESSAGE("CONTENT","ADMIN_MESSAGE","TIME_STAMP","USER_ID")
 VALUES('poruka4', 0, TO_TIMESTAMP('2022-02-09 07:01:30', 'YYYY-MM-DD HH24:MI:SS') ,2);
+
+-- ROLE	
+INSERT INTO ROLE (name) VALUES ('ROLE_USER');
+INSERT INTO ROLE (name) VALUES ('ROLE_ADMIN');
+INSERT INTO ROLE (name) VALUES ('ROLE_DRIVER');
+
+INSERT INTO USER_ROLE(user_id, role_id) VALUES (4, 1);
+INSERT INTO USER_ROLE(user_id, role_id) VALUES (5, 1);
+INSERT INTO USER_ROLE(user_id, role_id) VALUES (6, 2);
