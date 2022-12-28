@@ -60,7 +60,7 @@ public class UserService implements UserDetailsService{
 		newUser.setLastName(registrationDTO.getLastName());
 		newUser.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
 		newUser.setPhone(registrationDTO.getPhoneNumber());
-		newUser.setActive(true);
+		newUser.setActive(false);
 		newUser.setBlocked(false);
 		newUser.setProfilePhoto("");
 		

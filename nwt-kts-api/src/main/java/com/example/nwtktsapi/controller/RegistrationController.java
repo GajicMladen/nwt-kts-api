@@ -14,6 +14,8 @@ import com.example.nwtktsapi.dto.RegistrationDTO;
 import com.example.nwtktsapi.model.User;
 import com.example.nwtktsapi.service.UserService;
 import com.example.nwtktsapi.utils.EmailService;
+import com.example.nwtktsapi.utils.ErrMsg;
+import com.google.gson.Gson;
 
 @RestController
 @RequestMapping(value="api/reg", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -30,18 +32,22 @@ public class RegistrationController {
 		// Converts appropriate fields to title case.
 		registrationDTO.casify();
 		
+		Gson gson = new Gson();
+		
 		if(!registrationDTO.validate())
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Invalid data!");
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+					.body(gson.toJson(new ErrMsg("Uneti podaci su neispravni!")));
 		
 		User existingUser = userService.findByEmail(registrationDTO.getEmail());
 		
 		if (existingUser != null) {
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Email is already taken!");
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+					.body(gson.toJson(new ErrMsg("E-mail je već upotrebljen!")));
 		}
 		
 		User newUser = userService.save(registrationDTO);
 		
-//		mailService.sendConfirmationEmail(newUser);
+		mailService.sendConfirmationEmail(newUser);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
 	}

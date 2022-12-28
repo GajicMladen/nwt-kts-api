@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.nwtktsapi.auth.UserTokenState;
 import com.example.nwtktsapi.dto.JwtAuthenticationRequest;
 import com.example.nwtktsapi.model.User;
+import com.example.nwtktsapi.utils.ErrMsg;
 import com.example.nwtktsapi.utils.TokenUtils;
+import com.google.gson.Gson;
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,11 +37,13 @@ public class LoginController {
 			@RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response){
 		
 		Authentication auth;
+		Gson gson = new Gson();
 		try {
 			auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 					authenticationRequest.getUsername(), authenticationRequest.getPassword()));			
 		} catch(AuthenticationException e) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Neispravan e-mail ili lozinka!");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+					.body(gson.toJson(new ErrMsg("Neispravan e-mail ili lozinka!")));
 		}
 		
 		SecurityContextHolder.getContext().setAuthentication(auth);
@@ -50,11 +54,12 @@ public class LoginController {
 		int expiresIn = tokenUtils.getExpiredIn();
 
 		if(user.isBlocked())
-			return new ResponseEntity<>("Korisnik je blokiran!",HttpStatus.FORBIDDEN);
+			return new ResponseEntity<>(gson.toJson(new ErrMsg("Korisnik je blokiran!")),HttpStatus.FORBIDDEN);
 		
 		if(user.isActive())
 			return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user));
 		else
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Nalog nije verifikovan!");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+								 .body(gson.toJson(new ErrMsg("Nalog nije verifikovan!")));
 	}
 }
