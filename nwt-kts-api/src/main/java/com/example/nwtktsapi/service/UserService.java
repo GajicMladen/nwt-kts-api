@@ -2,6 +2,7 @@ package com.example.nwtktsapi.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.nwtktsapi.dto.RegistrationDTO;
 import com.example.nwtktsapi.model.Role;
@@ -40,6 +42,11 @@ public class UserService implements UserDetailsService{
 			return user;
 		}
 	}
+	
+	@Transactional
+	public Optional<User> findById(Long id) {
+		return userRepository.findById(id);
+	}
     
 	public User findByEmail(String email){
 		return userRepository.findByEmail(email);
@@ -63,6 +70,11 @@ public class UserService implements UserDetailsService{
 		newUser.setRoles(roles);
 		
 		return this.userRepository.save(newUser);
+	}
+	
+	@Transactional
+	public User save(User user) {
+		return this.userRepository.save(user);
 	}
 
 }
