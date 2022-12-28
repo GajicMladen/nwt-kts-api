@@ -1,9 +1,13 @@
 package com.example.nwtktsapi.controller;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +30,10 @@ public class RegistrationController {
 	
 	@Autowired
 	private EmailService mailService;
+	
+	private String SUCCESSFUL_ACTIVATION_REDIRECT = "http://localhost:4200/login/success";
+	private String ALREADY_ACTIVE_REDIRECT = "http://localhost:4200/login/alreadyactive";
+	private String INVALID_ACTIVATION_TRY = "http://localhost:4200/login/invalidactivation";
 	
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody RegistrationDTO registrationDTO, UriComponentsBuilder ucBuilder){
@@ -50,5 +58,23 @@ public class RegistrationController {
 		mailService.sendConfirmationEmail(newUser);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+	}
+	
+	@GetMapping("/activate/{id}")
+	public ResponseEntity<?> activateUser(@PathVariable Long id ){
+		
+		User user = userService.findById(id).orElse(null);
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(INVALID_ACTIVATION_TRY)).build();
+		}
+		else {
+			if (user.isActive())
+				return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(ALREADY_ACTIVE_REDIRECT)).build();
+			else {
+				user.setActive(true);
+				userService.save(user);
+				return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(SUCCESSFUL_ACTIVATION_REDIRECT)).build();
+			}
+		}
 	}
 }
