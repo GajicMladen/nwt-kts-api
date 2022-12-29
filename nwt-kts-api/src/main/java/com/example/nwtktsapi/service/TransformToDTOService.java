@@ -17,10 +17,11 @@ public class TransformToDTOService {
         for (T item: regularList) {
             if( item instanceof User)
                 ret.add( new UserDTO((User)item));
-            if( item instanceof Message)
+            else if( item instanceof Message)
                 ret.add( new MessageDTO((Message) item));
             //for other types
         }
         return ret;
     }
+
 }
