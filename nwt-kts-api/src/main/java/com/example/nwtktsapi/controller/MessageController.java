@@ -34,14 +34,14 @@ public class MessageController {
     public ResponseEntity<List<Object>> getAllMessages(){
         List<Message> messages =  messageService.getAllMessages();
         List<Object> ret = transformToDTOService.transformToDTOList(messages);
-        return new ResponseEntity<>(ret, HttpStatus.OK);
+        return  ResponseEntity.status(HttpStatus.OK).body(ret);
     }
 
     @GetMapping(value = "forUser/{id}")
     public ResponseEntity<List<Object>> getMessagesForUser(@PathVariable int id){
         List<Message> messages =  messageService.getMessagesForUser((long) id);
         List<Object> ret = transformToDTOService.transformToDTOList(messages);
-        return new ResponseEntity<>(ret, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(ret);
     }
 
     @PostMapping(value = "/newMessage",
@@ -49,6 +49,6 @@ public class MessageController {
     public ResponseEntity<Message> addNewMessage(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @RequestBody MessageDTO messageDTO){
         User user = userService.getUserById(messageDTO.getUserId());
         Message message = messageService.addNewMessage(messageDTO,user);
-        return new ResponseEntity<>(message,HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 }
