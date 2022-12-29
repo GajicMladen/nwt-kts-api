@@ -1,6 +1,7 @@
 package com.example.nwtktsapi.model;
 
 import com.example.nwtktsapi.dto.MessageDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ public class Message {
     @Column(name = "message_id", nullable = false)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
     private User user;
@@ -29,11 +31,10 @@ public class Message {
     public Message(){
 
     }
-    public Message(MessageDTO messageDTO,User user){
+    public Message(MessageDTO messageDTO){
         this.content = messageDTO.getContent();
         this.isAdminMessage = messageDTO.getIsAdminMessage();
         this.timeStamp = messageDTO.getTimeStamp();
-        this.user =  user;
     }
 
     public Long getId() {

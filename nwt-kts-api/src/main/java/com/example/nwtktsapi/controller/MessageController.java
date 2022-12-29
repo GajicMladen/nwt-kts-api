@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(path = "api/messages/")
@@ -50,5 +51,14 @@ public class MessageController {
         User user = userService.getUserById(messageDTO.getUserId());
         Message message = messageService.addNewMessage(messageDTO,user);
         return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
+
+
+    @GetMapping(value = "/lastMessageForUsers")
+    public ResponseEntity<List<Object>> getLastMessages(){
+        List<Message> messages = messageService.getLastMessages();
+        List<Object> messageDTOS = transformToDTOService.transformToDTOList(messages);
+
+        return ResponseEntity.status(HttpStatus.OK).body(messageDTOS);
     }
 }

@@ -26,11 +26,17 @@ public class MessageService {
     }
 
     public Message addNewMessage(MessageDTO messageDTO, User user){
-        Message message = new Message(messageDTO,user);
+        Message message = new Message(messageDTO);
+        message.setUser(user);
         return messageRepository.save(message);
     }
 
     public Message saveMessage(Message message){
         return messageRepository.save(message);
+    }
+
+
+    public List<Message> getLastMessages(){
+        return messageRepository.getLastMessages();
     }
 }
