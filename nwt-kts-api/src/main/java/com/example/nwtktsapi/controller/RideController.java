@@ -1,7 +1,9 @@
 package com.example.nwtktsapi.controller;
 
 import com.example.nwtktsapi.dto.RideDTO;
+import com.example.nwtktsapi.model.Driver;
 import com.example.nwtktsapi.model.SplitFare;
+import com.example.nwtktsapi.service.DriverService;
 import com.example.nwtktsapi.service.RideService;
 import com.example.nwtktsapi.service.SplitFareService;
 import com.example.nwtktsapi.utils.EmailService;
@@ -31,6 +33,9 @@ public class RideController {
     @Autowired
     private SplitFareService splitFareService;
 
+    @Autowired
+    private DriverService driverService;
+
     private String MAP_REDIRECT = "http://localhost:4200/clientmap";
 
     @PostMapping(value = "order")
@@ -44,6 +49,12 @@ public class RideController {
                         .body(gson.toJson(new ErrMsg("Naplata nije odobrena!")));
         }
         //TODO: Trazenje pogodnog vozaca: da li ima slobodnih, rezervacije, tip vozila
+        Driver driver = driverService.getSuitedDriver(rideDTO);
+        if (driver == null) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                    .body(gson.toJson(new ErrMsg("Nažalost trenutno nema slobodnih vozača!")));
+        }
+        System.out.println(driver.getName() + ' ' + driver.getLastName());
         //TODO: Naplata voznje
         //TODO: Obavesti vozaca
         //TODO: Obavesti korisnike za koliko vremena ce vozac biti tu

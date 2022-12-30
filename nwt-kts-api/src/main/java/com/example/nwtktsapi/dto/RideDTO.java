@@ -62,18 +62,18 @@ public class RideDTO {
         isReservation = reservation;
     }
 
-    public List<OnWayStationDTO> getLocations() {
-        List<OnWayStationDTO> locations = new ArrayList<>();
+    public List<StationDTO> getLocations() {
+        List<StationDTO> locations = new ArrayList<>();
         for (String location : getStops().split(";")) {
             String[] tokens = location.split(",");
-            locations.add(new OnWayStationDTO(tokens[0], Double.parseDouble(tokens[1]), Double.parseDouble(tokens[2])));
+            locations.add(new StationDTO(tokens[0], Double.parseDouble(tokens[1]), Double.parseDouble(tokens[2])));
         }
         return locations;
     }
 
     public List<String> getLocationsNames() {
         List<String> locations = new ArrayList<>();
-        for(OnWayStationDTO location : getLocations()) {
+        for(StationDTO location : getLocations()) {
             locations.add(location.getName());
         }
         return locations;

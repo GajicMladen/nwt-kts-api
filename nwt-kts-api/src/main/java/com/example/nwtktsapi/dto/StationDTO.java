@@ -1,14 +1,14 @@
 package com.example.nwtktsapi.dto;
 
-public class OnWayStationDTO {
+public class StationDTO {
 
     private String name;
     private double lat;
     private double lng;
 
-    public OnWayStationDTO() { }
+    public StationDTO() { }
 
-    public OnWayStationDTO(String name, double lat, double lng) {
+    public StationDTO(String name, double lat, double lng) {
         this.name = name;
         this.lat = lat;
         this.lng = lng;

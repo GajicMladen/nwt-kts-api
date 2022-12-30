@@ -8,19 +8,19 @@ public class Coordinates {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coordinates_id", nullable = false)
     private Long id;
-    @Column(name = "x")
-    private float x;
-    @Column(name = "y")
-    private float y;
+    @Column(name = "latitude")
+    private float latitude;
+    @Column(name = "longitude")
+    private float longitude;
     @Column(name = "stop_number")
-    private int stopNumber;
+    private Integer stopNumber;
 
     public Coordinates() {
     }
 
-    public Coordinates(float x, float y, int stopNumber) {
-        this.x = x;
-        this.y = y;
+    public Coordinates(float latitude, float longitude, int stopNumber) {
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.stopNumber = stopNumber;
     }
 
@@ -32,20 +32,20 @@ public class Coordinates {
         this.id = id;
     }
 
-    public float getX() {
-        return x;
+    public float getLatitude() {
+        return latitude;
     }
 
-    public void setX(float x) {
-        this.x = x;
+    public void setLatitude(float x) {
+        this.latitude = x;
     }
 
-    public float getY() {
-        return y;
+    public float getLongitude() {
+        return longitude;
     }
 
-    public void setY(float y) {
-        this.y = y;
+    public void setLongitude(float y) {
+        this.longitude = y;
     }
 
     public int getStopNumber() {

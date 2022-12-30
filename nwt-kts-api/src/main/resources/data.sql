@@ -4,14 +4,24 @@ insert into vehicle_price(type, price) values(2, 350);
 insert into vehicle_price(type, price) values(3, 300);
 insert into vehicle_price(type, price) values(4, 400);
 
-insert into users( dtype , email ,password ,name ,lastname ,phone  )
-values('Driver', 'm','m','Mladen','Gajic' , '0644281080');
+insert into coordinates(latitude, longitude) values (45.249602, 19.849632);
+insert into coordinates(latitude, longitude) values (45.254820, 19.852750);
 
-insert into users( dtype , email ,password ,name ,lastname ,phone  )
-values('Driver', 'j','j','Jovan','Tomic' , '06965466');
+insert into vehicle(name, plate_number, capacity, type)
+values('Toyota Prius', 'NS001TX', 3, 0);
+insert into vehicle(name, plate_number, capacity, type)
+values('Toyota Prius', 'NS002TX', 3, 0);
+insert into vehicle(name, plate_number, capacity, type)
+values('Toyota Prius', 'NS003TX', 4, 0);
 
-insert into users( dtype , email ,password ,name ,lastname ,phone  )
-values('Driver', 'd','d','Djosa','Jovanovic' , '0666595632');
+insert into users(active, dtype , email ,password ,name ,lastname ,phone, driver_status, vehicle_id)
+values(true, 'Driver', 'm','m','Mladen','Gajic' , '0644281080', 1, 1);
+
+insert into users(active, dtype , email ,password ,name ,lastname ,phone, driver_status, vehicle_id, position_id)
+values(true, 'Driver', 'j','j','Jovan','Tomic' , '06965466', 0, 2, 1);
+
+insert into users(active, dtype , email ,password ,name ,lastname ,phone, driver_status, vehicle_id, position_id)
+values(true, 'Driver', 'd','d','Djosa','Jovanovic' , '0666595632', 0, 3, 2);
 
 insert into users( dtype , email ,password ,name ,lastname ,phone  )
 values('Client', 'c','c','Marko','Markovic' , '0644281080');
