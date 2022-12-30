@@ -4,6 +4,7 @@ import com.example.nwtktsapi.dto.RideDTO;
 import com.example.nwtktsapi.dto.StationDTO;
 import com.example.nwtktsapi.model.Coordinates;
 import com.example.nwtktsapi.model.Driver;
+import com.example.nwtktsapi.model.VehicleType;
 import com.example.nwtktsapi.repository.DriverRepository;
 import com.sun.xml.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +18,19 @@ public class DriverService {
     @Autowired
     private DriverRepository driverRepository;
 
-    public List<Driver> getAvailableDrivers() {
-        return driverRepository.getAvailableDrivers();
+    public List<Driver> getAvailableDrivers(int type) {
+        return driverRepository.getAvailableDrivers(VehicleType.values()[type]);
     }
 
-    public List<Driver> getDrivingDrivers() {
-        return driverRepository.getDrivingDrivers();
+    public List<Driver> getDrivingDrivers(int type) {
+        return driverRepository.getDrivingDrivers(VehicleType.values()[type]);
     }
 
     public Driver getSuitedDriver(RideDTO rideDTO) {
         //TODO: Pogledati rezervacije
-        List<Driver> available = getAvailableDrivers();
+        List<Driver> available = getAvailableDrivers(rideDTO.getVehicleType());
         if (available.size() == 0) {
-            List<Driver> driving = getDrivingDrivers();
+            List<Driver> driving = getDrivingDrivers(rideDTO.getVehicleType());
             if (driving.size() == 0) {
                 return null;
             }
