@@ -48,7 +48,7 @@ public class RideController {
             return  ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
                         .body(gson.toJson(new ErrMsg("Naplata nije odobrena!")));
         }
-        //TODO: Trazenje pogodnog vozaca: da li ima slobodnih, rezervacije, tip vozila
+        //TODO: Trazenje pogodnog vozaca: rezervacije
         Driver driver = driverService.getSuitedDriver(rideDTO);
         if (driver == null) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)

@@ -1,14 +1,14 @@
-package com.example.nwtktsapi.dto;
+package com.example.nwtktsapi.model;
 
-public class StationDTO {
+public class Station {
 
     private String name;
     private double lat;
     private double lng;
 
-    public StationDTO() { }
+    public Station() { }
 
-    public StationDTO(String name, double lat, double lng) {
+    public Station(String name, double lat, double lng) {
         this.name = name;
         this.lat = lat;
         this.lng = lng;

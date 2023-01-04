@@ -1,5 +1,7 @@
 package com.example.nwtktsapi.dto;
 
+import com.example.nwtktsapi.model.Coordinate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,18 +64,18 @@ public class RideDTO {
         isReservation = reservation;
     }
 
-    public List<StationDTO> getLocations() {
-        List<StationDTO> locations = new ArrayList<>();
+    public List<Coordinate> getLocations() {
+        List<Coordinate> locations = new ArrayList<>();
         for (String location : getStops().split(";")) {
             String[] tokens = location.split(",");
-            locations.add(new StationDTO(tokens[0], Double.parseDouble(tokens[1]), Double.parseDouble(tokens[2])));
+            locations.add(new Coordinate(tokens[0], Double.parseDouble(tokens[1]), Double.parseDouble(tokens[2])));
         }
         return locations;
     }
 
     public List<String> getLocationsNames() {
         List<String> locations = new ArrayList<>();
-        for(StationDTO location : getLocations()) {
+        for(Coordinate location : getLocations()) {
             locations.add(location.getName());
         }
         return locations;

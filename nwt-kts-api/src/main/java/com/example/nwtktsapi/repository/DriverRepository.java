@@ -14,6 +14,7 @@ public interface DriverRepository extends JpaRepository<Driver, Long> {
     List<Driver> getAvailableDrivers(VehicleType type);
 
     //@Query("select d from Driver d where d.active = true and d.driverStatus = 2")
-    @Query("select d from Driver d inner join d.vehicle v where d.active = true and d.driverStatus = 0 and v.type = ?1")
+    @Query("select d from Driver d inner join d.vehicle v where d.active = true and d.driverStatus = 2 and v.type = ?1")
     List<Driver> getDrivingDrivers(VehicleType type);
+
 }

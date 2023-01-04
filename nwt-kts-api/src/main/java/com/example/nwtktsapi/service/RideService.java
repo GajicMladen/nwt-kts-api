@@ -1,7 +1,9 @@
 package com.example.nwtktsapi.service;
 
 import com.example.nwtktsapi.dto.RideDTO;
+import com.example.nwtktsapi.model.Fare;
 import com.example.nwtktsapi.model.SplitFare;
+import com.example.nwtktsapi.repository.RideRepository;
 import com.example.nwtktsapi.utils.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,17 @@ import java.util.concurrent.ExecutionException;
 public class RideService {
 
     @Autowired
+    private RideRepository rideRepository;
+
+    @Autowired
     private EmailService emailService;
 
     @Autowired
     private SplitFareService splitFareService;
+
+    public Fare getCurrentDriverFare(Long driverId) {
+        return rideRepository.getCurrentDriverFare(driverId);
+    }
 
     public Long notifySplitFare(RideDTO rideDTO) throws ExecutionException, InterruptedException {
         SplitFare splitFare = splitFareService.crateNewSplitFare();

@@ -1,12 +1,11 @@
 package com.example.nwtktsapi.service;
 
 import com.example.nwtktsapi.dto.RideDTO;
-import com.example.nwtktsapi.dto.StationDTO;
-import com.example.nwtktsapi.model.Coordinates;
+import com.example.nwtktsapi.model.Coordinate;
 import com.example.nwtktsapi.model.Driver;
+import com.example.nwtktsapi.model.Fare;
 import com.example.nwtktsapi.model.VehicleType;
 import com.example.nwtktsapi.repository.DriverRepository;
-import com.sun.xml.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +16,10 @@ public class DriverService {
 
     @Autowired
     private DriverRepository driverRepository;
+
+    @Autowired
+    private RideService rideService;
+
 
     public List<Driver> getAvailableDrivers(int type) {
         return driverRepository.getAvailableDrivers(VehicleType.values()[type]);
@@ -35,8 +38,7 @@ public class DriverService {
                 return null;
             }
             else {
-                //TODO: Videti koji vozac je najblizi krajnjoj lokaciji trenutne voznje
-                return driving.get(0);
+                return getFirstToFinishDriver(driving);
             }
         }
         else {
@@ -44,7 +46,7 @@ public class DriverService {
         }
     }
 
-    public Driver getClosestDriver(List<Driver> drivers, StationDTO start) {
+    public Driver getClosestDriver(List<Driver> drivers, Coordinate start) {
         Driver closestDriver = drivers.get(0);
         double minDistance = Double.MAX_VALUE;
         for (Driver d : drivers) {
@@ -57,11 +59,26 @@ public class DriverService {
         return  closestDriver;
     }
 
-    public double countDistance(Coordinates driverLocation, StationDTO startLocation) {
+    public Driver getFirstToFinishDriver(List<Driver> drivers) {
+        Driver firstToFinish = drivers.get(0);
+        double minDistance = Double.MAX_VALUE;
+        for (Driver d: drivers) {
+            Fare currentFare = rideService.getCurrentDriverFare(d.getId());
+            Coordinate lastStation = currentFare.getStops().get(currentFare.getStops().size()-1);
+            double distance = countDistance(d.getPosition(), lastStation);
+            if (minDistance > distance) {
+                firstToFinish = d;
+                minDistance = distance;
+            }
+        }
+        return firstToFinish;
+    }
+
+    public double countDistance(Coordinate driverLocation, Coordinate stationLocation) {
         double x1 = driverLocation.getLatitude();
         double y1 = driverLocation.getLongitude();
-        double x2 = startLocation.getLat();
-        double y2 = startLocation.getLng();
+        double x2 = stationLocation.getLatitude();
+        double y2 = stationLocation.getLongitude();
         return Math.sqrt( Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
     }
 }
