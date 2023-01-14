@@ -8,10 +8,10 @@ public class Driver extends  User{
 
     @OneToOne
     @JoinColumn(name = "position_id")
-    private Coordinates position;
+    private Coordinate position;
 
     @OneToOne
-    @JoinColumn(name = "vehicle_vehicle_id")
+    @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
     @OneToMany(mappedBy = "offender")
@@ -48,16 +48,16 @@ public class Driver extends  User{
     }
 
 
-    public void updatePosition( Coordinates newPosition){
-        this.position.setX( newPosition.getX() );
-        this.position.setY( newPosition.getY() );
+    public void updatePosition( Coordinate newPosition){
+        this.position.setLatitude( newPosition.getLatitude() );
+        this.position.setLongitude( newPosition.getLongitude() );
     }
 
-    public Coordinates getPosition() {
+    public Coordinate getPosition() {
         return position;
     }
 
-    public void setPosition(Coordinates position) {
+    public void setPosition(Coordinate position) {
         this.position = position;
     }
 
