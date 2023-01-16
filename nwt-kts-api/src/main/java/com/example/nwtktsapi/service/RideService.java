@@ -1,6 +1,7 @@
 package com.example.nwtktsapi.service;
 
 import com.example.nwtktsapi.dto.RideDTO;
+import com.example.nwtktsapi.model.Driver;
 import com.example.nwtktsapi.model.Fare;
 import com.example.nwtktsapi.model.SplitFare;
 import com.example.nwtktsapi.repository.RideRepository;
@@ -8,6 +9,7 @@ import com.example.nwtktsapi.utils.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -52,5 +54,24 @@ public class RideService {
             currentSecond++;
         }
         return currentSecond;
+    }
+
+    public void save(RideDTO rideDTO, Driver driver) {
+        Fare fare = new Fare();
+        //setClients
+        fare.setDriver(driver);
+        fare.setStops(rideDTO.getLocations());
+        //setPayments
+        fare.setPrice(rideDTO.getPrice());
+        fare.setRequestTime(LocalDateTime.now());
+        fare.setStartTime(LocalDateTime.now().plusMinutes(5)); //
+        fare.setEndTime(LocalDateTime.now().plusMinutes(rideDTO.getDuration() + 5));
+        fare.setAccepted(true); // ili false
+        fare.setReservation(false);
+        fare.setDistance(rideDTO.getDistance());
+        fare.setActive(true);
+
+        rideRepository.save(fare);
+
     }
 }

@@ -22,7 +22,7 @@ public class Fare {
     @JoinColumn(name = "driver_id")
     private Driver driver;
 
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(
             name = "stops",
             joinColumns = @JoinColumn(name = "fare_id"),

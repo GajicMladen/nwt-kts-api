@@ -12,6 +12,7 @@ public class RideDTO {
     private int vehicleType;
     private float price;
     private int duration;
+    private float distance;
     private boolean isReservation;
 
     public RideDTO() { }
@@ -54,6 +55,14 @@ public class RideDTO {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
     }
 
     public boolean isReservation() {

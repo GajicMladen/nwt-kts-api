@@ -1,5 +1,6 @@
 package com.example.nwtktsapi.utils;
 
+import com.example.nwtktsapi.model.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -18,6 +19,7 @@ public class EmailService {
 	
 	private final String CONFIRMATION_SUBJECT = "RideShare - Aktivacija naloga";
 	private final String SPLIT_FARE_SUBJECT = "RideShare - Plaćanje vožnje";
+	private final String NEW_RIDE_SUBJECT = "RideShare - Nova vožnja";
 
 	public void sendSimpleMessage(String to, String subject, String text) {
 		SimpleMailMessage message = new SimpleMailMessage();
@@ -44,5 +46,13 @@ public class EmailService {
 		body += "Klikom na link ispod potvrđujete da ste učesnik ove vožnje i da vam možemo naplatiti vožnju: \n";
 		body += "Link: http://localhost:8080/api/ride/agree/" + id.toString();
 		sendSimpleMessage(email, SPLIT_FARE_SUBJECT,body);
+	}
+
+	public void sendNewRideToDriver(Driver driver, List<String> locations, float price) {
+		String body = "Poštovani " + driver.getName() + ",\n";
+		body = "Izabrani ste da budete vozač na relaciji: \n";
+		body += String.join(" - ", locations) + "\n";
+		body += "Cena ove vožnje iznosi: " + price + " dinara.";
+		sendSimpleMessage(driver.getEmail(), NEW_RIDE_SUBJECT, body);
 	}
 }

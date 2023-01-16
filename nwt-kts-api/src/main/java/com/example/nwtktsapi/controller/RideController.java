@@ -39,7 +39,7 @@ public class RideController {
     private String MAP_REDIRECT = "http://localhost:4200/clientmap";
 
     @PostMapping(value = "order")
-    //@PreAuthorize("hasRole('ROLE_USER')")
+    // @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> orderRide(@RequestBody RideDTO rideDTO, Principal principal) throws ExecutionException, InterruptedException {
         Gson gson = new Gson();
         Long splitFareId = rideService.notifySplitFare(rideDTO);
@@ -55,9 +55,12 @@ public class RideController {
                     .body(gson.toJson(new ErrMsg("Nažalost trenutno nema slobodnih vozača!")));
         }
         System.out.println(driver.getName() + ' ' + driver.getLastName());
+        System.out.println(driver.getEmail());
+        //System.out.println(principal.getName());
         //TODO: Naplata voznje
-        //TODO: Obavesti vozaca
-        //TODO: Obavesti korisnike za koliko vremena ce vozac biti tu
+        driverService.notifyNewRide(driver, rideDTO);
+        //TODO: Obavesti korisnike
+        rideService.save(rideDTO, driver);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson("Vožnja je poručena!"));
     }
 
