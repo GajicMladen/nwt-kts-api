@@ -9,16 +9,19 @@ import java.util.Objects;
  * A DTO for the {@link com.example.nwtktsapi.model.User} entity
  */
 public class UserDTO implements Serializable {
-    private final Long id;
-    private final String email;
-    private final String name;
-    private final String lastName;
-    private final String phone;
-    private final String profilePhoto;
-    private final boolean active;
+    private  Long id;
+    private  String email;
+    private  String name;
+    private  String lastName;
+    private  String phone;
+    private  String profilePhoto;
+    private  boolean active;
 
-    private final boolean blocked;
+    private  boolean blocked;
 
+    public UserDTO(){
+
+    }
     public UserDTO(Long id, String email, String name, String lastName, String phone, String profilePhoto, boolean active , boolean blocked) {
         this.id = id;
         this.email = email;
