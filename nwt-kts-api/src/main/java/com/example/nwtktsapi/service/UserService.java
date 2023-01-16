@@ -37,7 +37,11 @@ public class UserService implements UserDetailsService{
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
-    
+
+	public List<User> getAllDrivers(){
+		return userRepository.findByRoles_Id(roleService.findByName("ROLE_DRIVER").getId());
+	}
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
 		User user = userRepository.findByEmail(username);

@@ -1,22 +1,28 @@
 package com.example.nwtktsapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 public class Driver extends  User{
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "position_id")
     private Coordinate position;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "offender")
     private List<Note> blamedNotes;
 
+    @JsonIgnore
     @Column(name = "driver_status")
     private DriverStatus driverStatus;
 

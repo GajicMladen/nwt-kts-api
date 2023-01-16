@@ -1,12 +1,17 @@
 package com.example.nwtktsapi.dto;
 
 import com.example.nwtktsapi.model.Coordinate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RideDTO {
 
+    private Long rideId;
+    private Long driverId;
+
+    private String vehiclePlateNumber;
     private String stops;
     private String[] splitFare;
     private int vehicleType;
@@ -14,7 +19,32 @@ public class RideDTO {
     private int duration;
     private boolean isReservation;
 
+
     public RideDTO() { }
+
+    public String getVehiclePlateNumber() {
+        return vehiclePlateNumber;
+    }
+
+    public void setVehiclePlateNumber(String vehiclePlateNumber) {
+        this.vehiclePlateNumber = vehiclePlateNumber;
+    }
+
+    public Long getRideId() {
+        return rideId;
+    }
+
+    public void setRideId(Long rideId) {
+        this.rideId = rideId;
+    }
+
+    public Long getDriverId() {
+        return driverId;
+    }
+
+    public void setDriverId(Long driverId) {
+        this.driverId = driverId;
+    }
 
     public String getStops() {
         return stops;
@@ -64,6 +94,7 @@ public class RideDTO {
         isReservation = reservation;
     }
 
+    @JsonIgnore
     public List<Coordinate> getLocations() {
         List<Coordinate> locations = new ArrayList<>();
         for (String location : getStops().split(";")) {
@@ -72,7 +103,7 @@ public class RideDTO {
         }
         return locations;
     }
-
+    @JsonIgnore
     public List<String> getLocationsNames() {
         List<String> locations = new ArrayList<>();
         for(Coordinate location : getLocations()) {
