@@ -56,7 +56,7 @@ public class RideService {
         return currentSecond;
     }
 
-    public void save(RideDTO rideDTO, Driver driver) {
+    public Long save(RideDTO rideDTO, Driver driver) {
         Fare fare = new Fare();
         //setClients
         fare.setDriver(driver);
@@ -71,7 +71,7 @@ public class RideService {
         fare.setDistance(rideDTO.getDistance());
         fare.setActive(true);
 
-        rideRepository.save(fare);
+        return rideRepository.save(fare).getFareID();
 
     }
 }

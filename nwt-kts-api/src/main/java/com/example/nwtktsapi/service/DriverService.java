@@ -43,6 +43,7 @@ public class DriverService {
     public Driver getSuitedDriver(RideDTO rideDTO) {
         //TODO: Pogledati rezervacije
         List<Driver> available = getAvailableDrivers(rideDTO.getVehicleType());
+        available.removeIf( driver -> rideDTO.getDeniedDrivers().contains(driver.getId()));
         if (available.size() == 0) {
             List<Driver> driving = getDrivingDrivers(rideDTO.getVehicleType());
             if (driving.size() == 0) {

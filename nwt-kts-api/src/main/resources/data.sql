@@ -20,10 +20,9 @@ values(true, 'Driver', 'm','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr
 
 insert into users(active, dtype , email ,password ,name ,lastname ,phone, driver_status, vehicle_id, position_id)
 values(true, 'Driver', 'j','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Jovan','Tomic' , '06965466', 0, 2, 1);
-values(true, 'Driver', 'j','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Jovan','Tomic' , '06965466', 0, 2, 1);
 
 insert into users(active, dtype , email ,password ,name ,lastname ,phone, driver_status, vehicle_id, position_id)
-values(true, 'Driver', 'djordjejovanovic27@gmail.com','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Djosa','Jovanovic' , '0666595632', 0, 3, 2);
+values(true, 'Driver', 'd','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Djosa','Jovanovic' , '0666595632', 0, 3, 2);
 
 insert into users(active, dtype , email ,password ,name ,lastname ,phone  )
 values(true, 'Client', 'c','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Marko','Markovic' , '0644281080');
@@ -60,12 +59,12 @@ INSERT INTO ROLE (name) VALUES ('ROLE_USER');
 INSERT INTO ROLE (name) VALUES ('ROLE_ADMIN');
 INSERT INTO ROLE (name) VALUES ('ROLE_DRIVER');
 
-INSERT INTO USER_ROLE(user_id, role_id) VALUES (4, 1);
-INSERT INTO USER_ROLE(user_id, role_id) VALUES (5, 2);
-INSERT INTO USER_ROLE(user_id, role_id) VALUES (6, 2);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (1, 3);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (2, 3);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (3, 3);
+INSERT INTO USER_ROLE(user_id, role_id) VALUES (4, 1);
+INSERT INTO USER_ROLE(user_id, role_id) VALUES (5, 2);
+INSERT INTO USER_ROLE(user_id, role_id) VALUES (6, 2);
 
 INSERT INTO FARE (driver_id, price, is_accepted, is_reservation, distance, is_active)
 VALUES (1, 626, true, false, 3133.3, true);

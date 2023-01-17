@@ -34,4 +34,11 @@ public class TokensService {
         }
         return newValue;
     }
+
+    public void removeTokensFromUser(User user, float tokens){
+        float newValue = user.getTokens();
+        newValue -= tokens;
+        user.setTokens(newValue);
+        userRepository.save(user);
+    }
 }

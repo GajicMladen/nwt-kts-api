@@ -4,10 +4,8 @@ import com.example.nwtktsapi.dto.NewRideRequestDriverDTO;
 import com.example.nwtktsapi.dto.RideDTO;
 import com.example.nwtktsapi.model.Driver;
 import com.example.nwtktsapi.model.SplitFare;
-import com.example.nwtktsapi.service.DriverService;
-import com.example.nwtktsapi.service.NotificationService;
-import com.example.nwtktsapi.service.RideService;
-import com.example.nwtktsapi.service.SplitFareService;
+import com.example.nwtktsapi.model.User;
+import com.example.nwtktsapi.service.*;
 import com.example.nwtktsapi.utils.EmailService;
 import com.example.nwtktsapi.utils.ErrMsg;
 import com.google.gson.Gson;
@@ -22,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.jws.soap.SOAPBinding;
 import java.net.URI;
 import java.security.Principal;
 import java.util.Arrays;
@@ -34,6 +33,8 @@ import java.util.concurrent.ExecutionException;
 public class RideController {
 
     @Autowired
+    private UserService userService;
+    @Autowired
     private RideService rideService;
 
     @Autowired
@@ -45,6 +46,9 @@ public class RideController {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private  TokensService tokensService;
+
 
     private String MAP_REDIRECT = "http://localhost:4200/clientmap";
 
@@ -52,19 +56,19 @@ public class RideController {
     // @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> orderRide(@RequestBody RideDTO rideDTO, Principal principal) throws ExecutionException, InterruptedException {
         Gson gson = new Gson();
+
         Long splitFareId = rideService.notifySplitFare(rideDTO);
         int secondsPassed = rideService.waitForSplitFareAgreement(rideDTO.getSplitFare().length, splitFareId);
         if (secondsPassed == 120) {
             return  ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
                         .body(gson.toJson(new ErrMsg("Naplata nije odobrena!")));
         }
-        //TODO: Sacuvati voznju u bazi!!!!!
 
-        //TODO: Trazenje pogodnog vozaca: rezervacije
-
-        //TODO: Naplata voznje
-        //TODO: Obavesti vozaca
-        //TODO: Obavesti korisnike za koliko vremena ce vozac biti tu
+        User client = userService.findByEmail(principal.getName());
+        if(client.getTokens() < rideDTO.getPrice()){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(gson.toJson(new ErrMsg("Nemate dovoljno tokena")));
+        }
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson("Vožnja je poručena!"));
     }
 
@@ -78,7 +82,6 @@ public class RideController {
         }
         System.out.println(driver.getName() + ' ' + driver.getLastName());
 
-        rideDTO.setRideId(1L);
         //Send driver a notification
         notificationService.sendDriverNewRideRequest(driver,rideDTO);
 
@@ -91,11 +94,15 @@ public class RideController {
         Driver driver = driverService.getDriverById(rideDTO.getDriverId());
         rideDTO.setDriverId(driver.getId());
         rideDTO.setVehiclePlateNumber( driver.getVehicle().getPlateNumber() );
-        //TODO: Set driver for ride in DB!!!
+
         notificationService.sendDriverAcceptedRide(driver,rideDTO);
-        System.out.println("Prihvacena voznja");
+//        System.out.println("Prihvacena voznja");
         rideService.save(rideDTO, driver);
-        return ResponseEntity.ok().body(gson.toJson("Vozač je potvrdio, sad vozi."));
+
+        User user = userService.getUserById(rideDTO.getClientId());
+        tokensService.removeTokensFromUser(user,rideDTO.getPrice());
+
+        return ResponseEntity.ok().body(gson.toJson(driver.getVehicle().getPlateNumber()));
     }
 
     @GetMapping(value = "agree/{id}")

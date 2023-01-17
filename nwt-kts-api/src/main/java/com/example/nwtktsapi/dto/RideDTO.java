@@ -11,6 +11,7 @@ public class RideDTO {
     private Long rideId;
     private Long driverId;
 
+    private Long clientId;
     private String vehiclePlateNumber;
     private String stops;
     private String[] splitFare;
@@ -20,11 +21,29 @@ public class RideDTO {
     private float distance;
     private boolean isReservation;
 
+    private List<Long> deniedDrivers;
+
 
     public RideDTO() { }
 
     public String getVehiclePlateNumber() {
         return vehiclePlateNumber;
+    }
+
+    public List<Long> getDeniedDrivers() {
+        return deniedDrivers;
+    }
+
+    public void setDeniedDrivers(List<Long> deniedDrivers) {
+        this.deniedDrivers = deniedDrivers;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
     public void setVehiclePlateNumber(String vehiclePlateNumber) {
