@@ -59,7 +59,7 @@ public class RideController {
                         .body(gson.toJson(new ErrMsg("Naplata nije odobrena!")));
         }
         //TODO: Sacuvati voznju u bazi!!!!!
-
+        //TODO: Ne pamtimo redni broj izabrane rute
         //TODO: Trazenje pogodnog vozaca: rezervacije
 
         //TODO: Naplata voznje
