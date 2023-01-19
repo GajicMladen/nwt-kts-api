@@ -22,12 +22,12 @@ public class Fare {
     @JoinColumn(name = "driver_id")
     private Driver driver;
 
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(
             name = "stops",
             joinColumns = @JoinColumn(name = "fare_id"),
             inverseJoinColumns = @JoinColumn(name = "coordinates_id"))
-    private List<Coordinates> stops;
+    private List<Coordinate> stops;
 
     @OneToMany(mappedBy = "fare")
     private List<Payment> payments;
@@ -48,16 +48,19 @@ public class Fare {
     private boolean isAccepted;
 
     @Column(name = "calculate_shortest")
-    private boolean calculateShortest;
+    private Boolean calculateShortest;
 
     @Column(name = "is_reservation")
     private boolean isReservation;
 
     @Column(name = "distance")
-    private float accepted;
+    private float distance;
 
     @Column(name = "estimated_time_left")
-    private float estimatedTimeLeft;
+    private Float estimatedTimeLeft;
+
+    @Column(name = "is_active")
+    private boolean isActive;
 
     public Fare() {
     }
@@ -78,11 +81,11 @@ public class Fare {
         this.clients = clients;
     }
 
-    public List<Coordinates> getStops() {
+    public List<Coordinate> getStops() {
         return stops;
     }
 
-    public void setStops(List<Coordinates> stops) {
+    public void setStops(List<Coordinate> stops) {
         this.stops = stops;
     }
 
@@ -150,12 +153,12 @@ public class Fare {
         isReservation = reservation;
     }
 
-    public float getAccepted() {
-        return accepted;
+    public float getDistance() {
+        return distance;
     }
 
-    public void setAccepted(float accepted) {
-        this.accepted = accepted;
+    public void setDistance(float distance) {
+        this.distance = distance;
     }
 
     public float getEstimatedTimeLeft() {
@@ -174,7 +177,6 @@ public class Fare {
         this.driver = driver;
     }
 
-
     public Long getId() {
         return fareID;
     }
@@ -182,4 +184,13 @@ public class Fare {
     public void setId(Long id) {
         this.fareID = id;
     }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
 }

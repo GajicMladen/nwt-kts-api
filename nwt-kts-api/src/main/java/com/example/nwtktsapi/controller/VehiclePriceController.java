@@ -20,7 +20,6 @@ public class VehiclePriceController {
 
     @GetMapping(value = "price")
     public ResponseEntity<?> getPrice(@RequestParam int typeNumber) {
-        System.out.println(typeNumber);
         VehicleType type = VehicleType.values()[typeNumber];
         int price = vehiclePriceService.getTypePrice(type);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(price);
