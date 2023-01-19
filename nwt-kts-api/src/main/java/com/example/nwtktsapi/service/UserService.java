@@ -81,6 +81,10 @@ public class UserService implements UserDetailsService{
 		return this.userRepository.save(newUser);
 	}
 	
+	public void setEncryptedPassword(User user, String rawPassword) {
+		user.setPassword(passwordEncoder.encode(rawPassword));
+	}
+	
 	@Transactional
 	public User save(User user) {
 		return this.userRepository.save(user);

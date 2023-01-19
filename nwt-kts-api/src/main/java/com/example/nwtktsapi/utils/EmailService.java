@@ -6,6 +6,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.example.nwtktsapi.model.ResetPassword;
 import com.example.nwtktsapi.model.User;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class EmailService {
 	private final String CONFIRMATION_SUBJECT = "RideShare - Aktivacija naloga";
 	private final String SPLIT_FARE_SUBJECT = "RideShare - Plaćanje vožnje";
 	private final String NEW_RIDE_SUBJECT = "RideShare - Nova vožnja";
+	private final String RESET_PASSWORD_SUBJECT = "RideShare - Promena lozinke";
 
 	public void sendSimpleMessage(String to, String subject, String text) {
 		SimpleMailMessage message = new SimpleMailMessage();
@@ -54,5 +56,13 @@ public class EmailService {
 		body += String.join(" - ", locations) + "\n";
 		body += "Cena ove vožnje iznosi: " + price + " dinara.";
 		sendSimpleMessage(driver.getEmail(), NEW_RIDE_SUBJECT, body);
+	
+	public void sendResetPasswordEmail(ResetPassword resetPassword) {
+		String body = "Primili smo Vaš zahtev za promenu lozinke. Da biste promenili lozinku, molimo Vas da pritisnete na sledeći link: ";
+		body += "http://localhost:4200/resetPassword/" + resetPassword.getToken() + "\n";
+		body += "Vodite računa o tome da je link aktivan 30 minuta od prijema maila. \n";
+		body += "Ukoliko niste poslali zahtev za promenu lozinke, molimo Vas da ignorišete ovu poruku.";
+		sendSimpleMessage(resetPassword.getEmail(), RESET_PASSWORD_SUBJECT, body);
+
 	}
 }
