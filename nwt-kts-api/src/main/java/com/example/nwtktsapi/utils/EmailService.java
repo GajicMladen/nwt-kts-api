@@ -56,7 +56,8 @@ public class EmailService {
 		body += String.join(" - ", locations) + "\n";
 		body += "Cena ove vožnje iznosi: " + price + " dinara.";
 		sendSimpleMessage(driver.getEmail(), NEW_RIDE_SUBJECT, body);
-	
+	}
+
 	public void sendResetPasswordEmail(ResetPassword resetPassword) {
 		String body = "Primili smo Vaš zahtev za promenu lozinke. Da biste promenili lozinku, molimo Vas da pritisnete na sledeći link: ";
 		body += "http://localhost:4200/resetPassword/" + resetPassword.getToken() + "\n";
