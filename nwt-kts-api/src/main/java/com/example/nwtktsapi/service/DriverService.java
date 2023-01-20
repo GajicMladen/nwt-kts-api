@@ -1,10 +1,7 @@
 package com.example.nwtktsapi.service;
 
 import com.example.nwtktsapi.dto.RideDTO;
-import com.example.nwtktsapi.model.Coordinate;
-import com.example.nwtktsapi.model.Driver;
-import com.example.nwtktsapi.model.Fare;
-import com.example.nwtktsapi.model.VehicleType;
+import com.example.nwtktsapi.model.*;
 import com.example.nwtktsapi.repository.DriverRepository;
 import com.example.nwtktsapi.utils.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,5 +89,16 @@ public class DriverService {
         double x2 = stationLocation.getLatitude();
         double y2 = stationLocation.getLongitude();
         return Math.sqrt( Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
+    }
+
+    public void changeDriverStatus(Driver driver, boolean isAvailable){
+        if(isAvailable){
+            driver.setDriverStatus(DriverStatus.AVAILABLE);
+        }
+        else{
+            driver.setDriverStatus(DriverStatus.UNAVAILABLE);
+        }
+        driverRepository.save(driver);
+
     }
 }

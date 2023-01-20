@@ -3,6 +3,7 @@ package com.example.nwtktsapi.controller;
 import com.example.nwtktsapi.dto.NewRideRequestDriverDTO;
 import com.example.nwtktsapi.dto.RideDTO;
 import com.example.nwtktsapi.model.Driver;
+import com.example.nwtktsapi.model.DriverStatus;
 import com.example.nwtktsapi.model.SplitFare;
 import com.example.nwtktsapi.model.User;
 import com.example.nwtktsapi.service.*;
@@ -52,6 +53,17 @@ public class RideController {
 
     private String MAP_REDIRECT = "http://localhost:4200/clientmap";
 
+    @GetMapping(value = "agree/{id}")
+    public ResponseEntity<?> agreeToSplitFare(@PathVariable Long id ) {
+        SplitFare splitFare = splitFareService.findById(id).orElse(null);
+        if (splitFare == null) {
+            return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.BAD_REQUEST);
+        } else {
+            splitFare.setNumberOfAgreed(splitFare.getNumberOfAgreed()+1);
+            splitFareService.save(splitFare);
+        }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).location(URI.create(MAP_REDIRECT)).build();
+    }
     @PostMapping(value = "order")
     // @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> orderRide(@RequestBody RideDTO rideDTO, Principal principal) throws ExecutionException, InterruptedException {
@@ -81,7 +93,7 @@ public class RideController {
                     .body(gson.toJson(new ErrMsg("Nažalost trenutno nema slobodnih vozača!")));
         }
         System.out.println(driver.getName() + ' ' + driver.getLastName());
-
+        rideDTO.setDriverId(driver.getId());
         //Send driver a notification
         notificationService.sendDriverNewRideRequest(driver,rideDTO);
 
@@ -96,24 +108,36 @@ public class RideController {
         rideDTO.setVehiclePlateNumber( driver.getVehicle().getPlateNumber() );
 
         notificationService.sendDriverAcceptedRide(driver,rideDTO);
-//        System.out.println("Prihvacena voznja");
-        rideService.save(rideDTO, driver);
-
-        User user = userService.getUserById(rideDTO.getClientId());
-        tokensService.removeTokensFromUser(user,rideDTO.getPrice());
 
         return ResponseEntity.ok().body(gson.toJson(driver.getVehicle().getPlateNumber()));
     }
 
-    @GetMapping(value = "agree/{id}")
-    public ResponseEntity<?> agreeToSplitFare(@PathVariable Long id ) {
-        SplitFare splitFare = splitFareService.findById(id).orElse(null);
-        if (splitFare == null) {
-            return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.BAD_REQUEST);
-        } else {
-            splitFare.setNumberOfAgreed(splitFare.getNumberOfAgreed()+1);
-            splitFareService.save(splitFare);
-        }
-        return ResponseEntity.status(HttpStatus.ACCEPTED).location(URI.create(MAP_REDIRECT)).build();
+    @PostMapping(value = "clientConfirmRide")
+    public ResponseEntity<?> clientConfirmRide(@RequestBody RideDTO rideDTO, Principal principal){
+        Gson gson = new Gson();
+        Driver driver = driverService.getDriverById(rideDTO.getDriverId());
+        User user = userService.getUserById(rideDTO.getClientId());
+
+        driver.setDriverStatus(DriverStatus.DRIVING);
+        rideService.save(rideDTO, driver);
+        tokensService.removeTokensFromUser(user,rideDTO.getPrice());
+        tokensService.addTokensForUser(driver,rideDTO.getPrice());
+
+        notificationService.sendDriverChangeStaus(driver);
+        notificationService.sendClientConfirmRide(driver,rideDTO);
+
+        return ResponseEntity.ok().body(gson.toJson("Voznja je pocela"));
     }
+    @PostMapping(value = "finishRide")
+    public ResponseEntity<?> finishRide(@RequestBody RideDTO rideDTO, Principal principal){
+        Gson gson = new Gson();
+        System.out.println(principal.getName());
+
+        Driver driver = driverService.getDriverById(rideDTO.getDriverId());
+        driverService.changeDriverStatus(driver,true);
+        notificationService.sendDriverChangeStaus(driver);
+
+        return ResponseEntity.ok().body(gson.toJson("Voznja je zavrsena!"));
+    }
+
 }
