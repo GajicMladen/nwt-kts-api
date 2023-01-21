@@ -1,9 +1,16 @@
 package com.example.nwtktsapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Driver extends  User{
@@ -13,9 +20,9 @@ public class Driver extends  User{
     @JoinColumn(name = "position_id")
     private Coordinate position;
 
-    @JsonIgnore
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "vehicle_id")
+    @JsonManagedReference
     private Vehicle vehicle;
 
     @JsonIgnore

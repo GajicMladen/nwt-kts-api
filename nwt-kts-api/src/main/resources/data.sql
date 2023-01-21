@@ -70,7 +70,7 @@ INSERT INTO USER_ROLE(user_id, role_id) VALUES (4, 1);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (5, 1);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (6, 1);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (7, 1);
-INSERT INTO USER_ROLE(user_id, role_id) VALUES (8, 3);
+INSERT INTO USER_ROLE(user_id, role_id) VALUES (8, 2);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (5, 2);
 
 INSERT INTO FARE (driver_id, price, is_accepted, is_reservation, distance, is_active)

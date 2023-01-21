@@ -12,10 +12,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.nwtktsapi.dto.AdminRegistrationDTO;
 import com.example.nwtktsapi.dto.RegistrationDTO;
+import com.example.nwtktsapi.model.Driver;
+import com.example.nwtktsapi.model.DriverStatus;
 import com.example.nwtktsapi.model.Role;
 import com.example.nwtktsapi.model.User;
+import com.example.nwtktsapi.model.Vehicle;
+import com.example.nwtktsapi.model.VehicleType;
 import com.example.nwtktsapi.repository.UserRepository;
+import com.example.nwtktsapi.repository.VehicleRepository;
 
 @Service
 public class UserService implements UserDetailsService{
@@ -26,13 +32,19 @@ public class UserService implements UserDetailsService{
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Autowired
+	private RoleService roleService;
+
+	@Autowired
+	private VehicleRepository vehicleRepository;
+	
+	private final String DEFAULT_PHOTO_URL = "https://i.ibb.co/VCfhmKQ/image.jpg";
+	
 	public User getUserById(Long userId){
 		Optional<User> user =  userRepository.findById(userId);
 		return user.orElse(null);
 	}
 
-	@Autowired
-	private RoleService roleService;
 	
     public List<User> getAllUsers(){
         return userRepository.findAll();
@@ -72,7 +84,7 @@ public class UserService implements UserDetailsService{
 		newUser.setPhone(registrationDTO.getPhoneNumber());
 		newUser.setActive(false);
 		newUser.setBlocked(false);
-		newUser.setProfilePhoto("");
+		newUser.setProfilePhoto(DEFAULT_PHOTO_URL);
 		
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(roleService.findByName("ROLE_USER"));
@@ -88,6 +100,61 @@ public class UserService implements UserDetailsService{
 	@Transactional
 	public User save(User user) {
 		return this.userRepository.save(user);
+	}
+	
+	//Returns error string, or null if no errors.
+	public String validateRegistrationDTO(RegistrationDTO dto) {
+		if(!dto.validate())
+			return "Uneti podaci su neispravni!";
+		
+		User existingUser = findByEmail(dto.getEmail());
+		
+		if (existingUser != null)
+			return "E-mail je već upotrebljen!";
+		return null;
+		
+	}
+	
+	public Driver createDriverFromDto(AdminRegistrationDTO dto) {
+		Driver driver = new Driver();
+		driver.setEmail(dto.getEmail());
+		driver.setName(dto.getName());
+		driver.setLastName(dto.getLastName());
+		driver.setPassword(passwordEncoder.encode(dto.getPassword()));
+		driver.setPhone(dto.getPhoneNumber());
+		driver.setTown(dto.getTown());
+		driver.setActive(true);
+		driver.setBlocked(false);
+		driver.setProfilePhoto(DEFAULT_PHOTO_URL);
+		driver.setDriverStatus(DriverStatus.UNAVAILABLE);
+		
+		List<Role> roles = new ArrayList<Role>();
+		roles.add(roleService.findByName("ROLE_DRIVER"));
+		driver.setRoles(roles);
+		
+		Vehicle vehicle = new Vehicle();
+		vehicle.setName(dto.getVehicleName());
+		vehicle.setPlateNumber(dto.getPlateNumber());
+		vehicle.setCapacity(dto.getCapacity());
+		vehicle.setType(getVehicleTypeFromString(dto.getVehicleType()));
+		
+		vehicle.setDriver(driver);
+		driver.setVehicle(vehicle);
+		
+		userRepository.save(driver);
+		
+		return driver;
+	}
+	
+	private VehicleType getVehicleTypeFromString(String str) {
+		switch(str) {
+			case "Basic": return VehicleType.BASIC;
+			case "Lux": return VehicleType.LUX;
+			case "Jumbo": return VehicleType.BIG;
+			case "Baby Friendly": return VehicleType.BABY_SEAT;
+			case "Pet Friendly": return VehicleType.PET_FRIENDLY;
+			default: return VehicleType.BASIC;
+		}
 	}
 
 }
