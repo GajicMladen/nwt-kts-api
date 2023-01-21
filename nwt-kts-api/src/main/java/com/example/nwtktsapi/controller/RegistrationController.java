@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.example.nwtktsapi.dto.AdminRegistrationDTO;
 import com.example.nwtktsapi.dto.RegistrationDTO;
+import com.example.nwtktsapi.model.Driver;
 import com.example.nwtktsapi.model.User;
 import com.example.nwtktsapi.service.UserService;
 import com.example.nwtktsapi.utils.EmailService;
@@ -56,6 +58,20 @@ public class RegistrationController {
 		User newUser = userService.save(registrationDTO);
 		
 		mailService.sendConfirmationEmail(newUser);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+	}
+	
+	@PostMapping("/adminRegister")
+	public ResponseEntity<?> adminRegister(@RequestBody AdminRegistrationDTO registrationDTO){
+		registrationDTO.casify();
+		Gson gson = new Gson();
+		
+		String err = userService.validateRegistrationDTO(registrationDTO);
+		if (err != null) return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+				.body(gson.toJson(new ErrMsg(err)));
+		
+		Driver newUser = userService.createDriverFromDto(registrationDTO);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
 	}
