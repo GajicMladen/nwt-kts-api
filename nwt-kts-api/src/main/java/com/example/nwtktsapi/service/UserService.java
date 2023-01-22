@@ -34,9 +34,6 @@ public class UserService implements UserDetailsService{
 
 	@Autowired
 	private RoleService roleService;
-
-	@Autowired
-	private VehicleRepository vehicleRepository;
 	
 	private final String DEFAULT_PHOTO_URL = "https://i.ibb.co/VCfhmKQ/image.jpg";
 	
