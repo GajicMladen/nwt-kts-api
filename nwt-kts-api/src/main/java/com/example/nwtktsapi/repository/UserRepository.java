@@ -1,6 +1,7 @@
 package com.example.nwtktsapi.repository;
 
 import com.example.nwtktsapi.model.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,6 +13,9 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
 	List<User> findByRoles_Id(Long id);
 
+	@Query("select u from User u inner join u.roles r where u.active = true and u.blocked = false and r.id = ?1")
+	List<User> findUsersByTypePagination(Long id, Pageable pageable);
 
-
+	@Query("select count(u) from User u inner join u.roles r where u.active = true and u.blocked = false and r.id = ?1")
+	int getUserByTypeCount(Long id);
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -90,4 +91,30 @@ public class UserService implements UserDetailsService{
 		return this.userRepository.save(user);
 	}
 
+	public List<User> getAllClientsPagination(int page, int size) {
+		return userRepository.findUsersByTypePagination(1L, PageRequest.of(page, size));
+	}
+
+	public List<User> getAllDriversPagination(int page, int size) {
+		return userRepository.findUsersByTypePagination(3L, PageRequest.of(page, size));
+	}
+
+    public User blockUser(Long id) {
+		Optional<User> user = userRepository.findById(id);
+		if (user.isPresent()) {
+			User u = user.get();
+			u.setBlocked(true);
+			userRepository.save(u);
+			return u;
+		}
+		return null;
+    }
+
+	public int getClientsCount() {
+		return userRepository.getUserByTypeCount(1L);
+	}
+
+	public int getDriversCount() {
+		return userRepository.getUserByTypeCount(3L);
+	}
 }
