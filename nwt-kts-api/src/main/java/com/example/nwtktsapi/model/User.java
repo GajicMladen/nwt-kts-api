@@ -46,6 +46,9 @@ public class User implements UserDetails {
     @Column(name = "lastname",nullable = false)
     private String lastName;
 
+    @Column(name = "town", nullable = false)
+    private String town;
+    
     @Column(name = "phone",nullable = false)
     private String phone;
 
@@ -122,6 +125,14 @@ public class User implements UserDetails {
 
     public String getProfilePhoto() {
         return profilePhoto;
+    }
+    
+    public void setTown(String town) {
+    	this.town = town;
+    }
+    
+    public String getTown() {
+    	return this.town;
     }
 
     public void setProfilePhoto(String profilePhoto) {

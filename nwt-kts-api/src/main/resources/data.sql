@@ -4,6 +4,30 @@ insert into vehicle_price(type, price) values(2, 350);
 insert into vehicle_price(type, price) values(3, 300);
 insert into vehicle_price(type, price) values(4, 400);
 
+insert into users( dtype , email ,password ,name ,lastname ,phone, profile_photo, town)
+values('Driver', 'm','m','Mladen','Gajic' , '0644281080', 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
+
+insert into users( dtype , email ,password ,name ,lastname ,phone, profile_photo, town  )
+values('Driver', 'j','j','Jovan','Tomic' , '06965466', 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
+
+insert into users( dtype , email ,password ,name ,lastname ,phone, profile_photo, town  )
+values('Driver', 'd','d','Djosa','Jovanovic' , '0666595632', 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
+
+insert into users( dtype , email ,password ,name ,lastname ,phone ,active, profile_photo, town )
+values('Client', 'c','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Marko','Markovic' , '0644281080',true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
+
+insert into users( dtype , email ,password ,name ,lastname ,phone,active, profile_photo, town  )
+values('Client', 'a','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Nikola','Nikolic' , '0644281080',true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
+
+insert into users( dtype , email ,password ,name ,lastname ,phone ,active, profile_photo, town )
+values('Client', 'b','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Lazar','Lazarovic' , '0644281080',true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
+
+insert into users( dtype , email ,password ,name ,lastname ,phone, active, profile_photo, town  )
+values('Client', 'p3r5kul45@gmail.com','lozinka1','Jovan','Tomic' , '0644281080', true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
+
+insert into users( dtype , email ,password ,name ,lastname ,phone, active, profile_photo, town  )
+values('Client', 'jtomic1@gmail.com','$2a$10$0W7w6ZXLQPXonylfuYH80uuLPeM/v52yAs37OHvhbrkqQi7Ki8b4q','Jovan','Tomic' , '0644281080', true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
+
 insert into coordinate(latitude, longitude) values (45.249602, 19.849632);
 insert into coordinate(latitude, longitude) values (45.235220255076584, 19.83856247725572);
 insert into coordinate(latitude, longitude) values (45.254820, 19.852750);
@@ -62,9 +86,13 @@ INSERT INTO ROLE (name) VALUES ('ROLE_DRIVER');
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (1, 3);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (2, 3);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (3, 3);
+
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (4, 1);
+INSERT INTO USER_ROLE(user_id, role_id) VALUES (5, 1);
+INSERT INTO USER_ROLE(user_id, role_id) VALUES (6, 1);
+INSERT INTO USER_ROLE(user_id, role_id) VALUES (7, 1);
+INSERT INTO USER_ROLE(user_id, role_id) VALUES (8, 2);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (5, 2);
-INSERT INTO USER_ROLE(user_id, role_id) VALUES (6, 2);
 
 INSERT INTO FARE (driver_id, price, is_accepted, is_reservation, distance, is_active)
 VALUES (1, 626, true, false, 3133.3, true);
