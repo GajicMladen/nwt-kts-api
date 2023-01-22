@@ -23,7 +23,7 @@ insert into users( dtype , email ,password ,name ,lastname ,phone ,active, profi
 values('Client', 'b','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Lazar','Lazarovic' , '0644281080',true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
 
 insert into users( dtype , email ,password ,name ,lastname ,phone, active, profile_photo, town  )
-values('Client', 'p3r5kul45@gmail.com','lozinka1','Jovan','Tomic' , '0644281080', true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
+values('Driver', 'p3r5kul45@gmail.com','lozinka1','Jovan','Tomic' , '0644281080', true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
 
 insert into users( dtype , email ,password ,name ,lastname ,phone, active, profile_photo, town  )
 values('Client', 'jtomic1@gmail.com','$2a$10$0W7w6ZXLQPXonylfuYH80uuLPeM/v52yAs37OHvhbrkqQi7Ki8b4q','Jovan','Tomic' , '0644281080', true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
@@ -69,7 +69,7 @@ INSERT INTO USER_ROLE(user_id, role_id) VALUES (3, 3);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (4, 1);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (5, 1);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (6, 1);
-INSERT INTO USER_ROLE(user_id, role_id) VALUES (7, 1);
+INSERT INTO USER_ROLE(user_id, role_id) VALUES (7, 3);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (8, 2);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (5, 2);
 
@@ -82,3 +82,14 @@ insert into coordinate(latitude, longitude) values (45.259699, 19.850104);
 insert into coordinate(latitude, longitude) values (45.240284, 19.845228);
 INSERT INTO STOPS(fare_id, coordinates_id) VALUES (1, 4);
 INSERT INTO STOPS(fare_id, coordinates_id) VALUES (1, 5);
+
+-- ZAHTEVI ZA IZMENU VOZACA
+INSERT INTO DRIVER_CHANGE_REQUEST(resolved, last_name, name, phone, profile_photo, town, user_id)
+VALUES (false, 'Maric', 'Miomir', '0601234567', 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Kula', 7);
+
+INSERT INTO DRIVER_CHANGE_REQUEST(resolved, last_name, name, phone, profile_photo, town, user_id)
+VALUES (false, 'Stupar', 'Mirko', '0607564321', 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Crvenka', 1);
+
+INSERT INTO DRIVER_CHANGE_REQUEST(resolved, last_name, name, phone, profile_photo, town, user_id)
+VALUES (false, 'Mihailovic', 'Ivan', '0625458867', 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Sivac', 2);
+

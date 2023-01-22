@@ -1,5 +1,6 @@
 package com.example.nwtktsapi.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,11 +34,11 @@ public class DriverChangeRequest {
 	@Column(name = "profile_photo")
 	private String profilePhoto;
 	
-	@Column(name = "approved", columnDefinition = "boolean default false")
-	private boolean approved;
+	@Column(name = "resolved", columnDefinition = "boolean default false")
+	private boolean resolved;
 	
-	@OneToOne
-	@JoinColumn(name = "users")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
 	private User driver;
 	
 	public DriverChangeRequest() {}
@@ -52,7 +53,7 @@ public class DriverChangeRequest {
 		this.phone = phone;
 		this.profilePhoto = profilePhoto;
 		this.driver = driver;
-		this.approved = false;
+		this.resolved = false;
 	}
 
 	public DriverChangeRequest(ChangeUserDataDTO dto, User driver) {
@@ -62,7 +63,7 @@ public class DriverChangeRequest {
 		this.phone = dto.getPhone();
 		this.profilePhoto = dto.getPhoto();
 		this.driver = driver;
-		this.approved = false;
+		this.resolved = false;
 	}
 	
 	public Long getId() {
@@ -113,12 +114,12 @@ public class DriverChangeRequest {
 		this.profilePhoto = profilePhoto;
 	}
 
-	public boolean isApproved() {
-		return approved;
+	public boolean isResolved() {
+		return resolved;
 	}
 
-	public void setApproved(boolean approved) {
-		this.approved = approved;
+	public void setResolved(boolean approved) {
+		this.resolved = approved;
 	}
 
 	public User getDriver() {
