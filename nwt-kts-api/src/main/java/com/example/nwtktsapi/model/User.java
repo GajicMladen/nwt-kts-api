@@ -46,7 +46,7 @@ public class User implements UserDetails {
     @Column(name = "lastname",nullable = false)
     private String lastName;
 
-    @Column(name = "town", nullable = false)
+    @Column(name = "town", nullable = true)
     private String town;
     
     @Column(name = "phone",nullable = false)
@@ -64,9 +64,11 @@ public class User implements UserDetails {
     @Column(name = "tokens" ,columnDefinition="Decimal(10,2) default '0.00'")
     private float tokens = 0;
 
+    @JsonIgnore
     @OneToMany( mappedBy = "sender")
     private List<Note> notes;
 
+    @JsonIgnore
     @OneToMany( mappedBy = "user")
     private List<Message> messages;
 
