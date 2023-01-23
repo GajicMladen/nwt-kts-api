@@ -156,7 +156,7 @@ public class LoginController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(gson.toJson(new ErrMsg("E-mail adresa " + email.getEmail() + " nije registrovana. Neophodno je izvršiti registraciju pre prijave.")));
 		}
 		
-		UsernamePasswordAuthenticationToken auth = 
+		Authentication auth = 
 			    new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 		
 		SecurityContextHolder.getContext().setAuthentication(auth);
