@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DriverRepository extends JpaRepository<Driver, Long> {
 
@@ -16,6 +17,9 @@ public interface DriverRepository extends JpaRepository<Driver, Long> {
     //@Query("select d from Driver d where d.active = true and d.driverStatus = 2")
     @Query("select d from Driver d inner join d.vehicle v where d.active = true and d.driverStatus = 2 and v.type = ?1")
     List<Driver> getDrivingDrivers(VehicleType type);
+
+    Optional<Driver> findByEmail(String email);
+
 
 
 }

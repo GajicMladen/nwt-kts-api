@@ -29,6 +29,11 @@ public class DriverService {
         return driver.orElse(null);
     }
 
+    public Driver getDriverByEmail(String email){
+        Optional<Driver> driver = driverRepository.findByEmail(email);
+        return driver.orElse(null);
+    }
+
     public List<Driver> getAvailableDrivers(int type) {
         return driverRepository.getAvailableDrivers(VehicleType.values()[type]);
     }

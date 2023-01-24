@@ -16,7 +16,7 @@ insert into vehicle(name, plate_number, capacity, type)
 values('Toyota Prius', 'NS003TX', 4, 0);
 
 insert into users( dtype , email ,password ,name ,lastname ,phone, active, profile_photo, town,driver_status, vehicle_id, position_id)
-values('Driver', 'm','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Mladen','Gajic' , '0644281080', true,'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad', 2, 1, 3);
+values('Driver', 'm','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Mladen','Gajic' , '0644281080', true,'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad', 1, 1, 3);
 
 insert into users( dtype , email ,password ,name ,lastname ,phone,active, profile_photo, town ,driver_status, vehicle_id, position_id )
 values('Driver', 'j','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Jovan','Tomic' , '06965466', true,'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad', 1, 2, 1);
@@ -24,8 +24,8 @@ values('Driver', 'j','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtc
 insert into users( dtype , email ,password ,name ,lastname ,phone,active, profile_photo, town ,driver_status, vehicle_id, position_id )
 values('Driver', 'd','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Djosa','Jovanovic' , '0666595632',true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad', 1, 3, 2);
 
-insert into users( dtype , email ,password ,name ,lastname ,phone ,active, profile_photo, town )
-values('Client', 'c','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Marko','Markovic' , '0644281080',true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
+insert into users( dtype , email ,password ,name ,lastname ,phone ,active, profile_photo, town,tokens )
+values('Client', 'c','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Marko','Markovic' , '0644281080',true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad',100);
 
 insert into users( dtype , email ,password ,name ,lastname ,phone,active, profile_photo, town  )
 values('Client', 'a','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Nikola','Nikolic' , '0644281080',true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');

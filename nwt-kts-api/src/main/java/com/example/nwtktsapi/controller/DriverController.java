@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -50,5 +51,17 @@ public class DriverController {
         driverService.changeDriverStatus(driver,available);
         notificationService.sendDriverChangeStaus(driver);
         return ResponseEntity.ok().body(gson.toJson("OK"));
+    }
+
+    @PostMapping(value = "logOutDriver")
+    public ResponseEntity<?> logOutDriver(Principal principal){
+        Driver driver = driverService.getDriverByEmail(principal.getName());
+        if(driver != null)
+        {
+            driverService.changeDriverStatus(driver,false);
+            notificationService.sendDriverChangeStaus(driver);
+            return ResponseEntity.ok().body("Uspesno izlogovan");
+        }
+        return ResponseEntity.status(404).body("Nepostojeci vozac");
     }
 }
