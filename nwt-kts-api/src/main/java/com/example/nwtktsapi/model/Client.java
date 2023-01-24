@@ -1,5 +1,7 @@
 package com.example.nwtktsapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -11,6 +13,7 @@ public class Client extends User{
     @OneToMany(mappedBy = "client")
     private List<Review> reviews;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "clients")
     private List<Fare> fares;
 
