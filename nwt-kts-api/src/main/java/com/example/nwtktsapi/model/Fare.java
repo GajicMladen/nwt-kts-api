@@ -1,8 +1,19 @@
 package com.example.nwtktsapi.model;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Fare {
@@ -18,6 +29,12 @@ public class Fare {
             inverseJoinColumns = @JoinColumn(name = "client_id"))
     private List<Client> clients;
 
+    @Column(name="start_address")
+    private String startAddress;
+    
+    @Column(name="end_address")
+    private String endAddress;
+    
     @ManyToOne
     @JoinColumn(name = "driver_id")
     private Driver driver;
@@ -32,6 +49,9 @@ public class Fare {
     @OneToMany(mappedBy = "fare")
     private List<Payment> payments;
 
+    @OneToMany(mappedBy = "fare")
+    private List<Rating> ratings;
+    
     @Column(name = "price")
     private float price;
 
@@ -88,12 +108,36 @@ public class Fare {
     public void setStops(List<Coordinate> stops) {
         this.stops = stops;
     }
+    
+    public String getStartAddress() {
+		return startAddress;
+	}
 
-    public List<Payment> getPayments() {
+    public void setStartAddress(String startAddress) {
+		this.startAddress = startAddress;
+	}
+
+    public String getEndAddress() {
+		return endAddress;
+	}
+
+    public void setEndAddress(String endAddress) {
+		this.endAddress = endAddress;
+	}
+
+	public List<Payment> getPayments() {
         return payments;
     }
+	
+    public List<Rating> getRatings() {
+		return ratings;
+	}
 
-    public void setPayments(List<Payment> payments) {
+	public void setRatings(List<Rating> ratings) {
+		this.ratings = ratings;
+	}
+
+	public void setPayments(List<Payment> payments) {
         this.payments = payments;
     }
 
