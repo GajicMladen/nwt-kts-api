@@ -2,7 +2,7 @@ package com.example.nwtktsapi.service;
 
 import com.example.nwtktsapi.dto.ReportDTO;
 import com.example.nwtktsapi.model.Fare;
-import com.example.nwtktsapi.model.User;
+import com.example.nwtktsapi.model.ReportType;
 import com.example.nwtktsapi.repository.RideRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +11,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 @Service
 public class ReportService {
@@ -22,28 +19,13 @@ public class ReportService {
     @Autowired
     private RideRepository rideRepository;
 
-    @Autowired
-    private UserService userService;
-
     public Map<String, Object> delegateReport(ReportDTO reportDTO) {
         LocalDateTime startDateTime = parseStringToLocalDateTime(reportDTO.getStart());
         LocalDateTime endDateTime = parseStringToLocalDateTime(reportDTO.getEnd());
-        switch (reportDTO.getReportType()) {
-            case ONE_CLIENT:
-                return getClientReports(startDateTime, endDateTime, userService.findById(reportDTO.getUserId()).get());
-            case ONE_DRIVER:
-                return getDriverReports(startDateTime, endDateTime, userService.findById(reportDTO.getUserId()).get());
-            case ALL_CLIENTS:
-                break;
-            case ALL_DRIVERS:
-                break;
-            default:
-                break;
-        }
-        return null;
+        return getReport(startDateTime, endDateTime, reportDTO.getReportType(), reportDTO.getUserId());
     }
 
-    private Map<String, Object> getClientReports(LocalDateTime start, LocalDateTime end, User client) {
+    private Map<String, Object> getReport(LocalDateTime start, LocalDateTime end, ReportType type, Long userId) {
         HashMap<String, Integer> ridePerDay = new HashMap<>();
         HashMap<String, Float> kilometersPerDay = new HashMap<>();
         HashMap<String, Float> moneyPerDay = new HashMap<>();
@@ -51,18 +33,27 @@ public class ReportService {
         while (start.isBefore(end.plusDays(1))) {
             LocalDateTime startOfDay = start;
             LocalDateTime endOfDay = start.plusHours(23).plusMinutes(59).plusSeconds(59);
-            List<Fare> rides = rideRepository.findFaresByClientIdAndStartTimeBetween(client.getId(), startOfDay, endOfDay);
-            float kilometers = 0;
-            float money = 0;
-            for (Fare ride: rides) {
-                kilometers += ride.getDistance()/1000;
-                money += ride.getPrice()/ride.getClients().size();
+            List<Float> results = new ArrayList<>();
+            switch (type) {
+                case ONE_CLIENT:
+                    results = getClientResults(userId, startOfDay, endOfDay);
+                    break;
+                case ONE_DRIVER:
+                    results = getDriverResults(userId, startOfDay, endOfDay);
+                    break;
+                case ALL_CLIENTS:
+                    results = getClientsResults(startOfDay, endOfDay);
+                    break;
+                case ALL_DRIVERS:
+                    results = getDriversResults(startOfDay, endOfDay);
+                    break;
+                default:
+                    break;
             }
-            ridePerDay.put(start.format(formatter), rides.size());
-            kilometersPerDay.put(start.format(formatter), kilometers);
-            moneyPerDay.put(start.format(formatter), money);
+            ridePerDay.put(start.format(formatter), Math.round(results.get(0)));
+            kilometersPerDay.put(start.format(formatter), results.get(1));
+            moneyPerDay.put(start.format(formatter), results.get(2));
             start = start.plusDays(1);
-
         }
         Map<String, Integer> sortedRidePerDay = new TreeMap<>(ridePerDay);
         Map<String, Float> sortedKilometersPerDay = new TreeMap<>(kilometersPerDay);
@@ -74,35 +65,64 @@ public class ReportService {
         return data;
     }
 
-    private Map<String, Object> getDriverReports(LocalDateTime start, LocalDateTime end, User driver) {
-        HashMap<String, Integer> ridePerDay = new HashMap<>();
-        HashMap<String, Float> kilometersPerDay = new HashMap<>();
-        HashMap<String, Float> moneyPerDay = new HashMap<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        while (start.isBefore(end.plusDays(1))) {
-            LocalDateTime startOfDay = start;
-            LocalDateTime endOfDay = start.plusHours(23).plusMinutes(59).plusSeconds(59);
-            List<Fare> rides = rideRepository.findByDriver_IdAndStartTimeBetween(driver.getId(), startOfDay, endOfDay);
-            float kilometers = 0;
-            float money = 0;
-            for (Fare ride: rides) {
-                kilometers += ride.getDistance()/1000;
-                money += ride.getPrice();
-            }
-            ridePerDay.put(start.format(formatter), rides.size());
-            kilometersPerDay.put(start.format(formatter), kilometers);
-            moneyPerDay.put(start.format(formatter), money);
-            start = start.plusDays(1);
+    private List<Float> getClientResults(Long id, LocalDateTime start, LocalDateTime end) {
+        List<Float> results = new ArrayList<>();
+        List<Fare> rides = rideRepository.findFaresByClientIdAndStartTimeBetween(id, start, end);
+        float kilometers = 0;
+        float money = 0;
+        for (Fare ride: rides) {
+            kilometers += ride.getDistance()/1000;
+            money += ride.getPrice()/ride.getClients().size();
         }
-        Map<String, Integer> sortedRidePerDay = new TreeMap<>(ridePerDay);
-        Map<String, Float> sortedKilometersPerDay = new TreeMap<>(kilometersPerDay);
-        Map<String, Float> sortedMoneyPerDay = new TreeMap<>(moneyPerDay);
-        Map<String, Object> data = new HashMap<>();
-        data.put("ridesPerDay", sortedRidePerDay);
-        data.put("kilometersPerDay", sortedKilometersPerDay);
-        data.put("moneyPerDay", sortedMoneyPerDay);
-        return data;
+        results.add((float) rides.size());
+        results.add(kilometers);
+        results.add(money);
+        return results;
+    }
 
+    private List<Float> getDriverResults(Long id, LocalDateTime start, LocalDateTime end) {
+        List<Float> results = new ArrayList<>();
+        List<Fare> rides = rideRepository.findByDriver_IdAndStartTimeBetween(id, start, end);
+        float kilometers = 0;
+        float money = 0;
+        for (Fare ride: rides) {
+            kilometers += ride.getDistance()/1000;
+            money += ride.getPrice();
+        }
+        results.add((float) rides.size());
+        results.add(kilometers);
+        results.add(money);
+        return results;
+    }
+
+    private List<Float> getClientsResults(LocalDateTime start, LocalDateTime end) {
+        List<Float> results = new ArrayList<>();
+        List<Fare> rides = rideRepository.findByStartTimeBetween(start, end);
+        float kilometers = 0;
+        float money = 0;
+        for (Fare ride: rides) {
+            kilometers += (ride.getDistance()/1000)*ride.getClients().size();
+            money += ride.getPrice();
+        }
+        results.add((float) rides.size());
+        results.add(kilometers);
+        results.add(money);
+        return results;
+    }
+
+    private List<Float> getDriversResults(LocalDateTime start, LocalDateTime end) {
+        List<Float> results = new ArrayList<>();
+        List<Fare> rides = rideRepository.findByStartTimeBetween(start, end);
+        float kilometers = 0;
+        float money = 0;
+        for (Fare ride: rides) {
+            kilometers += ride.getDistance()/1000;
+            money += ride.getPrice();
+        }
+        results.add((float) rides.size());
+        results.add(kilometers);
+        results.add(money);
+        return results;
     }
 
     private LocalDateTime parseStringToLocalDateTime(String date) {

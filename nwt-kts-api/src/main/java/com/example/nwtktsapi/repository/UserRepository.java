@@ -18,4 +18,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
 	@Query("select count(u) from User u inner join u.roles r where u.active = true and u.blocked = false and r.id = ?1")
 	int getUserByTypeCount(Long id);
+
+	@Query("select u from User u inner join u.roles r where u.active = true and u.blocked = false and (r.id = 1 or r.id = 3)")
+	List<User> getClientsAndDrivers();
 }

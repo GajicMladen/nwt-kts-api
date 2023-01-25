@@ -13,12 +13,11 @@ public interface RideRepository extends JpaRepository<Fare, Long> {
     @Query("select f from Fare f where f.isActive = true and f.driver.id = ?1")
     Fare getCurrentDriverFare(Long driverId);
 
-    @Query("select f from Fare f where f.driver.id = ?1")
-    List<Fare> getDriversFaresForDay(Long driverId);
-
     List<Fare> findByDriver_IdAndStartTimeBetween(Long driverId, LocalDateTime startTime, LocalDateTime endTime);
 
-    @Query("SELECT f FROM Fare f JOIN f.clients c WHERE c.id = :clientId AND f.startTime BETWEEN :startTime AND :endTime")
+    @Query("select f from Fare f join f.clients c where c.id = :clientId and f.startTime between :startTime and :endTime")
     List<Fare> findFaresByClientIdAndStartTimeBetween(@Param("clientId") Long clientId, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
+    @Query("select f from Fare f where f.startTime between :startTime and :endTime")
+    List<Fare> findByStartTimeBetween(@Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 }

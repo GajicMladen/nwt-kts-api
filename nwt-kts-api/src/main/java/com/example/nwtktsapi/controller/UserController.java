@@ -97,7 +97,7 @@ public class UserController {
 
     @GetMapping(value = "block")
     public ResponseEntity<?> blockUser(@RequestParam Long id) {
-        User user = this.userService.blockUser(id);
+        User user = userService.blockUser(id);
         return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
     }
     
@@ -139,6 +139,13 @@ public class UserController {
     	}
     	
     	return new ResponseEntity<>(dataDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value="getClientsAndDrivers")
+    public ResponseEntity<?> getClientsAndDrivers() {
+        List<User> users = userService.getClientsAndDrivers();
+        List<UserDTO> usersDTO = transformToDTOService.transforToUserDTOList(users);
+        return new ResponseEntity<>(usersDTO, HttpStatus.OK);
     }
 
 }
