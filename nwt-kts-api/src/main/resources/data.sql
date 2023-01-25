@@ -75,11 +75,6 @@ INSERT INTO USER_ROLE(user_id, role_id) VALUES (7, 3);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (8, 1);
 -- INSERT INTO USER_ROLE(user_id, role_id) VALUES (5, 2);
 
-INSERT INTO FARE (driver_id, price, is_accepted, is_reservation, distance, is_active)
-VALUES (1, 626, true, false, 3133.3, true);
-
-INSERT INTO CLIENTS_FOR_FARE(fare_id, client_id) VALUES (1, 4);
-
 -- ZAHTEVI ZA IZMENU VOZACA
 INSERT INTO DRIVER_CHANGE_REQUEST(resolved, last_name, name, phone, profile_photo, town, user_id)
 VALUES (false, 'Maric', 'Miomir', '0601234567', 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Kula', 7);
@@ -103,6 +98,9 @@ INSERT INTO COORDINATE(latitude, longitude, name, stop_number) VALUES (45.255253
 
 -- VOZNJE
 INSERT INTO FARE(driver_id, price, request_time, start_time, end_time, is_accepted, calculate_shortest, is_reservation, distance, estimated_time_left, is_active, start_address, end_address)
+VALUES (3, 155, TO_TIMESTAMP('2023-01-23 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2023-01-23 08:02:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2023-01-23 08:10:00', 'YYYY-MM-DD HH24:MI:SS'), true, false, false, 10, 0, false, 'Bulevar oslobodjenja','Polgar Andrasa 1');
+
+INSERT INTO FARE(driver_id, price, request_time, start_time, end_time, is_accepted, calculate_shortest, is_reservation, distance, estimated_time_left, is_active, start_address, end_address)
 VALUES (7, 300, TO_TIMESTAMP('2023-01-22 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2023-01-22 08:02:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2023-01-22 08:10:00', 'YYYY-MM-DD HH24:MI:SS'), true, false, false, 10, 0, false, 'Bulevar oslobodjenja','Polgar Andrasa 1');
 
 INSERT INTO FARE(driver_id, price, request_time, start_time, end_time, is_accepted, calculate_shortest, is_reservation, distance, estimated_time_left, is_active, start_address, end_address)
@@ -125,7 +123,6 @@ INSERT INTO RATING(vehicle_rating, driver_rating, comment, fare_id, client_id) V
 -- STOPS
 INSERT INTO STOPS(fare_id, coordinates_id) VALUES (1, 4);
 INSERT INTO STOPS(fare_id, coordinates_id) VALUES (1, 5);
-
 INSERT INTO STOPS(fare_id, coordinates_id) VALUES (2, 6);
 INSERT INTO STOPS(fare_id, coordinates_id) VALUES (2, 7);
 INSERT INTO STOPS(fare_id, coordinates_id) VALUES (3, 8);
@@ -138,6 +135,7 @@ INSERT INTO STOPS(fare_id, coordinates_id) VALUES (6, 10);
 INSERT INTO STOPS(fare_id, coordinates_id) VALUES (6, 11);
 
 -- CLIENTS_FOR_FARE
+INSERT INTO CLIENTS_FOR_FARE(fare_id, client_id) VALUES (1, 8);
 INSERT INTO CLIENTS_FOR_FARE(fare_id, client_id) VALUES (2, 8);
 INSERT INTO CLIENTS_FOR_FARE(fare_id, client_id) VALUES (3, 8);
 INSERT INTO CLIENTS_FOR_FARE(fare_id, client_id) VALUES (4, 8);

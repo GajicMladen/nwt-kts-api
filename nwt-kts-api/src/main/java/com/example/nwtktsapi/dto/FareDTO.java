@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.example.nwtktsapi.model.Fare;
 import com.example.nwtktsapi.model.Rating;
+import com.example.nwtktsapi.model.User;
 
 public class FareDTO {
 
@@ -19,6 +20,7 @@ public class FareDTO {
 	private String driverFullName;
 	private String vehicle;
 	private List<RatingDTO> ratings;
+	private List<UserDTO> users;
 	
 	public FareDTO() {}
 	
@@ -33,9 +35,13 @@ public class FareDTO {
 		this.driverFullName = fare.getDriver().getName() + " " + fare.getDriver().getLastName();
 		this.vehicle = fare.getDriver().getVehicle().getName();
 		this.ratings = new ArrayList<RatingDTO>();
+		this.users = new ArrayList<UserDTO>();
 		
 		for (Rating r: fare.getRatings())
 			ratings.add(new RatingDTO(r));
+		
+		for (User u: fare.getClients())
+			users.add(new UserDTO(u));
 	}
 
 	public Long getFareId() {
@@ -116,6 +122,14 @@ public class FareDTO {
 
 	public void setRatings(List<RatingDTO> ratings) {
 		this.ratings = ratings;
+	}
+
+	public List<UserDTO> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<UserDTO> users) {
+		this.users = users;
 	}
 	
 }
