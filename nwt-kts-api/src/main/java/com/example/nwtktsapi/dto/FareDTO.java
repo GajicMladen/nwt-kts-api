@@ -9,6 +9,7 @@ import com.example.nwtktsapi.model.Rating;
 
 public class FareDTO {
 
+	private Long fareId;
 	private String startTime;
 	private String endTime;
 	private String startAddress;
@@ -22,6 +23,7 @@ public class FareDTO {
 	public FareDTO() {}
 	
 	public FareDTO(Fare fare) {
+		this.fareId = fare.getId();
 		this.startTime = fare.getStartTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm"));
 		this.endTime = fare.getEndTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm"));
 		this.startAddress = fare.getStartAddress();
@@ -34,6 +36,14 @@ public class FareDTO {
 		
 		for (Rating r: fare.getRatings())
 			ratings.add(new RatingDTO(r));
+	}
+
+	public Long getFareId() {
+		return fareId;
+	}
+
+	public void setFareId(Long fareId) {
+		this.fareId = fareId;
 	}
 
 	public String getStartTime() {
