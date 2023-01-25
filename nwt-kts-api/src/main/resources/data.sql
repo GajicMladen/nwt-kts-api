@@ -118,8 +118,8 @@ INSERT INTO FARE(driver_id, price, request_time, start_time, end_time, is_accept
 VALUES (3, 600, TO_TIMESTAMP('2023-01-23 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2023-01-23 22:05:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2023-01-22 22:15:00', 'YYYY-MM-DD HH24:MI:SS'), true, false, false, 7.5, 0, false, 'Radomira Rase Radujkova', 'Булевар краља Петра I 13');
 
 --OCENE
-INSERT INTO RATING(vehicle_rating, driver_rating, comment, fare_id, client_id) VALUES (4, 3, 'Auto je bio neuredan!', 2, 8);
-INSERT INTO RATING(vehicle_rating, driver_rating, comment, fare_id, client_id) VALUES (5, 5, 'Sve je bilo super!', 2, 8);
+INSERT INTO RATING(vehicle_rating, driver_rating, comment, fare_id, client_id) VALUES (4, 3, 'Auto je bio neuredan!', 2, 4);
+INSERT INTO RATING(vehicle_rating, driver_rating, comment, fare_id, client_id) VALUES (5, 5, 'Sve je bilo super!', 2, 5);
 INSERT INTO RATING(vehicle_rating, driver_rating, comment, fare_id, client_id) VALUES (2, 3, 'Vozač je malo popio!', 3, 8);
 
 -- STOPS

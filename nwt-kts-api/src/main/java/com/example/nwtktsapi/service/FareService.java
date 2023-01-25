@@ -45,4 +45,8 @@ public class FareService {
 	public long getFaresCount(Client client) {
 		return this.fareRepository.countByClientsContaining(client);
 	}
+	
+	public Fare getFareById(Long id) {
+		return this.fareRepository.findById(id).get();
+	}
 }
