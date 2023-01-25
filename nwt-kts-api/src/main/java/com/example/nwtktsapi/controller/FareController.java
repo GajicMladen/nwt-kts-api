@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.nwtktsapi.dto.FareDTO;
 import com.example.nwtktsapi.dto.FareHistoryDTO;
 import com.example.nwtktsapi.model.Client;
+import com.example.nwtktsapi.model.Driver;
 import com.example.nwtktsapi.model.Fare;
 import com.example.nwtktsapi.model.User;
 import com.example.nwtktsapi.service.FareService;
@@ -39,24 +40,48 @@ public class FareController {
 	
 	@GetMapping(value = "/client")
 	public ResponseEntity<?> getFaresByClient(@RequestParam("id") Long clientId, @RequestParam("page") int page, @RequestParam("sort") String sort) {
-		User u = userService.getUserById(clientId);
 		
-		if (u == null)
-			return new ResponseEntity<>(new Gson().toJson(new ErrMsg("Klijent ne postoji!")), HttpStatus.NOT_FOUND);
+		String errorString = validateParams(clientId, page, sort);
+		if (errorString != null)
+			return new ResponseEntity<>(new Gson().toJson(new ErrMsg(errorString)), HttpStatus.BAD_REQUEST);
 		
-		if (!sortStringValid(sort))
-			return new ResponseEntity<>(new Gson().toJson(new ErrMsg("Nevalidan sort!")), HttpStatus.BAD_REQUEST);
-		
-		if (page < 0)
-			return new ResponseEntity<>(new Gson().toJson(new ErrMsg("Nevalidan page!")), HttpStatus.BAD_REQUEST);
-		
-		
-		Client client = (Client) u;
+		Client client = (Client) userService.getUserById(clientId);
 		List<Fare> fares = fareService.getFaresByClientPage(client, page, sort);
 		List<FareDTO> ret = new ArrayList<FareDTO>();
 		for(Fare f: fares) ret.add(new FareDTO(f));
 		
 		long count = this.fareService.getFaresCount(client);
+		
+		return new ResponseEntity<>(new Gson().toJson(new FareHistoryDTO(ret, count)), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/driver")
+	public ResponseEntity<?> getFaresByDriver(@RequestParam("id") Long driverId, @RequestParam("page") int page, @RequestParam("sort") String sort){
+		String errorString = validateParams(driverId, page, sort);
+		if (errorString != null)
+			return new ResponseEntity<>(new Gson().toJson(new ErrMsg(errorString)), HttpStatus.BAD_REQUEST);
+		
+		Driver driver = (Driver) userService.getUserById(driverId);
+		List<Fare> fares = fareService.getFaresByDriverPage(driver, page, sort);
+		List<FareDTO> ret = new ArrayList<FareDTO>();
+		for(Fare f: fares) ret.add(new FareDTO(f));
+		
+		long count = this.fareService.getFaresCount(driver);
+		
+		return new ResponseEntity<>(new Gson().toJson(new FareHistoryDTO(ret, count)), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/admin")
+	public ResponseEntity<?> getFares(@RequestParam("page") int page, @RequestParam("sort") String sort){
+		String errorString = validateParams(null, page, sort);
+		if (errorString != null)
+			return new ResponseEntity<>(new Gson().toJson(new ErrMsg(errorString)), HttpStatus.BAD_REQUEST);
+		
+		List<Fare> fares = fareService.getFaresPage(page, sort);
+		List<FareDTO> ret = new ArrayList<FareDTO>();
+		for(Fare f: fares) ret.add(new FareDTO(f));
+		
+		long count = this.fareService.getFaresCount();
 		
 		return new ResponseEntity<>(new Gson().toJson(new FareHistoryDTO(ret, count)), HttpStatus.OK);
 	}
@@ -68,5 +93,22 @@ public class FareController {
 		if(!Arrays.asList(AVAILABLE_DIRECTIONS).contains(tokens[1]))
 			return false;
 		return true;
+	}
+	
+	private String validateParams(Long id, int page, String sort) {
+		if (id != null) {
+			User u = userService.getUserById(id);
+			
+			if (u == null)
+				return "Klijent ne postoji!";
+		}
+		
+		if (!sortStringValid(sort))
+			return "Nevalidan sort!";
+		
+		if (page < 0)
+			return "Nevalidan page!";
+		
+		return null;
 	}
 }
