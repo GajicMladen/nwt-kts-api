@@ -9,7 +9,7 @@ public class VehiclePrice {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "type")
+    @Column(name = "vehicle_type")
     private VehicleType type;
 
     @Column(name = "price")

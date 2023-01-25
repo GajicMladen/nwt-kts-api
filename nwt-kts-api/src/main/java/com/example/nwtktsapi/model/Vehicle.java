@@ -29,7 +29,7 @@ public class Vehicle {
     @Column(name = "capacity")
     private int capacity;
 
-    @Column(name = "type")
+    @Column(name = "vehicle_type")
     private VehicleType type;
 
     public Vehicle() {
