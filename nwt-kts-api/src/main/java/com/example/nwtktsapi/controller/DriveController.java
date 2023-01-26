@@ -1,5 +1,9 @@
 package com.example.nwtktsapi.controller;
 
+import com.example.nwtktsapi.model.Driver;
+import com.example.nwtktsapi.model.DriverStatus;
+import com.example.nwtktsapi.service.DriverService;
+import com.example.nwtktsapi.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -30,6 +34,17 @@ public class DriveController {
         restTemplate.postForObject(url, request,Void.class);
 
 
+        return ResponseEntity.status(HttpStatus.OK).body("OK");
+    }
+    @Autowired
+    private NotificationService notificationService;
+    @Autowired
+    private DriverService driverService;
+    @PostMapping(value = "test")
+    public ResponseEntity<String> test(){
+        Driver driver = driverService.getAllDrivers().get(0);
+        driver.setDriverStatus(DriverStatus.DRIVING);
+        notificationService.sendDriverChangeStaus(driver);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
 }

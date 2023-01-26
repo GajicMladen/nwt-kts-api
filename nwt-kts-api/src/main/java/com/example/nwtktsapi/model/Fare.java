@@ -1,5 +1,8 @@
 package com.example.nwtktsapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -85,7 +88,31 @@ public class Fare {
     @Column(name = "is_active")
     private boolean isActive;
 
+    @Column(name = "is_done")
+    private boolean isDone;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "path_id", referencedColumnName = "id")
+    private PathForRide pathForRide;
+
     public Fare() {
+    }
+
+    public boolean isDone() {
+        return isDone;
+    }
+
+    public void setDone(boolean done) {
+        isDone = done;
+    }
+
+    public PathForRide getPathForRide() {
+        return pathForRide;
+    }
+
+    public void setPathForRide(PathForRide pathForRide) {
+        this.pathForRide = pathForRide;
     }
 
     public Long getFareID() {

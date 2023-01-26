@@ -47,9 +47,6 @@ public class UserService implements UserDetailsService{
         return userRepository.findAll();
     }
 
-	public List<User> getAllDrivers(){
-		return userRepository.findByRoles_Id(roleService.findByName("ROLE_DRIVER").getId());
-	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
@@ -184,4 +181,5 @@ public class UserService implements UserDetailsService{
 	public List<User> getClientsAndDrivers() {
 		return userRepository.getClientsAndDrivers();
 	}
+
 }
