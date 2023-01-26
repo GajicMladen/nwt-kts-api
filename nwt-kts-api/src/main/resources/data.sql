@@ -29,7 +29,7 @@ insert into users( dtype , email ,password ,name ,lastname ,phone,active, profil
 values('Client', 'a','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Nikola','Nikolic' , '0644281080',true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
 
 insert into users( dtype , email ,password ,name ,lastname ,phone ,active, profile_photo, town )
-values('Client', 'b','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Lazar','Lazarovic' , '0644281080',true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
+values('Client', 'djordjejovanovic27@gmail.com','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Lazar','Lazarovic' , '0644281080',true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
 
 insert into users( dtype , email ,password ,name ,lastname ,phone, active, profile_photo, town, vehicle_id)
 values('Driver', 'p3r5kul45@gmail.com','lozinka1','Jovan','Tomic' , '0644281080', true, 'https://i.ibb.co/9HGt1dw/image.webp', 'Novi Sad', 2);
@@ -134,7 +134,6 @@ INSERT INTO STOPS(fare_id, coordinates_id) VALUES (5, 9);
 INSERT INTO STOPS(fare_id, coordinates_id) VALUES (6, 10);
 INSERT INTO STOPS(fare_id, coordinates_id) VALUES (6, 11);
 
--- CLIENTS_FOR_FARE
 INSERT INTO CLIENTS_FOR_FARE(fare_id, client_id) VALUES (1, 8);
 INSERT INTO CLIENTS_FOR_FARE(fare_id, client_id) VALUES (2, 8);
 INSERT INTO CLIENTS_FOR_FARE(fare_id, client_id) VALUES (3, 8);

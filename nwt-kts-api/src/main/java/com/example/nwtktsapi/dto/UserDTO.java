@@ -16,8 +16,8 @@ public class UserDTO implements Serializable {
     private  String phone;
     private  String profilePhoto;
     private  boolean active;
-
     private  boolean blocked;
+    private  String roleString;
 
     public UserDTO(){
 
@@ -41,6 +41,7 @@ public class UserDTO implements Serializable {
         this.profilePhoto = user.getProfilePhoto();
         this.active = user.isActive();
         this.blocked = user.isBlocked();
+        this.roleString = user.getRoleString();
     }
 
 
@@ -77,6 +78,13 @@ public class UserDTO implements Serializable {
         return blocked;
     }
 
+    public String getRoleString() {
+        return roleString;
+    }
+
+    public void setRoleString(String roleString) {
+        this.roleString = roleString;
+    }
 
     @Override
     public boolean equals(Object o) {

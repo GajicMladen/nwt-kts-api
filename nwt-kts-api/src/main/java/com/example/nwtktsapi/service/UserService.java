@@ -181,4 +181,8 @@ public class UserService implements UserDetailsService{
 	public int getDriversCount() {
 		return userRepository.getUserByTypeCount(3L);
 	}
+
+	public List<User> getClientsAndDrivers() {
+		return userRepository.getClientsAndDrivers();
+	}
 }

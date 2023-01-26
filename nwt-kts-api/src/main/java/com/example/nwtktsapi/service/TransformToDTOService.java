@@ -28,4 +28,12 @@ public class TransformToDTOService {
         return ret;
     }
 
+    public List<UserDTO> transforToUserDTOList(List<User> regularList) {
+        List<UserDTO> users = new ArrayList<>();
+        for(User u : regularList) {
+            users.add(new UserDTO(u));
+        }
+        return users;
+    }
+
 }
