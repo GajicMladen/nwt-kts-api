@@ -77,8 +77,19 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     protected List<Role> roles;
-    
+
+    @Column(name = "in_ride", columnDefinition = "boolean default false")
+    private boolean inRide;
+
     public User() {
+    }
+
+    public boolean isInRide() {
+        return inRide;
+    }
+
+    public void setInRide(boolean inRide) {
+        this.inRide = inRide;
     }
 
     public List<Message> getMessages() {

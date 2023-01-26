@@ -3,6 +3,7 @@ package com.example.nwtktsapi.service;
 import com.example.nwtktsapi.dto.RideDTO;
 import com.example.nwtktsapi.model.*;
 import com.example.nwtktsapi.repository.RideRepository;
+import com.example.nwtktsapi.repository.UserRepository;
 import com.example.nwtktsapi.utils.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class RideService {
     private SplitFareService splitFareService;
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
     public Fare getCurrentDriverFare(Long driverId) {
         List<Fare> res =  rideRepository.getCurrentDriverFare(driverId);
@@ -74,9 +75,9 @@ public class RideService {
 
         Fare fare = new Fare();
         List<Client> clients = new ArrayList<>();
-        clients.add((Client) userService.getUserById(rideDTO.getClientId()));
+        clients.add((Client) userRepository.findById(rideDTO.getClientId()).get());
         for(String clientEmail: rideDTO.getSplitFare()){
-            Client client = (Client) userService.findByEmail(clientEmail);
+            Client client = (Client) userRepository.findByEmail(clientEmail);
             clients.add(client);
         }
         fare.setClients(clients);
@@ -98,5 +99,10 @@ public class RideService {
 
         return rideRepository.save(fare);
 
+    }
+
+    public boolean isClinetInRide(Long id){
+        User client = userRepository.clientInRide(id);
+        return client != null;
     }
 }

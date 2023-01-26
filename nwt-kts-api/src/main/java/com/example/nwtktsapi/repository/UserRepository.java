@@ -12,6 +12,9 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
 	List<User> findByRoles_Id(Long id);
 
+	@Query("select u from User u where u.id = ?1 and u.inRide = true")
+	User clientInRide(Long id);
+
 
 
 }

@@ -52,6 +52,17 @@ public class RideController {
 
     private String MAP_REDIRECT = "http://localhost:4200/clientmap";
 
+
+    @GetMapping("isClientInRide/{id}")
+    public ResponseEntity<?> isClientInRide(@PathVariable Long id){
+        Gson gson = new Gson();
+        boolean isClientInRide = rideService.isClinetInRide(id);
+        if(isClientInRide){
+            return ResponseEntity.ok().body(gson.toJson(true));
+        }
+        return ResponseEntity.ok().body(gson.toJson(false));
+    }
+
     @GetMapping(value = "agree/{id}")
     public ResponseEntity<?> agreeToSplitFare(@PathVariable Long id ) {
         SplitFare splitFare = splitFareService.findById(id).orElse(null);
@@ -63,6 +74,7 @@ public class RideController {
         }
         return ResponseEntity.status(HttpStatus.ACCEPTED).location(URI.create(MAP_REDIRECT)).build();
     }
+
     @PostMapping(value = "order")
     // @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> orderRide(@RequestBody RideDTO rideDTO, Principal principal) throws ExecutionException, InterruptedException {
@@ -140,7 +152,9 @@ public class RideController {
             reservationService.addReservationInScheduledTasks(fare.getId(), rideDTO.getStartTime());
             return ResponseEntity.ok().body(gson.toJson("Voznja je rezervisana!"));
         }else {
+            client.setInRide(true);
             driver.setDriverStatus(DriverStatus.DRIVING);
+            userService.save(client);
             driverService.save(driver);
             notificationService.sendDriverChangeStaus(driver);
             notificationService.startRideSimulation(fare);
@@ -152,13 +166,17 @@ public class RideController {
     public ResponseEntity<?> finishRide(@RequestBody RideDTO rideDTO, Principal principal){
         Gson gson = new Gson();
         Fare fare = rideService.getFareById(rideDTO.getRideId());
+        Driver driver = driverService.getDriverById(rideDTO.getDriverId());
+        User client = userService.getUserById(rideDTO.getClientId());
+
         fare.setActive(false);
         fare.setDone(true);
-        rideService.saveFare(fare);
-
-        Driver driver = driverService.getDriverById(rideDTO.getDriverId());
+        client.setInRide(false);
         driverService.changeDriverStatus(driver,true);
+
+        rideService.saveFare(fare);
         driverService.save(driver);
+        userService.save(client);
 
         notificationService.sendDriverChangeStaus(driver);
 

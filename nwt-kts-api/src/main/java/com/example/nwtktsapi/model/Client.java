@@ -11,8 +11,6 @@ import java.util.List;
 @Entity
 public class Client extends User{
 
-    @Column(name = "in_ride", columnDefinition = "boolean default false")
-    private boolean inRide;
 
     @OneToMany(mappedBy = "client")
     private List<Review> reviews;
