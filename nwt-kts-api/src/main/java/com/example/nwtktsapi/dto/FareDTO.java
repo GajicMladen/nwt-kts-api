@@ -4,6 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.nwtktsapi.model.Coordinate;
 import com.example.nwtktsapi.model.Fare;
 import com.example.nwtktsapi.model.Rating;
 import com.example.nwtktsapi.model.User;
@@ -21,6 +22,7 @@ public class FareDTO {
 	private String vehicle;
 	private List<RatingDTO> ratings;
 	private List<UserDTO> users;
+	private String stops;
 	
 	public FareDTO() {}
 	
@@ -37,11 +39,25 @@ public class FareDTO {
 		this.ratings = new ArrayList<RatingDTO>();
 		this.users = new ArrayList<UserDTO>();
 		
+		for (Coordinate cord: fare.getStops()) {
+            this.stops = this.stops.concat(cord.getName()+","+
+                    String.valueOf(cord.getLatitude())+","+
+                    String.valueOf(cord.getLongitude())+";");
+        }
+		
 		for (Rating r: fare.getRatings())
 			ratings.add(new RatingDTO(r));
 		
 		for (User u: fare.getClients())
 			users.add(new UserDTO(u));
+	}
+
+	public String getStops() {
+		return stops;
+	}
+
+	public void setStops(String stops) {
+		this.stops = stops;
 	}
 
 	public Long getFareId() {

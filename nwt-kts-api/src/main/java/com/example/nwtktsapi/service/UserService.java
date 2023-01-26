@@ -22,7 +22,6 @@ import com.example.nwtktsapi.model.User;
 import com.example.nwtktsapi.model.Vehicle;
 import com.example.nwtktsapi.model.VehicleType;
 import com.example.nwtktsapi.repository.UserRepository;
-import com.example.nwtktsapi.repository.VehicleRepository;
 
 @Service
 public class UserService implements UserDetailsService{

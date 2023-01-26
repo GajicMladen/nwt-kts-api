@@ -52,6 +52,9 @@ public class Fare {
     @OneToMany(mappedBy = "fare")
     private List<Rating> ratings;
     
+    @OneToMany(mappedBy = "fare")
+    private List<FavouriteRoute> favouriteRoutes;
+    
     @Column(name = "price")
     private float price;
 
