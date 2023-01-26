@@ -20,6 +20,10 @@ public class Client extends User{
     
     @JsonIgnore
     @OneToMany(mappedBy = "client")
+    private List<FavouriteRoute> favouriteRoutes;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "client")
     private List<Rating> ratings;
 
     @OneToMany(mappedBy = "client")
@@ -51,4 +55,22 @@ public class Client extends User{
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
     }
+
+	public List<FavouriteRoute> getFavouriteRoutes() {
+		return favouriteRoutes;
+	}
+
+	public void setFavouriteRoutes(List<FavouriteRoute> favouriteRoutes) {
+		this.favouriteRoutes = favouriteRoutes;
+	}
+
+	public List<Rating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(List<Rating> ratings) {
+		this.ratings = ratings;
+	}
+    
+    
 }

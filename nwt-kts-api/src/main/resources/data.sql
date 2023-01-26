@@ -101,7 +101,7 @@ INSERT INTO FARE(driver_id, price, request_time, start_time, end_time, is_accept
 VALUES (3, 155, TO_TIMESTAMP('2023-01-23 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2023-01-23 08:02:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2023-01-23 08:10:00', 'YYYY-MM-DD HH24:MI:SS'), true, false, false, 10, 0, false, 'Bulevar oslobodjenja','Polgar Andrasa 1');
 
 INSERT INTO FARE(driver_id, price, request_time, start_time, end_time, is_accepted, calculate_shortest, is_reservation, distance, estimated_time_left, is_active, start_address, end_address)
-VALUES (7, 300, TO_TIMESTAMP('2023-01-22 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2023-01-22 08:02:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2023-01-22 08:10:00', 'YYYY-MM-DD HH24:MI:SS'), true, false, false, 10, 0, false, 'Bulevar oslobodjenja','Polgar Andrasa 1');
+VALUES (7, 300, TO_TIMESTAMP('2023-01-25 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2023-01-25 08:02:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2023-01-25 08:10:00', 'YYYY-MM-DD HH24:MI:SS'), true, false, false, 10, 0, false, 'Bulevar oslobodjenja','Polgar Andrasa 1');
 
 INSERT INTO FARE(driver_id, price, request_time, start_time, end_time, is_accepted, calculate_shortest, is_reservation, distance, estimated_time_left, is_active, start_address, end_address)
 VALUES (7, 400, TO_TIMESTAMP('2023-01-22 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2023-01-22 09:02:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2023-01-22 09:10:00', 'YYYY-MM-DD HH24:MI:SS'), true, false, false, 5, 0, false,'Bulevar Evrope 4', 'Булевар краља Петра I 13');
@@ -141,3 +141,6 @@ INSERT INTO CLIENTS_FOR_FARE(fare_id, client_id) VALUES (3, 8);
 INSERT INTO CLIENTS_FOR_FARE(fare_id, client_id) VALUES (4, 8);
 INSERT INTO CLIENTS_FOR_FARE(fare_id, client_id) VALUES (5, 8);
 INSERT INTO CLIENTS_FOR_FARE(fare_id, client_id) VALUES (6, 8);
+
+-- OMILJENE
+INSERT INTO FAVOURITE_ROUTE(client_id, fare_id) VALUES (8, 3);

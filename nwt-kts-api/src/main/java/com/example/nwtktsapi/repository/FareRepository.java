@@ -1,5 +1,7 @@
 package com.example.nwtktsapi.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +17,5 @@ public interface FareRepository extends JpaRepository<Fare, Long>{
 	
 	long countByClientsContaining(Client client);
 	long countByDriver(Driver driver);
+	List<Fare> findByClientsContaining(Client c);
 }

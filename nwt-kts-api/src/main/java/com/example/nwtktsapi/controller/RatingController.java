@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.nwtktsapi.dto.RatingDTO;
 import com.example.nwtktsapi.service.RatingService;
 import com.example.nwtktsapi.service.UserService;
+import com.example.nwtktsapi.utils.ErrMsg;
 
 @RestController
 @RequestMapping(value = "/api/rating", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -29,9 +30,12 @@ public class RatingController {
 		if (!validateRatingDTO(ratingDTO))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		
-		ratingService.saveRating(ratingDTO);
+		boolean res = ratingService.saveRating(ratingDTO);
 		
-		return new ResponseEntity<RatingDTO>(ratingDTO, HttpStatus.OK);
+		if (res)
+			return new ResponseEntity<RatingDTO>(ratingDTO, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(new ErrMsg("Prošao je rok za ocenjivanje!"), HttpStatus.BAD_REQUEST);
 	}
 	
 	private boolean validateRatingDTO(RatingDTO ratingDTO) {
