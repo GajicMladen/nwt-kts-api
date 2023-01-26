@@ -7,6 +7,7 @@ import com.example.nwtktsapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,5 +41,11 @@ public class TokensService {
         newValue -= tokens;
         user.setTokens(newValue);
         userRepository.save(user);
+    }
+
+    public void removeTokensFromUsers(List<User> users, float tokens){
+        for (User user:users ) {
+            removeTokensFromUser(user,tokens/users.size());
+        }
     }
 }

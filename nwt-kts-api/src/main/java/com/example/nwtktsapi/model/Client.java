@@ -2,6 +2,7 @@ package com.example.nwtktsapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -9,6 +10,9 @@ import java.util.List;
 
 @Entity
 public class Client extends User{
+
+    @Column(name = "in_ride", columnDefinition = "boolean default false")
+    private boolean inRide;
 
     @OneToMany(mappedBy = "client")
     private List<Review> reviews;

@@ -2,10 +2,7 @@ package com.example.nwtktsapi.controller;
 
 import com.example.nwtktsapi.dto.NewRideRequestDriverDTO;
 import com.example.nwtktsapi.dto.RideDTO;
-import com.example.nwtktsapi.model.Driver;
-import com.example.nwtktsapi.model.DriverStatus;
-import com.example.nwtktsapi.model.SplitFare;
-import com.example.nwtktsapi.model.User;
+import com.example.nwtktsapi.model.*;
 import com.example.nwtktsapi.service.*;
 import com.example.nwtktsapi.utils.EmailService;
 import com.example.nwtktsapi.utils.ErrMsg;
@@ -24,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.jws.soap.SOAPBinding;
 import java.net.URI;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -50,6 +48,7 @@ public class RideController {
     @Autowired
     private  TokensService tokensService;
 
+    @Autowired ReservationService reservationService;
 
     private String MAP_REDIRECT = "http://localhost:4200/clientmap";
 
@@ -68,6 +67,7 @@ public class RideController {
     // @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> orderRide(@RequestBody RideDTO rideDTO, Principal principal) throws ExecutionException, InterruptedException {
         Gson gson = new Gson();
+        System.out.println(rideDTO.toString());
 
         Long splitFareId = rideService.notifySplitFare(rideDTO);
         int secondsPassed = rideService.waitForSplitFareAgreement(rideDTO.getSplitFare().length, splitFareId);
@@ -77,9 +77,14 @@ public class RideController {
         }
 
         User client = userService.findByEmail(principal.getName());
-        if(client.getTokens() < rideDTO.getPrice()){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(gson.toJson(new ErrMsg("Nemate dovoljno tokena")));
+        if(client.getTokens() < rideDTO.getPrice()) {
+            if (rideDTO.getSplitFare().length > 0 && client.getTokens() < rideDTO.getPrice() / rideDTO.getSplitFare().length) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(gson.toJson(new ErrMsg("Nemate dovoljno tokena,iako se vožnja deli...")));
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(gson.toJson(new ErrMsg("Nemate dovoljno tokena")));
+            }
         }
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson("Vožnja je poručena!"));
     }
@@ -92,7 +97,7 @@ public class RideController {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
                     .body(gson.toJson(new ErrMsg("Nažalost trenutno nema slobodnih vozača!")));
         }
-        System.out.println(driver.getName() + ' ' + driver.getLastName());
+        // System.out.println(driver.getName() + ' ' + driver.getLastName());
         rideDTO.setDriverId(driver.getId());
         //Send driver a notification
         notificationService.sendDriverNewRideRequest(driver,rideDTO);
@@ -112,32 +117,62 @@ public class RideController {
         return ResponseEntity.ok().body(gson.toJson(driver.getVehicle().getPlateNumber()));
     }
 
+    //Add principal (moved from here because of tests!)
     @PostMapping(value = "clientConfirmRide")
-    public ResponseEntity<?> clientConfirmRide(@RequestBody RideDTO rideDTO, Principal principal){
+    public ResponseEntity<?> clientConfirmRide(@RequestBody RideDTO rideDTO){
         Gson gson = new Gson();
+        List<User> usersToPay = new ArrayList<>();
         Driver driver = driverService.getDriverById(rideDTO.getDriverId());
-        User user = userService.getUserById(rideDTO.getClientId());
+        User client = userService.getUserById(rideDTO.getClientId());
+        for(String passengersMail : rideDTO.getSplitFare()){
+            User passenger = userService.findByEmail(passengersMail);
+            usersToPay.add(passenger);
+        }
+        usersToPay.add(client);
+        Fare fare = rideService.save(rideDTO, driver);
 
-        driver.setDriverStatus(DriverStatus.DRIVING);
-        rideService.save(rideDTO, driver);
-        tokensService.removeTokensFromUser(user,rideDTO.getPrice());
+        tokensService.removeTokensFromUsers(usersToPay,rideDTO.getPrice());
         tokensService.addTokensForUser(driver,rideDTO.getPrice());
 
-        notificationService.sendDriverChangeStaus(driver);
-        notificationService.sendClientConfirmRide(driver,rideDTO);
+        notificationService.sendClientConfirmRide(driver, rideDTO);
 
-        return ResponseEntity.ok().body(gson.toJson("Voznja je pocela"));
+        if(rideDTO.isReservation()){
+            reservationService.addReservationInScheduledTasks(fare.getId(), rideDTO.getStartTime());
+            return ResponseEntity.ok().body(gson.toJson("Voznja je rezervisana!"));
+        }else {
+            driver.setDriverStatus(DriverStatus.DRIVING);
+            driverService.save(driver);
+            notificationService.sendDriverChangeStaus(driver);
+            notificationService.startRideSimulation(fare);
+            return ResponseEntity.ok().body(gson.toJson("Voznja je pocela"));
+        }
+
     }
     @PostMapping(value = "finishRide")
     public ResponseEntity<?> finishRide(@RequestBody RideDTO rideDTO, Principal principal){
         Gson gson = new Gson();
-        System.out.println(principal.getName());
+        Fare fare = rideService.getFareById(rideDTO.getRideId());
+        fare.setActive(false);
+        fare.setDone(true);
+        rideService.saveFare(fare);
 
         Driver driver = driverService.getDriverById(rideDTO.getDriverId());
         driverService.changeDriverStatus(driver,true);
+        driverService.save(driver);
+
         notificationService.sendDriverChangeStaus(driver);
 
         return ResponseEntity.ok().body(gson.toJson("Voznja je zavrsena!"));
     }
 
+
+    @GetMapping(value = "activeRideForDriver/{id}")
+    public  ResponseEntity<?> activeRideForDriver(@PathVariable Long id){
+        Gson gson = new Gson();
+        Fare currentRide =  rideService.getCurrentDriverFare(id);
+        if(currentRide != null){
+            return ResponseEntity.ok().body(new RideDTO(currentRide));
+        }
+        return  ResponseEntity.status(404).body("Vozac nema trenutnu voznju");
+    }
 }

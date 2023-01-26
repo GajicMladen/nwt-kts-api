@@ -3,10 +3,13 @@ package com.example.nwtktsapi.service;
 import com.example.nwtktsapi.dto.RideDTO;
 import com.example.nwtktsapi.model.*;
 import com.example.nwtktsapi.repository.DriverRepository;
+import com.example.nwtktsapi.repository.RideRepository;
 import com.example.nwtktsapi.utils.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -18,7 +21,14 @@ public class DriverService {
     private DriverRepository driverRepository;
 
     @Autowired
+    private RideRepository rideRepository;
+
+    @Autowired
     private RideService rideService;
+
+    public Driver save(Driver driver){
+        return driverRepository.save(driver);
+    }
 
     public List<Driver> getAllDrivers(){
         return driverRepository.findAll();
@@ -41,13 +51,26 @@ public class DriverService {
     public List<Driver> getDrivingDrivers(int type) {
         return driverRepository.getDrivingDrivers(VehicleType.values()[type]);
     }
+    public List<Driver> getDriversThatHaveReservationInPeriod(LocalDateTime startTime,LocalDateTime endTime){
+        List<Fare> reservationsInPeriod = rideRepository.getReservationsInPeriod(true,endTime,startTime);
+        List<Driver> res=  new ArrayList<>();
+        for (Fare fare:reservationsInPeriod) {
+            res.add( fare.getDriver() );
+        }
+        return res;
+    }
 
     public Driver getSuitedDriver(RideDTO rideDTO) {
-        //TODO: Pogledati rezervacije
         List<Driver> available = getAvailableDrivers(rideDTO.getVehicleType());
+        List<Driver> reservedDriversInThatPeriod = getDriversThatHaveReservationInPeriod(rideDTO.getStartTime(),rideDTO.getEndTime());
+
         available.removeIf( driver -> rideDTO.getDeniedDrivers().contains(driver.getId()));
+        available.removeIf(reservedDriversInThatPeriod::contains);
         if (available.size() == 0) {
+
             List<Driver> driving = getDrivingDrivers(rideDTO.getVehicleType());
+            driving.removeIf( driver -> rideDTO.getDeniedDrivers().contains(driver.getId()));
+            driving.removeIf(reservedDriversInThatPeriod::contains);
             if (driving.size() == 0) {
                 return null;
             }
@@ -59,6 +82,7 @@ public class DriverService {
             return getClosestDriver(available, rideDTO.getLocations().get(0));
         }
     }
+
 
     public Driver getClosestDriver(List<Driver> drivers, Coordinate start) {
         Driver closestDriver = drivers.get(0);

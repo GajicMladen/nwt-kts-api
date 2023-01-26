@@ -1,15 +1,15 @@
 package com.example.nwtktsapi.service;
 
 import com.example.nwtktsapi.dto.RideDTO;
-import com.example.nwtktsapi.model.Driver;
-import com.example.nwtktsapi.model.Fare;
-import com.example.nwtktsapi.model.SplitFare;
+import com.example.nwtktsapi.model.*;
 import com.example.nwtktsapi.repository.RideRepository;
 import com.example.nwtktsapi.utils.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -25,10 +25,23 @@ public class RideService {
     @Autowired
     private SplitFareService splitFareService;
 
+    @Autowired
+    private UserService userService;
+
     public Fare getCurrentDriverFare(Long driverId) {
-        return rideRepository.getCurrentDriverFare(driverId);
+        List<Fare> res =  rideRepository.getCurrentDriverFare(driverId);
+        if(res.size() > 0)
+            return res.get(0);
+        return null;
     }
 
+    public Fare getFareById(Long id){
+        return rideRepository.findByFareID(id);
+    }
+
+    public Fare saveFare(Fare fare){
+        return  rideRepository.save(fare);
+    }
     public Long notifySplitFare(RideDTO rideDTO) throws ExecutionException, InterruptedException {
         SplitFare splitFare = splitFareService.crateNewSplitFare();
         CompletableFuture[] futures = new CompletableFuture[rideDTO.getSplitFare().length];
@@ -56,22 +69,34 @@ public class RideService {
         return currentSecond;
     }
 
-    public Long save(RideDTO rideDTO, Driver driver) {
+    public Fare save(RideDTO rideDTO, Driver driver) {
+        System.out.println(rideDTO.toString());
+
         Fare fare = new Fare();
-        //setClients
+        List<Client> clients = new ArrayList<>();
+        clients.add((Client) userService.getUserById(rideDTO.getClientId()));
+        for(String clientEmail: rideDTO.getSplitFare()){
+            Client client = (Client) userService.findByEmail(clientEmail);
+            clients.add(client);
+        }
+        fare.setClients(clients);
         fare.setDriver(driver);
         fare.setStops(rideDTO.getLocations());
-        //setPayments
+
         fare.setPrice(rideDTO.getPrice());
         fare.setRequestTime(LocalDateTime.now());
         fare.setStartTime(LocalDateTime.now().plusMinutes(5)); //
         fare.setEndTime(LocalDateTime.now().plusMinutes(rideDTO.getDuration() + 5));
         fare.setAccepted(true); // ili false
-        fare.setReservation(false);
+        fare.setReservation(rideDTO.isReservation());
         fare.setDistance(rideDTO.getDistance());
-        fare.setActive(true);
+        fare.setActive(!rideDTO.isReservation());
 
-        return rideRepository.save(fare).getFareID();
+        PathForRide newPath = new PathForRide();
+        newPath.setCords(rideDTO.getPathForRide());
+        fare.setPathForRide(newPath);
+
+        return rideRepository.save(fare);
 
     }
 }
