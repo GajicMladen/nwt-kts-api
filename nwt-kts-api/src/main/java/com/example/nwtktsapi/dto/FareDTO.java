@@ -39,6 +39,7 @@ public class FareDTO {
 		this.ratings = new ArrayList<RatingDTO>();
 		this.users = new ArrayList<UserDTO>();
 		
+		this.stops = "";
 		for (Coordinate cord: fare.getStops()) {
             this.stops = this.stops.concat(cord.getName()+","+
                     String.valueOf(cord.getLatitude())+","+

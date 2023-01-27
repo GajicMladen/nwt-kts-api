@@ -89,7 +89,7 @@ public class Fare {
     private boolean isActive;
 
     @Column(name = "is_done")
-    private boolean isDone;
+    private Boolean isDone;
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
