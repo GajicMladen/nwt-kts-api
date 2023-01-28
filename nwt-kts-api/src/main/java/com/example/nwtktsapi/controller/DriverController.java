@@ -3,6 +3,7 @@ package com.example.nwtktsapi.controller;
 import com.example.nwtktsapi.model.Driver;
 import com.example.nwtktsapi.model.DriverStatus;
 import com.example.nwtktsapi.service.DriverService;
+import com.example.nwtktsapi.service.DriverTimesheetService;
 import com.example.nwtktsapi.service.NotificationService;
 import com.example.nwtktsapi.service.TransformToDTOService;
 import com.google.gson.Gson;
@@ -23,9 +24,10 @@ public class DriverController {
     private DriverService driverService;
     @Autowired
     private TransformToDTOService transformToDTOService;
-
     @Autowired
     private NotificationService notificationService;
+    @Autowired
+    private DriverTimesheetService driverTimesheetService;
 
     @GetMapping(value = "all")
     public ResponseEntity<List<Object>> getAllDrivers(){
@@ -55,12 +57,15 @@ public class DriverController {
 
     @PostMapping(value = "logOutDriver")
     public ResponseEntity<?> logOutDriver(Principal principal){
+        Gson gson = new Gson();
         Driver driver = driverService.getDriverByEmail(principal.getName());
         if(driver != null)
         {
             driverService.changeDriverStatus(driver,false);
             notificationService.sendDriverChangeStaus(driver);
-            return ResponseEntity.ok().body("Uspesno izlogovan");
+            driverTimesheetService.logout(driver);
+            //return ResponseEntity.ok().body("Uspesno izlogovan");
+            return  ResponseEntity.status(HttpStatus.OK).body(gson.toJson("Uspesno izlogovan"));
         }
         return ResponseEntity.status(404).body("Nepostojeci vozac");
     }

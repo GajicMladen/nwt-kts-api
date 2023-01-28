@@ -36,8 +36,8 @@ values('Admin', 'a','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr
 insert into users( dtype , email ,password ,name ,lastname ,phone ,active, profile_photo, town )
 values('Client', 'djordjejovanovic27@gmail.com','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Lazar','Lazarovic' , '0644281080',true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
 
-insert into users( dtype , email ,password ,name ,lastname ,phone, active, profile_photo, town , vehicle_id)
-values('Driver', 'p3r5kul45@gmail.com','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Jovan','Tomic' , '0644281080', true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad', 2);
+insert into users( dtype , email ,password ,name ,lastname ,phone, active, profile_photo, town, driver_status, vehicle_id, position_id)
+values('Driver', 'p3r5kul45@gmail.com','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Jovan','Tomic' , '0644281080', true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad', 1, 2, 3);
 
 
 insert into users( dtype , email ,password ,name ,lastname ,phone, active, profile_photo, town  )
@@ -78,7 +78,7 @@ INSERT INTO USER_ROLE(user_id, role_id) VALUES (4, 1);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (5, 2);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (6, 1);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (7, 3);
-INSERT INTO USER_ROLE(user_id, role_id) VALUES (8, 1);
+INSERT INTO USER_ROLE(user_id, role_id) VALUES (8, 2);
 
 -- ZAHTEVI ZA IZMENU VOZACA
 INSERT INTO DRIVER_CHANGE_REQUEST(resolved, last_name, name, phone, profile_photo, town, user_id)
@@ -148,3 +148,22 @@ INSERT INTO CLIENTS_FOR_FARE(fare_id, client_id) VALUES (6, 8);
 
 -- OMILJENE
 INSERT INTO FAVOURITE_ROUTE(client_id, fare_id) VALUES (8, 3);
+
+--TIMESHEET
+INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
+VALUES (7, 'login', TO_TIMESTAMP('2023-01-28 08:30:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
+VALUES (7, 'logout', TO_TIMESTAMP('2023-01-28 10:30:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
+VALUES (7, 'login', TO_TIMESTAMP('2023-01-28 11:30:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
+VALUES (7, 'logout', TO_TIMESTAMP('2023-01-28 16:30:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
+VALUES (7, 'login', TO_TIMESTAMP('2023-01-28 17:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
+VALUES (7, 'logout', TO_TIMESTAMP('2023-01-28 17:59:45', 'YYYY-MM-DD HH24:MI:SS'));
+
+-- INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
+-- VALUES (7, 'login', TO_TIMESTAMP('2023-01-27 17:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+-- INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
+-- VALUES (7, 'logout', TO_TIMESTAMP('2023-01-27 22:30:00', 'YYYY-MM-DD HH24:MI:SS'));

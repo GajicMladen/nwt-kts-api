@@ -72,6 +72,7 @@ public class User implements UserDetails {
     @OneToMany( mappedBy = "user")
     private List<Message> messages;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),

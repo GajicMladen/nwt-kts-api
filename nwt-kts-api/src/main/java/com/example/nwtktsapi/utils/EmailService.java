@@ -44,7 +44,7 @@ public class EmailService {
 		String body = "Poštovani, \n";
 		body += "Dodati ste kao jedan od platiša za vožnju na relaciji: \n";
 		body += String.join(" - ", locations) + "\n";
-		body += "Iznos koji će vam biti naplaćen je: " + price + " dinara\n";
+		body += "Iznos koji će vam biti naplaćen je: " + price + " tokena.\n";
 		body += "Klikom na link ispod potvrđujete da ste učesnik ove vožnje i da vam možemo naplatiti vožnju: \n";
 		body += "Link: http://localhost:8080/api/ride/agree/" + id.toString();
 		sendSimpleMessage(email, SPLIT_FARE_SUBJECT,body);
