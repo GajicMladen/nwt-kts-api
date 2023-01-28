@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.example.nwtktsapi.service.DriverTimesheetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -50,6 +51,9 @@ public class LoginController {
 	
 	@Autowired
 	private EmailService mailService;
+
+	@Autowired
+	private DriverTimesheetService driverTimesheetService;
 	
 	@Autowired
 	private ResetPasswordService resetPasswordService;
@@ -77,6 +81,9 @@ public class LoginController {
 
 		if(user.isBlocked())
 			return new ResponseEntity<>(gson.toJson(new ErrMsg("Korisnik je blokiran!")),HttpStatus.FORBIDDEN);
+
+		if(user.getRoleString().equals("ROLE_DRIVER") && !driverTimesheetService.canLogin(user.getId()))
+			return new ResponseEntity<>(gson.toJson(new ErrMsg("Danas ste već radili osam časova!")), HttpStatus.FORBIDDEN);
 		
 		if(user.isActive())
 			return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user));

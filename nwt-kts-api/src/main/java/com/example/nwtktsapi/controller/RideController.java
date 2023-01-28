@@ -18,7 +18,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.jws.soap.SOAPBinding;
 import java.net.URI;
 import java.security.Principal;
 import java.util.ArrayList;

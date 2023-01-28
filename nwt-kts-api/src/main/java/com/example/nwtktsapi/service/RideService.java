@@ -45,15 +45,15 @@ public class RideService {
     }
     public Long notifySplitFare(RideDTO rideDTO) throws ExecutionException, InterruptedException {
         SplitFare splitFare = splitFareService.crateNewSplitFare();
-        CompletableFuture[] futures = new CompletableFuture[rideDTO.getSplitFare().length];
+        //CompletableFuture[] futures = new CompletableFuture[rideDTO.getSplitFare().length];
         float price = rideDTO.getPrice()/(rideDTO.getSplitFare().length+1);
         for (int i = 0; i < rideDTO.getSplitFare().length; i++) {
             String email = rideDTO.getSplitFare()[i];
-            futures[i] = CompletableFuture.runAsync(() -> {
-                emailService.sendSplitFareAgreement(email, rideDTO.getLocationsNames(), price, splitFare.getId());
-            });
+            //futures[i] = CompletableFuture.runAsync(() -> {
+            emailService.sendSplitFareAgreement(email, rideDTO.getLocationsNames(), price, splitFare.getId());
+            //});
         }
-        CompletableFuture.allOf(futures).get();
+        //CompletableFuture.allOf(futures).get();
         return splitFare.getId();
     }
 
