@@ -15,10 +15,10 @@ public class DriverTimesheet {
     @JoinColumn(name = "driver_id")
     private Driver driver;
 
-    @Column(name = "type") // login or logout
+    @Column(name = "timesheet_type") // login or logout
     private String type;
 
-    @Column(name = "time")
+    @Column(name = "timesheet_time")
     private LocalDateTime time;
 
     public DriverTimesheet() {

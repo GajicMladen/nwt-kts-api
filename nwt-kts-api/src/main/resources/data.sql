@@ -150,20 +150,20 @@ INSERT INTO CLIENTS_FOR_FARE(fare_id, client_id) VALUES (6, 8);
 INSERT INTO FAVOURITE_ROUTE(client_id, fare_id) VALUES (8, 3);
 
 --TIMESHEET
-INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
-VALUES (7, 'login', TO_TIMESTAMP('2023-01-28 08:30:00', 'YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
-VALUES (7, 'logout', TO_TIMESTAMP('2023-01-28 10:30:00', 'YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
-VALUES (7, 'login', TO_TIMESTAMP('2023-01-28 11:30:00', 'YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
-VALUES (7, 'logout', TO_TIMESTAMP('2023-01-28 16:30:00', 'YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
-VALUES (7, 'login', TO_TIMESTAMP('2023-01-28 17:00:00', 'YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
-VALUES (7, 'logout', TO_TIMESTAMP('2023-01-28 17:59:45', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO DRIVER_TIMESHEET(driver_id, timesheet_type, timesheet_time)
+VALUES (7, 'login', TO_TIMESTAMP('2023-01-30 08:30:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO DRIVER_TIMESHEET(driver_id, timesheet_type, timesheet_time)
+VALUES (7, 'logout', TO_TIMESTAMP('2023-01-30 10:30:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO DRIVER_TIMESHEET(driver_id, timesheet_type, timesheet_time)
+VALUES (7, 'login', TO_TIMESTAMP('2023-01-30 11:30:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO DRIVER_TIMESHEET(driver_id, timesheet_type, timesheet_time)
+VALUES (7, 'logout', TO_TIMESTAMP('2023-01-30 16:30:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO DRIVER_TIMESHEET(driver_id, timesheet_type, timesheet_time)
+VALUES (7, 'login', TO_TIMESTAMP('2023-01-30 17:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO DRIVER_TIMESHEET(driver_id, timesheet_type, timesheet_time)
+VALUES (7, 'logout', TO_TIMESTAMP('2023-01-30 17:59:45', 'YYYY-MM-DD HH24:MI:SS'));
 
--- INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
+-- INSERT INTO DRIVER_TIMESHEET(driver_id, timesheet_type, time)
 -- VALUES (7, 'login', TO_TIMESTAMP('2023-01-27 17:00:00', 'YYYY-MM-DD HH24:MI:SS'));
--- INSERT INTO DRIVER_TIMESHEET(driver_id, type, time)
+-- INSERT INTO DRIVER_TIMESHEET(driver_id, timesheet_type, time)
 -- VALUES (7, 'logout', TO_TIMESTAMP('2023-01-27 22:30:00', 'YYYY-MM-DD HH24:MI:SS'));
