@@ -78,7 +78,7 @@ INSERT INTO USER_ROLE(user_id, role_id) VALUES (4, 1);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (5, 2);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (6, 1);
 INSERT INTO USER_ROLE(user_id, role_id) VALUES (7, 3);
-INSERT INTO USER_ROLE(user_id, role_id) VALUES (8, 2);
+INSERT INTO USER_ROLE(user_id, role_id) VALUES (8, 1);
 
 -- ZAHTEVI ZA IZMENU VOZACA
 INSERT INTO DRIVER_CHANGE_REQUEST(resolved, last_name, name, phone, profile_photo, town, user_id)
