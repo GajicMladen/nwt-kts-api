@@ -8,13 +8,14 @@ public class FavouriteRouteDTO {
 	private String routeName;
 	private Long clientId;
 	private String stops;
+	private Long favouriteId;
 	
 	public FavouriteRouteDTO() {};
 	
-	public FavouriteRouteDTO(Long clientId, Fare fare) {
+	public FavouriteRouteDTO(Long clientId, Fare fare, Long favId) {
 		this.clientId = clientId;
 		this.routeName = fare.getStops().get(0).getName() + " - " + fare.getStops().get(fare.getStops().size() - 1).getName();
-	
+		this.favouriteId = favId;
 		this.stops = "";
 		for (Coordinate cord: fare.getStops()) {
             this.stops = this.stops.concat(cord.getName()+","+
@@ -23,6 +24,14 @@ public class FavouriteRouteDTO {
         }
 	}
 	
+	public Long getFavouriteId() {
+		return favouriteId;
+	}
+
+	public void setFavouriteId(Long favouriteId) {
+		this.favouriteId = favouriteId;
+	}
+
 	public String getRouteName() {
 		return routeName;
 	}

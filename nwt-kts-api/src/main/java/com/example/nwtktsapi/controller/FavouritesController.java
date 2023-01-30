@@ -47,7 +47,7 @@ public class FavouritesController {
 		List<FavouriteRouteDTO> ret = new ArrayList<FavouriteRouteDTO>();
 		
 		for (FavouriteRoute fave: faves)
-			ret.add(new FavouriteRouteDTO(c.getId(), fave.getFare()));
+			ret.add(new FavouriteRouteDTO(c.getId(), fave.getFare(), fave.getId()));
 			
 		return new ResponseEntity<List<FavouriteRouteDTO>>(ret, HttpStatus.OK);
 	}
