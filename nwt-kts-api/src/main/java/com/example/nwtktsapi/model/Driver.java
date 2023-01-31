@@ -36,6 +36,10 @@ public class Driver extends  User{
     public Driver() {
     }
 
+    public Driver(Long id, String password, String email, String name, String lastName, String town, String phone, String profilePhoto, boolean active, boolean blocked, float tokens, List<Note> notes, List<Message> messages, List<Role> roles, boolean inRide) {
+        super(id, password, email, name, lastName, town, phone, profilePhoto, active, blocked, tokens, notes, messages, roles, inRide);
+    }
+
     public List<Note> getBlamedMessages() {
         return blamedNotes;
     }
