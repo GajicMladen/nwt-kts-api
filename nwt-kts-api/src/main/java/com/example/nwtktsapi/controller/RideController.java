@@ -109,9 +109,7 @@ public class RideController {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
                     .body(gson.toJson(new ErrMsg("Nažalost trenutno nema slobodnih vozača!")));
         }
-        // System.out.println(driver.getName() + ' ' + driver.getLastName());
         rideDTO.setDriverId(driver.getId());
-        //Send driver a notification
         notificationService.sendDriverNewRideRequest(driver,rideDTO);
 
         return ResponseEntity.ok().body(gson.toJson(rideDTO));

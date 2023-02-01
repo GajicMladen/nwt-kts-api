@@ -16,6 +16,13 @@ public class TokensService {
     @Autowired
     private UserRepository userRepository;
 
+    public TokensService() {
+    }
+
+    public TokensService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public float getTokensForUser(Long userId) throws UserNotFoundException {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()){

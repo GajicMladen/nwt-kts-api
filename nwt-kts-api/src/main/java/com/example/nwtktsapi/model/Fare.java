@@ -101,6 +101,29 @@ public class Fare {
         setClients(new ArrayList<>());
     }
 
+    public Fare(Long fareID, List<Client> clients, String startAddress, String endAddress, Driver driver, List<Coordinate> stops, List<Payment> payments, List<Rating> ratings, List<FavouriteRoute> favouriteRoutes, float price, LocalDateTime requestTime, LocalDateTime startTime, LocalDateTime endTime, boolean isAccepted, Boolean calculateShortest, boolean isReservation, float distance, Float estimatedTimeLeft, boolean isActive, boolean isDone) {
+        this.fareID = fareID;
+        this.clients = clients;
+        this.startAddress = startAddress;
+        this.endAddress = endAddress;
+        this.driver = driver;
+        this.stops = stops;
+        this.payments = payments;
+        this.ratings = ratings;
+        this.favouriteRoutes = favouriteRoutes;
+        this.price = price;
+        this.requestTime = requestTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.isAccepted = isAccepted;
+        this.calculateShortest = calculateShortest;
+        this.isReservation = isReservation;
+        this.distance = distance;
+        this.estimatedTimeLeft = estimatedTimeLeft;
+        this.isActive = isActive;
+        this.isDone = isDone;
+    }
+
     public boolean isDone() {
         return isDone;
     }

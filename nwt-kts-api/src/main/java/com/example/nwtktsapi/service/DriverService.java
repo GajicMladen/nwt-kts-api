@@ -26,6 +26,18 @@ public class DriverService {
     @Autowired
     private RideService rideService;
 
+    public void setDriverRepository(DriverRepository driverRepository) {
+        this.driverRepository = driverRepository;
+    }
+
+    public void setRideRepository(RideRepository rideRepository) {
+        this.rideRepository = rideRepository;
+    }
+
+    public void setRideService(RideService rideService) {
+        this.rideService = rideService;
+    }
+
     public Driver save(Driver driver){
         return driverRepository.save(driver);
     }
@@ -52,7 +64,7 @@ public class DriverService {
         return driverRepository.getDrivingDrivers(VehicleType.values()[type]);
     }
     public List<Driver> getDriversThatHaveReservationInPeriod(LocalDateTime startTime,LocalDateTime endTime){
-        List<Fare> reservationsInPeriod = rideRepository.getReservationsInPeriod(true,endTime,startTime);
+        List<Fare> reservationsInPeriod = rideRepository.getReservationsInPeriod(true,startTime,endTime);
         List<Driver> res=  new ArrayList<>();
         for (Fare fare:reservationsInPeriod) {
             res.add( fare.getDriver() );
