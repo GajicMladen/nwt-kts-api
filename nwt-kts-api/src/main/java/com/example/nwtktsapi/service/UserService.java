@@ -78,6 +78,7 @@ public class UserService implements UserDetailsService{
 		newUser.setPhone(registrationDTO.getPhoneNumber());
 		newUser.setActive(false);
 		newUser.setBlocked(false);
+		newUser.setTown(registrationDTO.getTown());
 		newUser.setProfilePhoto(DEFAULT_PHOTO_URL);
 		
 		List<Role> roles = new ArrayList<Role>();
