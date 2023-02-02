@@ -43,7 +43,7 @@ public class Constants {
     public static Client testClient = new Client(
             1L,
             "pass",
-            "test@gmail.com",
+            "c",
             "Test",
             "Teskovic",
             "TestTown",

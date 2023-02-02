@@ -2,8 +2,7 @@ package com.example.nwtktsapi.controllers;
 
 import com.example.nwtktsapi.constants.Constants;
 import com.example.nwtktsapi.dto.RideDTO;
-import com.example.nwtktsapi.model.Driver;
-import com.example.nwtktsapi.model.User;
+import com.example.nwtktsapi.model.*;
 import com.example.nwtktsapi.service.DriverService;
 import com.example.nwtktsapi.service.RideService;
 import com.example.nwtktsapi.service.UserService;
@@ -26,10 +25,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.security.Principal;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {"spring.config.name=application-test"})
@@ -221,6 +221,78 @@ public class RideControllerTest {
                 );
 
         assertEquals(500, response.getStatusCode().value());
+    }
+
+
+    @Test
+    public void finishRide_shouldBeOK(){
+        RideDTO rideDTO = Constants.RIDE_DTO;
+        Driver driver = Constants.testDriver;
+        Client client = Constants.testClient;
+
+        driver.setDriverStatus(DriverStatus.DRIVING);
+        driver.setVehicle(Constants.testVehicle);
+        driver.setInRide(true);
+        client.setInRide(true);
+        client = (Client) userService.save(client);
+        driver = (Driver) userService.save(driver);
+        rideDTO.setClientId(client.getId());
+        rideDTO.setDriverId(driver.getId());
+        Fare fare = rideService.save(rideDTO,driver);
+        rideDTO.setRideId( fare.getFareID() );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<RideDTO> entity = new HttpEntity<>(rideDTO, headers);
+
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("d","testpass")
+                .exchange(
+                        "/api/ride/finishRide",
+                        HttpMethod.POST,
+                        entity,
+                        String.class
+                );
+
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+
+        client = (Client) userService.getUserById(client.getId());
+        driver = (Driver) userService.getUserById(driver.getId());
+
+        assertFalse(client.isInRide());
+        assertFalse(driver.isInRide());
+        assertEquals(DriverStatus.AVAILABLE,driver.getDriverStatus());
+    }
+
+    @Test
+    public void activeRideForDriver_shouldBeOK(){
+        Fare fare = Constants.testFare1;
+        Driver driver = Constants.testDriver;
+        Client client = Constants.testClient;
+        driver.setDriverStatus(DriverStatus.DRIVING);
+        driver.setVehicle(Constants.testVehicle);
+        driver.setInRide(true);
+        client.setInRide(true);
+
+        client = (Client) userService.save(client);
+        driver = (Driver) userService.save(driver);
+
+        fare.setDriver(driver);
+        fare.setClients(Arrays.asList(client));
+        fare.setDone(false);
+        fare.setActive(true);
+        rideService.saveFare(fare);
+
+        ResponseEntity<String> response = restTemplate
+                .exchange(
+                        "/api/ride/activeRideForDriver/"+driver.getId().toString(),
+                        HttpMethod.GET,
+                        null,
+                        String.class
+                );
+
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+
     }
 
 }

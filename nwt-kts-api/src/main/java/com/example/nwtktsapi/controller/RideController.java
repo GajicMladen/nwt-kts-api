@@ -171,6 +171,7 @@ public class RideController {
         fare.setActive(false);
         fare.setDone(true);
         client.setInRide(false);
+        driver.setInRide(false);
         driverService.changeDriverStatus(driver,true);
 
         rideService.saveFare(fare);
