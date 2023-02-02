@@ -37,6 +37,23 @@ public class RideDTO {
 
     public RideDTO() { }
 
+    public RideDTO( Long driverId, Long clientId, String vehiclePlateNumber, String stops, String[] splitFare, int vehicleType, float price, int duration, float distance, boolean reservation, LocalDateTime startTime, LocalDateTime endTime, List<Long> deniedDrivers, String pathForRide) {
+        this.driverId = driverId;
+        this.clientId = clientId;
+        this.vehiclePlateNumber = vehiclePlateNumber;
+        this.stops = stops;
+        this.splitFare = splitFare;
+        this.vehicleType = vehicleType;
+        this.price = price;
+        this.duration = duration;
+        this.distance = distance;
+        this.reservation = reservation;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.deniedDrivers = deniedDrivers;
+        this.pathForRide = pathForRide;
+    }
+
     public RideDTO(Fare fare) {
         this.rideId = fare.getFareID();
         this.driverId = fare.getDriver().getId();

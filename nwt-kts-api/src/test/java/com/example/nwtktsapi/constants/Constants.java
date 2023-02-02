@@ -1,8 +1,10 @@
 package com.example.nwtktsapi.constants;
 
+import com.example.nwtktsapi.dto.RideDTO;
 import com.example.nwtktsapi.model.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Constants {
@@ -16,6 +18,9 @@ public class Constants {
 
     public static String VALID_EMAIL = "test@gmail.com";
     public static String INVALID_EMAIL = "invalid.test@gmail.com";
+
+    public static Long VALID_FARE_ID = 5L;
+    public static Long INVALID_FARE_ID = 5L;
 
     public static Driver testDriver = new Driver(
             1L,
@@ -222,4 +227,21 @@ public class Constants {
     public static LocalDateTime INVALID_START_TIME = LocalDateTime.now().plusDays(15);
     public static LocalDateTime INVALID_END_TIME = LocalDateTime.now().plusDays(15).plusMinutes(15);
 
+
+    public static RideDTO RIDE_DTO = new RideDTO(
+            null,
+            null,
+            null,
+            "bla,13,14;dsa,13,14.2",
+            new String[]{},
+            0,
+            123,
+            7,
+            435,
+            false,
+            LocalDateTime.now(),
+            LocalDateTime.now().plusMinutes(7),
+            new ArrayList<>(),
+            "[[13,14],[13,14.2]]"
+    );
 }
