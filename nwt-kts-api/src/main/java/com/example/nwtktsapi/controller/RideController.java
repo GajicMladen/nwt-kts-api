@@ -80,24 +80,26 @@ public class RideController {
         Gson gson = new Gson();
         System.out.println(rideDTO.toString());
 
-        Long splitFareId = rideService.notifySplitFare(rideDTO);
-        int secondsPassed = rideService.waitForSplitFareAgreement(rideDTO.getSplitFare().length, splitFareId);
-        if (secondsPassed == 120) {
-            return  ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-                        .body(gson.toJson(new ErrMsg("Naplata nije odobrena!")));
-        }
-
-        User client = userService.findByEmail(principal.getName());
+        User client = userService.getUserById(rideDTO.getClientId());
+//        User client = userService.findByEmail(principal.getName());
         if(client.getTokens() < rideDTO.getPrice()) {
             if (rideDTO.getSplitFare().length > 0 && client.getTokens() < rideDTO.getPrice() / rideDTO.getSplitFare().length) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body(gson.toJson(new ErrMsg("Nemate dovoljno tokena,iako se vožnja deli...")));
+                        .body(gson.toJson(new ErrMsg("Nemate dovoljno tokena,iako se voznja deli...")));
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body(gson.toJson(new ErrMsg("Nemate dovoljno tokena")));
             }
         }
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson("Vožnja je poručena!"));
+
+        Long splitFareId = rideService.notifySplitFare(rideDTO);
+        int secondsPassed = rideService.waitForSplitFareAgreement(rideDTO.getSplitFare().length, splitFareId);
+        if (secondsPassed == 120) {
+            return  ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                    .body(gson.toJson(new ErrMsg("Naplata nije odobrena!")));
+        }
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson("Voznja je porucena!"));
     }
 
     @PostMapping(value = "getDriverForRide")
@@ -108,9 +110,7 @@ public class RideController {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
                     .body(gson.toJson(new ErrMsg("Nažalost trenutno nema slobodnih vozača!")));
         }
-        // System.out.println(driver.getName() + ' ' + driver.getLastName());
         rideDTO.setDriverId(driver.getId());
-        //Send driver a notification
         notificationService.sendDriverNewRideRequest(driver,rideDTO);
 
         return ResponseEntity.ok().body(gson.toJson(rideDTO));

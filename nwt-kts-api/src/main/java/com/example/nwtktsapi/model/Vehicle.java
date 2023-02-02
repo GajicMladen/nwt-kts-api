@@ -35,6 +35,13 @@ public class Vehicle {
     public Vehicle() {
     }
 
+    public Vehicle(String name, String plateNumber, int capacity, VehicleType type) {
+        this.name = name;
+        this.plateNumber = plateNumber;
+        this.capacity = capacity;
+        this.type = type;
+    }
+
     public String getName() {
         return name;
     }

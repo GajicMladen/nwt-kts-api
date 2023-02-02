@@ -43,6 +43,7 @@ public class RideService {
     public Fare saveFare(Fare fare){
         return  rideRepository.save(fare);
     }
+
     public Long notifySplitFare(RideDTO rideDTO) throws ExecutionException, InterruptedException {
         SplitFare splitFare = splitFareService.crateNewSplitFare();
         //CompletableFuture[] futures = new CompletableFuture[rideDTO.getSplitFare().length];

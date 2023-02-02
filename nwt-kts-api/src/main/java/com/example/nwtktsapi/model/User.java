@@ -85,6 +85,24 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public User(Long id, String password, String email, String name, String lastName, String town, String phone, String profilePhoto, boolean active, boolean blocked, float tokens, List<Note> notes, List<Message> messages, List<Role> roles, boolean inRide) {
+        this.id = id;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.lastName = lastName;
+        this.town = town;
+        this.phone = phone;
+        this.profilePhoto = profilePhoto;
+        this.active = active;
+        this.blocked = blocked;
+        this.tokens = tokens;
+        this.notes = notes;
+        this.messages = messages;
+        this.roles = roles;
+        this.inRide = inRide;
+    }
+
     public boolean isInRide() {
         return inRide;
     }

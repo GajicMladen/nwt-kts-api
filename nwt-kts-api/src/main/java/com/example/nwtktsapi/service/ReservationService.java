@@ -28,13 +28,24 @@ public class ReservationService {
     @Autowired
     private NotificationService notificationService;
 
+    public void setRideRepository(RideRepository rideRepository) {
+        this.rideRepository = rideRepository;
+    }
+
+    public void setDriverRepository(DriverRepository driverRepository) {
+        this.driverRepository = driverRepository;
+    }
+
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
 
     public List<Fare> getAllReservations(){
         return  rideRepository.findByIsReservation(true);
     }
 
-    public List<Fare> getAllFutureReservation(){
-        return rideRepository.findByIsReservationAndStartTimeGreaterThan(true,LocalDateTime.now());
+    public List<Fare> getAllFutureReservation(LocalDateTime startDateTime){
+        return rideRepository.findByIsReservationAndStartTimeGreaterThan(true,startDateTime);
     }
 
     @Scheduled( fixedRate = 60000)
@@ -74,8 +85,10 @@ public class ReservationService {
         }
     }
 
-    private void startFare(Long fareId){
+    public void startFare(Long fareId){
         Fare fare = rideRepository.findByFareID(fareId);
+        if( fare == null)
+            return;
         fare.setActive(true);
         Driver driver = fare.getDriver();
         driver.setDriverStatus(DriverStatus.DRIVING);
@@ -86,6 +99,5 @@ public class ReservationService {
     }
     public void addReservationInScheduledTasks(Long rideId, LocalDateTime localDateTime){
         scheduledTasks.put(rideId,localDateTime);
-        System.out.println(scheduledTasks.size());
     }
 }

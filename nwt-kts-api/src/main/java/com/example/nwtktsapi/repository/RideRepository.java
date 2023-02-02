@@ -28,7 +28,7 @@ public interface RideRepository extends JpaRepository<Fare, Long> {
     @Query("select f from Fare f where f.isReservation = ?1 and f.startTime > ?2")
     List<Fare> findByIsReservationAndStartTimeGreaterThan(boolean isReservation, LocalDateTime startTime);
 
-    @Query("select f from Fare f where f.isReservation = ?1 and (f.startTime < ?2 or f.endTime > ?3) and f.isDone = false")
+    @Query("select f from Fare f where f.isReservation = ?1 and (f.startTime < ?3 or f.endTime > ?2) and f.isDone = false")
     List<Fare> getReservationsInPeriod(boolean isReservation, LocalDateTime startTime, LocalDateTime endTime);
 
 
