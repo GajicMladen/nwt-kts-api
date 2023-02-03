@@ -1,5 +1,7 @@
 package com.example.nwtktsapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -10,10 +12,12 @@ public class Note {
     @Column(name = "note_id", nullable = false)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "sender_user_id",nullable = false)
     private User sender;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "offender_user_id")
     //private Driver offender;

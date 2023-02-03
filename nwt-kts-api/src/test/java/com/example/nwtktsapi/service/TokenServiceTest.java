@@ -103,4 +103,18 @@ public class TokenServiceTest {
     	tokensService.removeTokensFromUser(Constants.testUser, 120);
     	assertEquals(Constants.testUser.getTokens(), 0);
     }
+
+    @Test
+    public void removeTokensFromDriver_shouldBe50() {
+        Constants.testDriver.setTokens(100);
+        tokensService.removeTokensFromUser(Constants.testDriver, 50);
+        assertEquals(Constants.testDriver.getTokens(), 50);
+    }
+
+    @Test
+    public  void removeTokensFromClient_shouldBe50() {
+        Constants.testClient.setTokens(150);
+        tokensService.removeTokensFromUser(Constants.testClient, 100);
+        assertEquals(Constants.testClient.getTokens(), 50);
+    }
 }

@@ -6,6 +6,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -29,6 +30,12 @@ public class UserRepositoryTest {
 
         User foundUser = userRepository.findByEmail(user.getEmail());
         assertEquals(user.getId(), foundUser.getId());
+    }
+
+    @Test
+    void testFindByEmail_NotFound() {
+        User foundUser = userRepository.findByEmail("not@found.com");
+        assertNull(foundUser);
     }
 
     @Test
@@ -60,7 +67,7 @@ public class UserRepositoryTest {
     	assertEquals(numOfAdmins, Constants.NUM_OF_ADMINS);
     	assertEquals(numOfDrivers, Constants.NUM_OF_DRIVERS);
     }
-    
+
     @Test
     void testGetClientsAndDriver() {
     	List<User> usersAndDrivers = userRepository.getClientsAndDrivers();
@@ -77,5 +84,11 @@ public class UserRepositoryTest {
     void testFindByRoleId_Driver() {
     	List<User> users = userRepository.findByRoles_Id(Constants.DRIVER_ROLE_ID);
     	assertEquals(users.size(), Constants.NUM_OF_DRIVERS);
+    }
+
+    @Test
+    void testDriverByTypeCount() {
+        int numOfDrivers = userRepository.getUserByTypeCount(Constants.DRIVER_ROLE_ID);
+        assertEquals(numOfDrivers, Constants.NUM_OF_DRIVERS);
     }
 }

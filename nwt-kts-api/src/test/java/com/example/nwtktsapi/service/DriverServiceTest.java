@@ -15,8 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 
@@ -338,6 +337,57 @@ public class DriverServiceTest {
 
         driverService.changeDriverStatus(Constants.testDriver , false);
         assertEquals(DriverStatus.UNAVAILABLE, Constants.testDriver.getDriverStatus());
+    }
+
+    @Test
+    public void countDistance_shouldBe0() {
+        Coordinate c1 = new Coordinate("Branimira Cosica 1",45.254987,19.831168);
+        Coordinate c2 = new Coordinate("Branimira Cosica 1",45.254987,19.831168);
+        double distance = driverService.countDistance(c1, c2);
+        assertEquals(0, distance);
+    }
+
+    @Test
+    public void countDistance_shouldNotBe0() {
+        Coordinate c1 = new Coordinate("Branimira Cosica 1",45.254987,19.831168);
+        Coordinate c2 = new Coordinate("Djordja Jovanovica 9",45.259714,19.850098);
+        double distance = driverService.countDistance(c1, c2);
+        assertNotEquals(0, distance);
+    }
+
+    @Test
+    void getFirstToFinishDriver_shouldBeDriver1() {
+        List<Driver> drivers = new ArrayList<>();
+        Coordinate c1 = new Coordinate("Branimira Cosica 1",45.254987,19.831168);
+        Coordinate c2 = new Coordinate("Djordja Jovanovica 9",45.259714,19.850098);
+        Coordinate c3 = new Coordinate("Slobodana Bajica 6",45.257566,19.829582);
+        Coordinate c4 = new Coordinate("Seljackih Buna 75",45.252830,19.792073);
+        Constants.testDriver.setPosition(c1);
+        Constants.testDriver2.setPosition(c2);
+        drivers.add(Constants.testDriver);
+        drivers.add(Constants.testDriver2);
+        Constants.testFare1.setStops(Arrays.asList(c3));
+        Constants.testFare2.setStops(Arrays.asList(c4));
+
+        Driver driver = driverService.getFirstToFinishDriver(drivers);
+        assertEquals(Constants.testDriver.getId(), driver.getId());
+    }
+
+    @Test
+    public void getClosestDrive_shouldBeDriver1(){
+        List<Driver> drivers = new ArrayList<>();
+        Coordinate c1 = new Coordinate("Branimira Cosica 1",45.254987,19.831168);
+        Coordinate c2 = new Coordinate("Djordja Jovanovica 9",45.259714,19.850098);
+        Coordinate c3 = new Coordinate("Slobodana Bajica 6",45.257566,19.829582);
+
+        Constants.testDriver.setPosition(c1);
+        Constants.testDriver2.setPosition(c2);
+
+        drivers.add(Constants.testDriver);
+        drivers.add(Constants.testDriver2);
+
+        Driver driver = driverService.getClosestDriver(drivers, c3);
+        assertEquals(Constants.testDriver.getId(), driver.getId());
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.nwtktsapi.repository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -115,6 +116,21 @@ class RideRepositoryTest {
         assertEquals(1, fares.size());
         assertTrue(fares.get(0).isActive());
         assertEquals(driver.getId(), fares.get(0).getDriver().getId());
+    }
+
+    @Test
+    @Transactional
+    void testGetCurrentDriverFare_notFound() {
+        Driver driver = Constants.testDriver;
+        driverRepository.save(driver);
+        Fare fare = new Fare();
+        fare.setActive(false);
+        fare.setDriver(driver);
+        rideRepository.save(fare);
+
+        List<Fare> fares = rideRepository.getCurrentDriverFare(driver.getId());
+        List<Fare> expected = new ArrayList<>();
+        assertEquals(expected, fares);
     }
 
     @Test

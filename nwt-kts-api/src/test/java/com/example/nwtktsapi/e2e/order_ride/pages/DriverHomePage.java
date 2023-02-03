@@ -21,11 +21,23 @@ public class DriverHomePage {
     @FindBy(name = "accept-ride")
     private WebElement acceptRideButton;
 
+    @FindBy(name = "refuse-ride")
+    private WebElement refuseRideButton;
+
     @FindBy(name="logout")
     private WebElement logoutButton;
 
     @FindBy(name="end-ride")
     private WebElement endRide;
+
+    @FindBy(name="text-area")
+    private WebElement textareaField;
+
+    @FindBy(name = "send-note")
+    private WebElement sendNoteButton;
+
+    @FindBy(css="p.message-paragraph")
+    private WebElement message;
 
     public DriverHomePage(WebDriver driver) {
         this.driver = driver;
@@ -53,8 +65,22 @@ public class DriverHomePage {
         actions.click(acceptRideButton).perform();
     }
 
+    public String refuseRide() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        wait.until(ExpectedConditions.visibilityOf(refuseRideButton));
+        Actions actions = new Actions((driver));
+        actions.click(refuseRideButton).perform();
+        wait.until(ExpectedConditions.visibilityOf(textareaField));
+        textareaField.sendKeys("Klijent je nekorektan!");
+        wait.until(ExpectedConditions.visibilityOf(sendNoteButton));
+        actions = new Actions(driver);
+        actions.click(sendNoteButton).perform();
+        wait.until(ExpectedConditions.visibilityOf(message));
+        return message.getText();
+    }
+
     public void endRide() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
         wait.until(ExpectedConditions.visibilityOf(endRide));
         Actions actions = new Actions((driver));
         actions.click(endRide).perform();

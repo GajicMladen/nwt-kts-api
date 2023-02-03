@@ -1,13 +1,14 @@
 package com.example.nwtktsapi.e2e.order_ride.tests;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.TestNG;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.*;
 
 import java.awt.Toolkit;
 import java.time.Duration;
@@ -17,7 +18,7 @@ public class OrderRideTestBase {
     public static WebDriver driver_chrome;
     public static WebDriver driver_edge;
 
-    @BeforeSuite
+    @BeforeMethod
     public void initializeWebDriver() {
         TestNG testng = new TestNG();
         testng.setVerbose(0);
@@ -39,7 +40,7 @@ public class OrderRideTestBase {
         driver_edge.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
     }
 
-    @AfterSuite
+    @AfterMethod
     public void quitDriver() {
         driver_chrome.quit();
         driver_edge.quit();

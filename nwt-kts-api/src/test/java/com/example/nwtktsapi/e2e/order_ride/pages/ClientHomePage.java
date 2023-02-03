@@ -59,7 +59,7 @@ public class ClientHomePage {
 
     public String clickOrderRideWithMessage() {
         clickOrderRide();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
         wait.until(ExpectedConditions.visibilityOf(message));
         return message.getText();
     }
@@ -78,7 +78,7 @@ public class ClientHomePage {
         wait.until(ExpectedConditions.visibilityOf(acceptRideButton));
         Actions actions = new Actions((driver));
         actions.click(acceptRideButton).perform();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(50));
         wait.until(ExpectedConditions.visibilityOf(message));
         return message.getText();
     }

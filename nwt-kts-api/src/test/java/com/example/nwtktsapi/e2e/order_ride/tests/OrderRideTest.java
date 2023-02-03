@@ -32,7 +32,6 @@ public class OrderRideTest extends OrderRideTestBase {
         driverHomePage.endRide();
         clientHomePage.logout();
         driverHomePage.logout();
-        System.out.println(result+"**********************");
         assertEquals(result, "Pronašli smo vozača");
     }
 
@@ -94,5 +93,28 @@ public class OrderRideTest extends OrderRideTestBase {
         clientHomePage.logout();
         driverHomePage.logout();
         assertEquals(result, "Niste zadali početnu i krajnju lokaciju!");
+    }
+
+    @Test
+    public void driverRefuses() throws InterruptedException {
+        LoginPage loginPage = new LoginPage(driver_chrome);
+        loginPage.filloutForm("c", "testpass");
+        loginPage.clickLoginButton();
+
+        ClientHomePage clientHomePage = new ClientHomePage(driver_chrome);
+        clientHomePage.filloutForm("Dragise Brasovana 14a", "Djordja Jovanovica 7");
+
+        loginPage = new LoginPage(driver_edge);
+        loginPage.filloutForm("p3r5kul45@gmail.com", "testpass");
+        loginPage.clickLoginButton();
+
+        DriverHomePage driverHomePage = new DriverHomePage(driver_edge);
+        driverHomePage.setDriverAvailable();
+
+        clientHomePage.clickOrderRide();
+        String result = driverHomePage.refuseRide();
+        clientHomePage.logout();
+        driverHomePage.logout();
+        assertEquals(result, "Poruka je poslata.");
     }
 }
