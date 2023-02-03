@@ -17,7 +17,7 @@ import com.example.nwtktsapi.repository.UserRepository;
 @Service
 public class FareService {
 
-	private final int PAGE_SIZE = 3;
+	private final int PAGE_SIZE = 2;
 	
 	@Autowired
 	FareRepository fareRepository;

@@ -37,8 +37,8 @@ values('Client', 'a','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtc
 insert into users( dtype , email ,password ,name ,lastname ,phone ,active, profile_photo, town )
 values('Client', 'djordjejovanovic27@gmail.com','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Lazar','Lazarovic' , '0644281080',true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad');
 
-insert into users( dtype , email ,password ,name ,lastname ,phone, active, profile_photo, town, driver_status, 0, vehicle_id )
-values('Client', 'p3r5kul45@gmail.com','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Jovan','Tomic' , '0644281080', true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad',2);
+insert into users( dtype , email ,password ,name ,lastname ,phone, active, profile_photo, town, driver_status, vehicle_id )
+values('Client', 'p3r5kul45@gmail.com','$2a$10$XeS1WZloSVVq2Z2dJd3L7ePADJy51sWu/oLqcy.Qcmppr6VcUtcr6','Jovan','Tomic' , '0644281080', true, 'https://i.ibb.co/VCfhmKQ/image.jpg', 'Novi Sad', 2, 1);
 
 
 insert into users( dtype , email ,password ,name ,lastname ,phone, active, profile_photo, town  )

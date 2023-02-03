@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.nwtktsapi.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,12 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.nwtktsapi.dto.AdminRegistrationDTO;
 import com.example.nwtktsapi.dto.RegistrationDTO;
-import com.example.nwtktsapi.model.Driver;
-import com.example.nwtktsapi.model.DriverStatus;
-import com.example.nwtktsapi.model.Role;
-import com.example.nwtktsapi.model.User;
-import com.example.nwtktsapi.model.Vehicle;
-import com.example.nwtktsapi.model.VehicleType;
 import com.example.nwtktsapi.repository.UserRepository;
 
 @Service
@@ -122,6 +117,11 @@ public class UserService implements UserDetailsService{
 		driver.setBlocked(false);
 		driver.setProfilePhoto(DEFAULT_PHOTO_URL);
 		driver.setDriverStatus(DriverStatus.UNAVAILABLE);
+		Coordinate coord = new Coordinate();
+		coord.setLatitude(45.244605);
+		coord.setLongitude(19.815208);
+
+		driver.setPosition(coord);
 		
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(roleService.findByName("ROLE_DRIVER"));
