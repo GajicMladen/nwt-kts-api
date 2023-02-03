@@ -85,6 +85,8 @@ public class RideService {
         fare.setDriver(driver);
         fare.setStops(rideDTO.getLocations());
 
+        fare.setStartAddress(rideDTO.getLocationsNames().get(0));
+        fare.setStartAddress(rideDTO.getLocationsNames().get(rideDTO.getLocationsNames().size() - 1));
         fare.setPrice(rideDTO.getPrice());
         fare.setRequestTime(LocalDateTime.now());
         fare.setStartTime(LocalDateTime.now().plusMinutes(5)); //
@@ -93,6 +95,7 @@ public class RideService {
         fare.setReservation(rideDTO.isReservation());
         fare.setDistance(rideDTO.getDistance());
         fare.setActive(!rideDTO.isReservation());
+        fare.setRouteIndex(rideDTO.getRouteIndex());
 
         PathForRide newPath = new PathForRide();
         newPath.setCords(rideDTO.getPathForRide());

@@ -38,6 +38,9 @@ public class Fare {
     
     @Column(name="end_address")
     private String endAddress;
+
+    @Column(name="route_index")
+    private String routeIndex;
     
     @ManyToOne
     @JoinColumn(name = "driver_id")
@@ -292,4 +295,39 @@ public class Fare {
         isActive = active;
     }
 
+    public String getRouteIndex() {
+        return routeIndex;
+    }
+
+    public void setRouteIndex(String routeIndex) {
+        this.routeIndex = routeIndex;
+    }
+
+    public List<FavouriteRoute> getFavouriteRoutes() {
+        return favouriteRoutes;
+    }
+
+    public void setFavouriteRoutes(List<FavouriteRoute> favouriteRoutes) {
+        this.favouriteRoutes = favouriteRoutes;
+    }
+
+    public Boolean getCalculateShortest() {
+        return calculateShortest;
+    }
+
+    public void setCalculateShortest(Boolean calculateShortest) {
+        this.calculateShortest = calculateShortest;
+    }
+
+    public void setEstimatedTimeLeft(Float estimatedTimeLeft) {
+        this.estimatedTimeLeft = estimatedTimeLeft;
+    }
+
+    public Boolean getDone() {
+        return isDone;
+    }
+
+    public void setDone(Boolean done) {
+        isDone = done;
+    }
 }

@@ -32,12 +32,13 @@ public class RideDTO {
 
     private List<Long> deniedDrivers;
 
-
     private String pathForRide;
+
+    private String routeIndex;
 
     public RideDTO() { }
 
-    public RideDTO( Long driverId, Long clientId, String vehiclePlateNumber, String stops, String[] splitFare, int vehicleType, float price, int duration, float distance, boolean reservation, LocalDateTime startTime, LocalDateTime endTime, List<Long> deniedDrivers, String pathForRide) {
+    public RideDTO( Long driverId, Long clientId, String vehiclePlateNumber, String stops, String[] splitFare, int vehicleType, float price, int duration, float distance, boolean reservation, LocalDateTime startTime, LocalDateTime endTime, List<Long> deniedDrivers, String pathForRide, String routeIndex) {
         this.driverId = driverId;
         this.clientId = clientId;
         this.vehiclePlateNumber = vehiclePlateNumber;
@@ -52,6 +53,7 @@ public class RideDTO {
         this.endTime = endTime;
         this.deniedDrivers = deniedDrivers;
         this.pathForRide = pathForRide;
+        this.routeIndex = routeIndex;
     }
 
     public RideDTO(Fare fare) {
@@ -73,6 +75,7 @@ public class RideDTO {
         this.reservation = fare.isReservation();
         this.startTime = fare.getStartTime();
         this.endTime = fare.getEndTime();
+        this.routeIndex = fare.getRouteIndex();
 //        this.deniedDrivers = deniedDrivers;
 //        this.pathForRide = pathForRide;
     }
@@ -194,6 +197,14 @@ public class RideDTO {
 
     public void setReservation(boolean reservation) {
         this.reservation = reservation;
+    }
+
+    public String getRouteIndex() {
+        return routeIndex;
+    }
+
+    public void setRouteIndex(String routeIndex) {
+        this.routeIndex = routeIndex;
     }
 
     @JsonIgnore
