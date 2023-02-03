@@ -30,7 +30,7 @@ public class LoginPage {
 	public LoginPage(WebDriver driver) {
 		this.driver = driver;
 		driver.get(WEB_URL);
-		driver.manage().window().maximize();
+		//driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);
 	}
 	
