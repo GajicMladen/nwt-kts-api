@@ -1,35 +1,36 @@
 package com.example.nwtktsapi.controllers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import java.util.Arrays;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
+
 import com.example.nwtktsapi.constants.Constants;
 import com.example.nwtktsapi.dto.RideDTO;
-import com.example.nwtktsapi.model.*;
+import com.example.nwtktsapi.model.Client;
+import com.example.nwtktsapi.model.Driver;
+import com.example.nwtktsapi.model.DriverStatus;
+import com.example.nwtktsapi.model.Fare;
+import com.example.nwtktsapi.model.User;
 import com.example.nwtktsapi.service.DriverService;
 import com.example.nwtktsapi.service.RideService;
 import com.example.nwtktsapi.service.UserService;
 import com.example.nwtktsapi.utils.ErrMsg;
 import com.google.gson.Gson;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
-
-import java.security.Principal;
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {"spring.config.name=application-test"})

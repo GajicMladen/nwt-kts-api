@@ -64,6 +64,14 @@ public class TokenServiceTest {
         totalTokens = tokensService.getTokensForUser(Constants.VALID_CLIENT_ID);
         assertEquals(100, totalTokens);
     }
+    
+    @Test
+    public void addTokensForUser_invalidArg() throws UserNotFoundException {
+    	float CURRENT = 100;
+    	Constants.testUser.setTokens(CURRENT);
+    	tokensService.addTokensForUser(Constants.testUser, -15);
+    	assertEquals(Constants.testUser.getTokens(), CURRENT);
+    }
 
     @Test
     public void removeTokensFromUser_shouldBe90() throws UserNotFoundException {
@@ -86,5 +94,13 @@ public class TokenServiceTest {
         assertEquals(90, Constants.testUser.getTokens());
         assertEquals(90, Constants.testDriver.getTokens());
         assertEquals(90, Constants.testClient.getTokens());
+    }
+    
+    @Test
+    public void removeTokensFromUser_shouldBe0() throws UserNotFoundException {
+    	float CURRENT = 100;
+    	Constants.testUser.setTokens(CURRENT);
+    	tokensService.removeTokensFromUser(Constants.testUser, 120);
+    	assertEquals(Constants.testUser.getTokens(), 0);
     }
 }
