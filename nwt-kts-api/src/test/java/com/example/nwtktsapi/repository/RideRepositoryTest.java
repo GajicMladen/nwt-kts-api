@@ -34,7 +34,19 @@ class RideRepositoryTest {
 
     @Test
     @Transactional
-    void testFindByIsReservation() {
+    void testFindByFareID() {
+    	Fare fare = new Fare();
+    	fare.setReservation(true);
+        fare.setStartTime(LocalDateTime.of(2022, 1, 1, 0, 0));
+        fare.setEndTime(LocalDateTime.of(2022, 1, 2, 0, 0));
+        fare = rideRepository.save(fare);
+        
+        assertEquals(fare, rideRepository.findByFareID(fare.getId()));
+    }
+    
+    @Test
+    @Transactional
+    void testFindByIsReservationTrue() {
         Fare fare = new Fare();
         fare.setReservation(true);
         fare.setStartTime(LocalDateTime.of(2022, 1, 1, 0, 0));
@@ -44,6 +56,19 @@ class RideRepositoryTest {
         List<Fare> fares = rideRepository.findByIsReservation(true);
         assertEquals(1, fares.size());
         assertTrue(fares.get(0).isReservation());
+    }
+    
+    @Test
+    @Transactional
+    void testFindByIsReservationFalse() {
+        Fare fare = new Fare();
+        fare.setReservation(false);
+        fare.setStartTime(LocalDateTime.of(2022, 1, 1, 0, 0));
+        fare.setEndTime(LocalDateTime.of(2022, 1, 2, 0, 0));
+        fare = rideRepository.save(fare);
+
+        List<Fare> fares = rideRepository.findByIsReservation(true);
+        assertFalse(fares.contains(fare));
     }
 
     @Test
@@ -67,6 +92,13 @@ class RideRepositoryTest {
         );
         assertEquals(2, fares.size());
         assertTrue(fares.get(0).isReservation());
+    }
+    
+    @Test
+    @Transactional
+    void testFindByStartTimeBetween_None() {
+    	List<Fare> fares = rideRepository.findByStartTimeBetween(LocalDateTime.of(2025,  1, 1,0,0), LocalDateTime.of(2026, 1, 1, 0,0));
+    	assertEquals(fares.size(), 0);
     }
 
     @Test
@@ -104,6 +136,23 @@ class RideRepositoryTest {
         assertEquals(startTime, fares.get(0).getStartTime());
         assertEquals(endTime, fares.get(0).getEndTime());
     }
+    
+    @Test
+    @Transactional
+    void testFindByDriver_IdAndStartTimeBetween_None() {
+        Driver driver = Constants.testDriver;
+        driver = driverRepository.save(driver);
+        Fare fare = new Fare();
+        fare.setDriver(Constants.testDriver2);
+        LocalDateTime startTime = LocalDateTime.of(2022, 1, 1, 0, 0);
+        LocalDateTime endTime = LocalDateTime.of(2022, 1, 2, 0, 0);
+        fare.setStartTime(startTime);
+        fare.setEndTime(endTime);
+        fare = rideRepository.save(fare);
+
+        List<Fare> fares = rideRepository.findByDriver_IdAndStartTimeBetween(driver.getId(), startTime, endTime);
+        assertEquals(fares.size(), 0);
+    }
 
     @Test
     @Transactional
@@ -125,6 +174,27 @@ class RideRepositoryTest {
         assertEquals(startTime, fares.get(0).getStartTime());
         assertEquals(endTime, fares.get(0).getEndTime());
     }
+    
+    @Test
+    @Transactional
+    void testFindFaresByClientIdAndStartTimeBetween_None() {
+        Client client = Constants.testClient;
+        client = userRepository.save(client);
+        Client client2 = Constants.testClient2;
+        client2 = userRepository.save(client2);
+        Fare fare = new Fare();
+        fare.getClients().add(client2);
+        LocalDateTime startTime = LocalDateTime.of(2022, 1, 1, 0, 0);
+        LocalDateTime endTime = LocalDateTime.of(2022, 1, 2, 0, 0);
+        fare.setStartTime(startTime);
+        fare.setEndTime(endTime);
+        rideRepository.save(fare);
+
+        List<Fare> fares = rideRepository.findFaresByClientIdAndStartTimeBetween(client.getId(), startTime, endTime);
+        assertEquals(0, fares.size());
+    }
+    
+    
     @Test
     @Transactional
     void testGetReservationsInPeriod() {
@@ -242,5 +312,32 @@ class RideRepositoryTest {
         assertTrue(fares.get(0).isReservation());
         assertTrue(fares.get(1).isReservation());
     }
-
+    
+    @Test
+    @Transactional
+    void testFindByReservationAndStartTimeGreater() {
+        Fare fare1 = new Fare();
+        fare1.setReservation(true);
+        fare1.setStartTime(LocalDateTime.of(2023, 1, 1, 0, 0));
+        fare1.setEndTime(LocalDateTime.of(2023, 1, 2, 0, 0));
+        fare1.setDone(false);
+        fare1 = rideRepository.save(fare1);
+        
+        List<Fare> fares = rideRepository.findByIsReservationAndStartTimeGreaterThan(true, LocalDateTime.of(2022, 12, 12, 0, 0));
+        assertTrue(fares.contains(fare1));
+    }
+    
+    @Test
+    @Transactional
+    void testFindByReservationAndStartTimeGreaterNonRes() {
+        Fare fare1 = new Fare();
+        fare1.setReservation(false);
+        fare1.setStartTime(LocalDateTime.of(2023, 1, 1, 0, 0));
+        fare1.setEndTime(LocalDateTime.of(2023, 1, 2, 0, 0));
+        fare1.setDone(false);
+        fare1 = rideRepository.save(fare1);
+        
+        List<Fare> fares = rideRepository.findByIsReservationAndStartTimeGreaterThan(false, LocalDateTime.of(2022, 12, 12, 0, 0));
+        assertTrue(fares.contains(fare1));
+    }
 }

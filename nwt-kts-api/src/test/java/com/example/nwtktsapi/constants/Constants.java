@@ -1,11 +1,15 @@
 package com.example.nwtktsapi.constants;
 
-import com.example.nwtktsapi.dto.RideDTO;
-import com.example.nwtktsapi.model.*;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
+
+import com.example.nwtktsapi.dto.RideDTO;
+import com.example.nwtktsapi.model.Client;
+import com.example.nwtktsapi.model.Driver;
+import com.example.nwtktsapi.model.Fare;
+import com.example.nwtktsapi.model.User;
+import com.example.nwtktsapi.model.Vehicle;
+import com.example.nwtktsapi.model.VehicleType;
 
 public class Constants {
 
@@ -16,14 +20,23 @@ public class Constants {
     public static Long INVALID_CLIENT_ID = -1L ;
     public static Long INVALID_ADMIN_ID = -1L ;
 
+    public static Long USER_ROLE_ID = 1L;
+    public static Long ADMIN_ROLE_ID = 2L;
+    public static Long DRIVER_ROLE_ID = 3L;
+    
+    public static Integer NUM_OF_USERS = 4;
+    public static Integer NUM_OF_DRIVERS = 3;
+    public static Integer NUM_OF_ADMINS = 1;
+    
     public static String VALID_EMAIL = "test@gmail.com";
     public static String INVALID_EMAIL = "invalid.test@gmail.com";
 
     public static Long VALID_FARE_ID = 5L;
     public static Long INVALID_FARE_ID = 5L;
+    public static Long INVALID_FARE_ID_2 = 99L;
 
     public static Driver testDriver = new Driver(
-            1L,
+            9L,
             "pass",
             "test@gmail.com",
             "Test",
@@ -46,6 +59,23 @@ public class Constants {
             "c",
             "Test",
             "Teskovic",
+            "TestTown",
+            "065459821",
+            "",
+            true,
+            false,
+            0,
+            null,
+            null,
+            null,
+            false);
+    
+    public static Client testClient2 = new Client(
+            2L,
+            "pass",
+            "aaa2@mail.com",
+            "Testadin",
+            "Testarevic",
             "TestTown",
             "065459821",
             "",

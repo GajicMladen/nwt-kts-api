@@ -50,9 +50,16 @@ public class DriverServiceTest {
         when(driverRepository.getAvailableDrivers(VehicleType.BASIC)).thenReturn(drivers);
         when(driverRepository.getAvailableDrivers(VehicleType.LUX)).thenReturn(new ArrayList<>());
         when(driverRepository.getAvailableDrivers(VehicleType.BABY_SEAT)).thenReturn(drivers.subList(0,1));
+        when(driverRepository.getAvailableDrivers(VehicleType.BIG)).thenReturn(new ArrayList<>());
+        when(driverRepository.getAvailableDrivers(VehicleType.PET_FRIENDLY)).thenReturn(drivers.subList(1, 3));
+        
         when(driverRepository.getDrivingDrivers(VehicleType.BASIC)).thenReturn(drivers);
         when(driverRepository.getDrivingDrivers(VehicleType.LUX)).thenReturn(new ArrayList<>());
         when(driverRepository.getDrivingDrivers(VehicleType.BABY_SEAT)).thenReturn(drivers.subList(0,1));
+        when(driverRepository.getDrivingDrivers(VehicleType.BIG)).thenReturn(new ArrayList<>());
+        when(driverRepository.getDrivingDrivers(VehicleType.PET_FRIENDLY)).thenReturn(drivers.subList(2, 3));
+        
+        
         driverService = new DriverService();
         driverService.setDriverRepository(driverRepository);
 
@@ -133,8 +140,18 @@ public class DriverServiceTest {
         List<Driver> drivers = driverService.getAvailableDrivers(VehicleType.BABY_SEAT.ordinal());
         assertEquals(1, drivers.size());
     }
+    
+    @Test
+    public void getAvailableDrivers_forPetFriendlyType_shouldBe2() {
+        List<Driver> drivers = driverService.getAvailableDrivers(VehicleType.PET_FRIENDLY.ordinal());
+        assertEquals(2, drivers.size());
+    }
 
-
+    @Test
+    public void getAvailableDrivers_forBigType_shouldBe0() {
+        List<Driver> drivers = driverService.getAvailableDrivers(VehicleType.BIG.ordinal());
+        assertEquals(0, drivers.size());
+    }
 
     @Test
     public void getDrivingDrivers_forBasicType_shouldBe3(){
@@ -152,6 +169,18 @@ public class DriverServiceTest {
     public void getDrivingDrivers_forBabySeatType_shouldBe2(){
         List<Driver> drivers = driverService.getDrivingDrivers(VehicleType.BABY_SEAT.ordinal());
         assertEquals(1, drivers.size());
+    }
+    
+    @Test
+    public void getDrivingDrivers_forPetFriendlyType_shouldBe1(){
+        List<Driver> drivers = driverService.getDrivingDrivers(VehicleType.PET_FRIENDLY.ordinal());
+        assertEquals(1, drivers.size());
+    }
+
+    @Test
+    public void getDrivingDrivers_forBigType_shouldBe0(){
+        List<Driver> drivers = driverService.getDrivingDrivers(VehicleType.BIG.ordinal());
+        assertEquals(0, drivers.size());
     }
 
     @Test

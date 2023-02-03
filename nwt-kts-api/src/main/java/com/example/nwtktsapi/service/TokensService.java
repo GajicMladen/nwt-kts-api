@@ -45,9 +45,11 @@ public class TokensService {
 
     public void removeTokensFromUser(User user, float tokens){
         float newValue = user.getTokens();
-        newValue -= tokens;
-        user.setTokens(newValue);
-        userRepository.save(user);
+        if (tokens < newValue) {
+        	newValue -= tokens;
+        	user.setTokens(newValue);
+        } else user.setTokens(0);
+	    userRepository.save(user);
     }
 
     public void removeTokensFromUsers(List<User> users, float tokens){

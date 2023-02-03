@@ -1,30 +1,36 @@
 package com.example.nwtktsapi.controller;
 
-import com.example.nwtktsapi.dto.NewRideRequestDriverDTO;
-import com.example.nwtktsapi.dto.RideDTO;
-import com.example.nwtktsapi.model.*;
-import com.example.nwtktsapi.service.*;
-import com.example.nwtktsapi.utils.EmailService;
-import com.example.nwtktsapi.utils.ErrMsg;
-import com.google.gson.Gson;
-import com.sun.xml.bind.v2.TODO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
 import java.net.URI;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.nwtktsapi.dto.RideDTO;
+import com.example.nwtktsapi.model.Driver;
+import com.example.nwtktsapi.model.DriverStatus;
+import com.example.nwtktsapi.model.Fare;
+import com.example.nwtktsapi.model.SplitFare;
+import com.example.nwtktsapi.model.User;
+import com.example.nwtktsapi.service.DriverService;
+import com.example.nwtktsapi.service.NotificationService;
+import com.example.nwtktsapi.service.ReservationService;
+import com.example.nwtktsapi.service.RideService;
+import com.example.nwtktsapi.service.SplitFareService;
+import com.example.nwtktsapi.service.TokensService;
+import com.example.nwtktsapi.service.UserService;
+import com.example.nwtktsapi.utils.ErrMsg;
+import com.google.gson.Gson;
 
 @Controller
 @RequestMapping(value = "api/ride/")

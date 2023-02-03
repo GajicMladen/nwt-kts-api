@@ -44,7 +44,6 @@ public class ReservationServiceTest {
         when(rideRepository.findByIsReservationAndStartTimeGreaterThan(true, Constants.VALID_START_TIME))
                 .thenReturn(fares);
         when(rideRepository.findByFareID(Constants.VALID_FARE_ID)).thenReturn(Constants.testFare1);
-
         reservationService.setRideRepository(rideRepository);
         reservationService.setDriverRepository(driverRepository);
         reservationService.setNotificationService(notificationService);
@@ -61,6 +60,12 @@ public class ReservationServiceTest {
         List<Fare> fares = reservationService.getAllFutureReservation(Constants.VALID_START_TIME);
         assertEquals(3,fares.size());
     }
+    
+    @Test
+    public void getAllFutureReservations_shouldBe0() {
+    	List<Fare> fares = reservationService.getAllFutureReservation(LocalDateTime.of(2023,1,1,0,0));
+    	assertEquals(0, fares.size());
+    }
 
     @Test
     public void startFare_shouldBeOK(){
@@ -71,6 +76,18 @@ public class ReservationServiceTest {
         verify(rideRepository,times(1)).save(Constants.testFare1);
         verify(notificationService,times(1)).sendDriverChangeStaus(Constants.testDriver);
         verify(notificationService,times(1)).startRideSimulation(Constants.testFare1);
+    }
+    
+    @Test
+    public void startFare_shouldFail() {
+    	Constants.testDriver.setDriverStatus(DriverStatus.AVAILABLE);
+    	Constants.testFare1.setDriver(Constants.testDriver);
+    	reservationService.startFare(Constants.INVALID_FARE_ID_2);
+        assertEquals(DriverStatus.AVAILABLE ,Constants.testDriver.getDriverStatus());
+        verify(driverRepository,times(0)).save(Constants.testDriver);
+        verify(rideRepository,times(0)).save(Constants.testFare1);
+        verify(notificationService,times(0)).sendDriverChangeStaus(Constants.testDriver);
+        verify(notificationService,times(0)).startRideSimulation(Constants.testFare1);
     }
 
 }
