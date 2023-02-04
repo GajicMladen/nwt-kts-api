@@ -1,5 +1,7 @@
 package com.example.nwtktsapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -10,13 +12,16 @@ public class Note {
     @Column(name = "note_id", nullable = false)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "sender_user_id",nullable = false)
     private User sender;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "offender_user_id")
-    private Driver offender;
+    //private Driver offender;
+    private User offender;
 
     @Column(name = "note_type")
     private NoteType noteType;
@@ -54,11 +59,11 @@ public class Note {
         this.dateCreated = dateCreated;
     }
 
-    public Driver getOffender() {
+    public User getOffender() {
         return offender;
     }
 
-    public void setOffender(Driver offender) {
+    public void setOffender(User offender) {
         this.offender = offender;
     }
 

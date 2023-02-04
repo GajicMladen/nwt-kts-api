@@ -1,6 +1,13 @@
 package com.example.nwtktsapi.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Vehicle {
@@ -9,8 +16,8 @@ public class Vehicle {
     @Column(name = "vehicle_id", nullable = false)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "driver_user_id")
+    @OneToOne(mappedBy="vehicle")
+    @JsonBackReference
     private Driver driver;
 
     @Column(name = "name")
@@ -22,10 +29,17 @@ public class Vehicle {
     @Column(name = "capacity")
     private int capacity;
 
-    @Column(name = "type")
+    @Column(name = "vehicle_type")
     private VehicleType type;
 
     public Vehicle() {
+    }
+
+    public Vehicle(String name, String plateNumber, int capacity, VehicleType type) {
+        this.name = name;
+        this.plateNumber = plateNumber;
+        this.capacity = capacity;
+        this.type = type;
     }
 
     public String getName() {

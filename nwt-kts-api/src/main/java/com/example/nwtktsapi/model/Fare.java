@@ -1,8 +1,23 @@
 package com.example.nwtktsapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Fare {
@@ -18,20 +33,35 @@ public class Fare {
             inverseJoinColumns = @JoinColumn(name = "client_id"))
     private List<Client> clients;
 
+    @Column(name="start_address")
+    private String startAddress;
+    
+    @Column(name="end_address")
+    private String endAddress;
+
+    @Column(name="route_index")
+    private String routeIndex;
+    
     @ManyToOne
     @JoinColumn(name = "driver_id")
     private Driver driver;
 
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(
             name = "stops",
             joinColumns = @JoinColumn(name = "fare_id"),
             inverseJoinColumns = @JoinColumn(name = "coordinates_id"))
-    private List<Coordinates> stops;
+    private List<Coordinate> stops;
 
     @OneToMany(mappedBy = "fare")
     private List<Payment> payments;
 
+    @OneToMany(mappedBy = "fare")
+    private List<Rating> ratings;
+    
+    @OneToMany(mappedBy = "fare")
+    private List<FavouriteRoute> favouriteRoutes;
+    
     @Column(name = "price")
     private float price;
 
@@ -48,18 +78,69 @@ public class Fare {
     private boolean isAccepted;
 
     @Column(name = "calculate_shortest")
-    private boolean calculateShortest;
+    private Boolean calculateShortest;
 
     @Column(name = "is_reservation")
     private boolean isReservation;
 
     @Column(name = "distance")
-    private float accepted;
+    private float distance;
 
     @Column(name = "estimated_time_left")
-    private float estimatedTimeLeft;
+    private Float estimatedTimeLeft;
+
+    @Column(name = "is_active")
+    private boolean isActive;
+
+    @Column(name = "is_done")
+    private Boolean isDone;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "path_id", referencedColumnName = "id")
+    private PathForRide pathForRide;
 
     public Fare() {
+        setClients(new ArrayList<>());
+    }
+
+    public Fare(Long fareID, List<Client> clients, String startAddress, String endAddress, Driver driver, List<Coordinate> stops, List<Payment> payments, List<Rating> ratings, List<FavouriteRoute> favouriteRoutes, float price, LocalDateTime requestTime, LocalDateTime startTime, LocalDateTime endTime, boolean isAccepted, Boolean calculateShortest, boolean isReservation, float distance, Float estimatedTimeLeft, boolean isActive, boolean isDone) {
+        this.fareID = fareID;
+        this.clients = clients;
+        this.startAddress = startAddress;
+        this.endAddress = endAddress;
+        this.driver = driver;
+        this.stops = stops;
+        this.payments = payments;
+        this.ratings = ratings;
+        this.favouriteRoutes = favouriteRoutes;
+        this.price = price;
+        this.requestTime = requestTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.isAccepted = isAccepted;
+        this.calculateShortest = calculateShortest;
+        this.isReservation = isReservation;
+        this.distance = distance;
+        this.estimatedTimeLeft = estimatedTimeLeft;
+        this.isActive = isActive;
+        this.isDone = isDone;
+    }
+
+    public boolean isDone() {
+        return isDone;
+    }
+
+    public void setDone(boolean done) {
+        isDone = done;
+    }
+
+    public PathForRide getPathForRide() {
+        return pathForRide;
+    }
+
+    public void setPathForRide(PathForRide pathForRide) {
+        this.pathForRide = pathForRide;
     }
 
     public Long getFareID() {
@@ -78,19 +159,43 @@ public class Fare {
         this.clients = clients;
     }
 
-    public List<Coordinates> getStops() {
+    public List<Coordinate> getStops() {
         return stops;
     }
 
-    public void setStops(List<Coordinates> stops) {
+    public void setStops(List<Coordinate> stops) {
         this.stops = stops;
     }
+    
+    public String getStartAddress() {
+		return startAddress;
+	}
 
-    public List<Payment> getPayments() {
+    public void setStartAddress(String startAddress) {
+		this.startAddress = startAddress;
+	}
+
+    public String getEndAddress() {
+		return endAddress;
+	}
+
+    public void setEndAddress(String endAddress) {
+		this.endAddress = endAddress;
+	}
+
+	public List<Payment> getPayments() {
         return payments;
     }
+	
+    public List<Rating> getRatings() {
+		return ratings;
+	}
 
-    public void setPayments(List<Payment> payments) {
+	public void setRatings(List<Rating> ratings) {
+		this.ratings = ratings;
+	}
+
+	public void setPayments(List<Payment> payments) {
         this.payments = payments;
     }
 
@@ -150,12 +255,12 @@ public class Fare {
         isReservation = reservation;
     }
 
-    public float getAccepted() {
-        return accepted;
+    public float getDistance() {
+        return distance;
     }
 
-    public void setAccepted(float accepted) {
-        this.accepted = accepted;
+    public void setDistance(float distance) {
+        this.distance = distance;
     }
 
     public float getEstimatedTimeLeft() {
@@ -174,12 +279,55 @@ public class Fare {
         this.driver = driver;
     }
 
-
     public Long getId() {
         return fareID;
     }
 
     public void setId(Long id) {
         this.fareID = id;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public String getRouteIndex() {
+        return routeIndex;
+    }
+
+    public void setRouteIndex(String routeIndex) {
+        this.routeIndex = routeIndex;
+    }
+
+    public List<FavouriteRoute> getFavouriteRoutes() {
+        return favouriteRoutes;
+    }
+
+    public void setFavouriteRoutes(List<FavouriteRoute> favouriteRoutes) {
+        this.favouriteRoutes = favouriteRoutes;
+    }
+
+    public Boolean getCalculateShortest() {
+        return calculateShortest;
+    }
+
+    public void setCalculateShortest(Boolean calculateShortest) {
+        this.calculateShortest = calculateShortest;
+    }
+
+    public void setEstimatedTimeLeft(Float estimatedTimeLeft) {
+        this.estimatedTimeLeft = estimatedTimeLeft;
+    }
+
+    public Boolean getDone() {
+        return isDone;
+    }
+
+    public void setDone(Boolean done) {
+        isDone = done;
     }
 }

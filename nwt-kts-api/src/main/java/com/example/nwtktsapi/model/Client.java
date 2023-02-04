@@ -1,23 +1,43 @@
 package com.example.nwtktsapi.model;
 
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Client extends User{
 
+
     @OneToMany(mappedBy = "client")
     private List<Review> reviews;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "clients")
     private List<Fare> fares;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "client")
+    private List<FavouriteRoute> favouriteRoutes;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "client")
+    private List<Rating> ratings;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Payment> payments;
 
     public Client() {
+    }
+
+    public Client(Long id, String password, String email, String name, String lastName, String town, String phone, String profilePhoto, boolean active, boolean blocked, float tokens, List<Note> notes, List<Message> messages, List<Role> roles, boolean inRide) {
+        super(id, password, email, name, lastName, town, phone, profilePhoto, active, blocked, tokens, notes, messages, roles, inRide);
     }
 
     public List<Review> getReviews() {
@@ -43,4 +63,22 @@ public class Client extends User{
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
     }
+
+	public List<FavouriteRoute> getFavouriteRoutes() {
+		return favouriteRoutes;
+	}
+
+	public void setFavouriteRoutes(List<FavouriteRoute> favouriteRoutes) {
+		this.favouriteRoutes = favouriteRoutes;
+	}
+
+	public List<Rating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(List<Rating> ratings) {
+		this.ratings = ratings;
+	}
+    
+    
 }

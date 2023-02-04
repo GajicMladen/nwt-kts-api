@@ -1,26 +1,44 @@
 package com.example.nwtktsapi.model;
 
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 public class Driver extends  User{
 
-    @OneToOne
+    @JsonIgnore
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "position_id")
-    private Coordinates position;
+    private Coordinate position;
 
-    @OneToOne
-    @JoinColumn(name = "vehicle_vehicle_id")
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "vehicle_id")
+    @JsonManagedReference
     private Vehicle vehicle;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "offender")
     private List<Note> blamedNotes;
 
+    @JsonIgnore
     @Column(name = "driver_status")
     private DriverStatus driverStatus;
 
     public Driver() {
+    }
+
+    public Driver(Long id, String password, String email, String name, String lastName, String town, String phone, String profilePhoto, boolean active, boolean blocked, float tokens, List<Note> notes, List<Message> messages, List<Role> roles, boolean inRide) {
+        super(id, password, email, name, lastName, town, phone, profilePhoto, active, blocked, tokens, notes, messages, roles, inRide);
     }
 
     public List<Note> getBlamedMessages() {
@@ -48,16 +66,16 @@ public class Driver extends  User{
     }
 
 
-    public void updatePosition( Coordinates newPosition){
-        this.position.setX( newPosition.getX() );
-        this.position.setY( newPosition.getY() );
+    public void updatePosition( Coordinate newPosition){
+        this.position.setLatitude( newPosition.getLatitude() );
+        this.position.setLongitude( newPosition.getLongitude() );
     }
 
-    public Coordinates getPosition() {
+    public Coordinate getPosition() {
         return position;
     }
 
-    public void setPosition(Coordinates position) {
+    public void setPosition(Coordinate position) {
         this.position = position;
     }
 

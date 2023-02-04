@@ -9,16 +9,19 @@ import java.util.Objects;
  * A DTO for the {@link com.example.nwtktsapi.model.User} entity
  */
 public class UserDTO implements Serializable {
-    private final Long id;
-    private final String email;
-    private final String name;
-    private final String lastName;
-    private final String phone;
-    private final String profilePhoto;
-    private final boolean active;
+    private  Long id;
+    private  String email;
+    private  String name;
+    private  String lastName;
+    private  String phone;
+    private  String profilePhoto;
+    private  boolean active;
+    private  boolean blocked;
+    private  String roleString;
 
-    private final boolean blocked;
+    public UserDTO(){
 
+    }
     public UserDTO(Long id, String email, String name, String lastName, String phone, String profilePhoto, boolean active , boolean blocked) {
         this.id = id;
         this.email = email;
@@ -38,6 +41,7 @@ public class UserDTO implements Serializable {
         this.profilePhoto = user.getProfilePhoto();
         this.active = user.isActive();
         this.blocked = user.isBlocked();
+        this.roleString = user.getRoleString();
     }
 
 
@@ -74,6 +78,13 @@ public class UserDTO implements Serializable {
         return blocked;
     }
 
+    public String getRoleString() {
+        return roleString;
+    }
+
+    public void setRoleString(String roleString) {
+        this.roleString = roleString;
+    }
 
     @Override
     public boolean equals(Object o) {

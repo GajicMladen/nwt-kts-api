@@ -1,8 +1,8 @@
 package com.example.nwtktsapi.model;
 
 public enum VehicleType {
-    LUX,
     BASIC,
+    LUX,
     BIG,
     BABY_SEAT,
     PET_FRIENDLY
